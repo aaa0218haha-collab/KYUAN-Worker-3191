@@ -110,14 +110,7 @@ function addMoreMenu() {
   details.style.right = `${Math.max(8, window.innerWidth - buttonRect.left + 8)}px`;
 }
 
-const observer = new MutationObserver(() => {
-  if (observer.pending) return;
-  observer.pending = true;
-  requestAnimationFrame(() => {
-    observer.pending = false;
-    addMoreMenu();
-  });
-});
+const observer = new MutationObserver(addMoreMenu);
 
 observer.observe(document.body, { childList: true, subtree: true });
 addMoreMenu();
