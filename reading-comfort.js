@@ -107,7 +107,7 @@ function addMoreMenu() {
     ? 36
     : 38;
   details.style.top = `${Math.max(4, buttonRect.top + (buttonRect.height - summaryHeight) / 2)}px`;
-  details.style.right = `${Math.max(8, window.innerWidth - buttonRect.left + 8)}px`;
+  details.style.right = `${Math.max(8, document.documentElement.clientWidth - buttonRect.left + 8)}px`;
 }
 
 const observer = new MutationObserver(addMoreMenu);
