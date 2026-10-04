@@ -13,7 +13,7 @@ readingStyles.textContent = `
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{box-shadow:0 1px 4px #3025160a}
   #root header [data-reading-hidden="true"],#personal-ai-trigger[data-reading-hidden="true"]{display:none!important}
-  #reading-more{position:relative;flex:none;font:500 13px/1.4 system-ui,"Noto Sans TC",sans-serif}
+  #reading-more{position:fixed;z-index:2147483000;flex:none;font:500 13px/1.4 system-ui,"Noto Sans TC",sans-serif}
   #reading-more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border:1px solid #e3ded4;border-radius:12px;background:#fff;color:#514a40}
   #reading-more summary::-webkit-details-marker{display:none}
   #reading-more summary::after{content:"";width:7px;height:7px;margin:0 0 3px 9px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg)}
@@ -65,16 +65,15 @@ function addMoreMenu() {
     button.innerText.trim() === "登入" ||
     button.title.includes("登出 Google"),
   );
-  const actions = googleButton?.parentElement?.parentElement;
-  if (!googleButton || !actions) return;
+  if (!googleButton) return;
 
-  let details = header.querySelector("#reading-more");
+  let details = document.querySelector("#reading-more");
   if (!details) {
     details = document.createElement("details");
     details.id = "reading-more";
     details.innerHTML =
       '<summary aria-label="開啟更多功能">更多</summary><div id="reading-more-menu"></div>';
-    actions.insertBefore(details, googleButton.parentElement);
+    document.body.append(details);
   }
 
   const menu = details.querySelector("#reading-more-menu");
@@ -103,6 +102,12 @@ function addMoreMenu() {
   }
 
   details.hidden = available === 0;
+  const buttonRect = googleButton.getBoundingClientRect();
+  const summaryHeight = window.matchMedia("(max-width:640px)").matches
+    ? 36
+    : 38;
+  details.style.top = `${Math.max(4, buttonRect.top + (buttonRect.height - summaryHeight) / 2)}px`;
+  details.style.right = `${Math.max(8, window.innerWidth - buttonRect.left + 8)}px`;
 }
 
 const observer = new MutationObserver(() => {
