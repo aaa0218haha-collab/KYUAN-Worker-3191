@@ -5,6 +5,11 @@ const providers = {
     guideUrl: "https://ai.google.dev/gemini-api/docs/api-key",
     guideLabel: "Google AI Studio 申請 API Key",
     model: "gemini-2.5-flash",
+    steps: [
+      "登入 Google AI Studio，開啟「API keys」。",
+      "按「Create API key」建立金鑰；若看不到專案，先匯入或建立 Google Cloud 專案。",
+      "複製金鑰貼到下方。Gemini 用量與可用額度依 Google 帳戶及方案為準。",
+    ],
   },
   openai: {
     label: "OpenAI",
@@ -13,6 +18,11 @@ const providers = {
       "https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key",
     guideLabel: "OpenAI Platform 申請 API Key",
     model: "gpt-4.1-mini",
+    steps: [
+      "登入 OpenAI Platform，開啟 API keys 並建立新的 secret key。",
+      "建立時複製金鑰；離開頁面後通常無法再次查看完整金鑰。",
+      "API 使用額度／付費設定與 ChatGPT 訂閱分開；確認 Platform 的 billing 設定。",
+    ],
   },
 };
 
@@ -39,6 +49,7 @@ styles.textContent = `
   .pai-msg.user{justify-self:end;background:#e9f0ec}.pai-msg.assistant{justify-self:start;background:#f3f0eb}.pai-msg.error{background:#fff0ed;color:#8b3023}
   .pai-chat-form{display:grid;gap:8px}.pai-chat-form textarea{min-height:76px;resize:vertical}
   .pai-actions{display:flex;justify-content:flex-end;gap:8px}
+  .pai-actions button:not(.pai-primary){border:1px solid #d9d2c9;border-radius:10px;background:#fff;color:#514b44;padding:9px 12px;font:500 13px system-ui,sans-serif;cursor:pointer}
   .pai-primary{border:0;border-radius:10px;background:#2e3d37;color:#fff;padding:10px 15px;font:600 14px system-ui,sans-serif;cursor:pointer}
   .pai-primary:disabled{opacity:.55;cursor:wait}
   #personal-ai-status{min-height:1.3em;color:#625c55;font-size:12px}
@@ -63,13 +74,9 @@ dialog.innerHTML = `
   </div>
   <div class="pai-body">
     <section class="pai-guide" aria-label="API Key 使用步驟">
-      <strong>四步驟開始使用</strong>
-      <ol>
-        <li>選擇 Gemini 或 OpenAI，點擊官方連結建立 API Key。</li>
-        <li>複製剛建立的金鑰，貼到下方欄位並按「在本機使用」。</li>
-        <li>在訊息框描述想處理的職場任務，按「送出給 AI」。</li>
-        <li>金鑰只會直接送到您選擇的 AI 服務；不會上傳到本 App 的 Firebase。</li>
-      </ol>
+      <strong id="pai-guide-heading">申請步驟</strong>
+      <ol id="pai-guide-steps"></ol>
+      <p class="pai-note">複製金鑰貼到下方後按「在本機使用」，再輸入問題送出。金鑰直接傳給所選 AI 服務，不會上傳到本 App 的 Firebase。</p>
     </section>
     <div class="pai-row">
       <label for="pai-provider">AI 服務</label>
@@ -82,10 +89,10 @@ dialog.innerHTML = `
     <div class="pai-row">
       <label for="pai-key">您的 API Key</label>
       <input id="pai-key" type="password" autocomplete="new-password" autocapitalize="off" spellcheck="false" placeholder="貼上您自己的 API Key">
-      <div class="pai-actions"><button id="pai-save-key" class="pai-primary" type="button">在本機使用</button></div>
+      <div class="pai-actions"><button id="pai-clear-key" type="button">清除金鑰</button><button id="pai-save-key" class="pai-primary" type="button">在本機使用</button></div>
       <label class="pai-check"><input id="pai-remember" type="checkbox"><span>在這台裝置記住金鑰（儲存在此瀏覽器；公用裝置請勿勾選）</span></label>
     </div>
-    <p class="pai-warning">API Key 等同帳號憑證。請勿分享或貼入不信任的裝置；此功能會讓您的提問直接傳送至所選 AI 服務，並可能依該平台方案產生費用。API Key 與對話不會保存到本 App 的雲端。</p>
+    <p class="pai-warning">API Key 等同帳號憑證。本功能在瀏覽器直接連線，金鑰不會上傳到本 App 的 Firebase；但若勾選「記住」，會以瀏覽器儲存，並非伺服器代管的保管方式。不要在公用裝置使用或輸入個資、雇主機密。提問會送交所選 AI 服務，可能產生費用並依供應商政策處理。</p>
     <div id="pai-chat" class="pai-chat" aria-live="polite"></div>
     <form id="pai-chat-form" class="pai-chat-form">
       <label for="pai-prompt"><strong>想請 AI 協助什麼？</strong></label>
@@ -103,7 +110,9 @@ const keyInput = dialog.querySelector("#pai-key");
 const rememberInput = dialog.querySelector("#pai-remember");
 const keyLink = dialog.querySelector("#pai-key-link");
 const guideLink = dialog.querySelector("#pai-guide-link");
+const guideSteps = dialog.querySelector("#pai-guide-steps");
 const saveButton = dialog.querySelector("#pai-save-key");
+const clearButton = dialog.querySelector("#pai-clear-key");
 const chatForm = dialog.querySelector("#pai-chat-form");
 const promptInput = dialog.querySelector("#pai-prompt");
 const sendButton = dialog.querySelector("#pai-send");
@@ -131,6 +140,13 @@ function updateProvider() {
   keyLink.href = provider.keyUrl;
   keyLink.textContent = provider.guideLabel;
   guideLink.href = provider.guideUrl;
+  guideSteps.replaceChildren(
+    ...provider.steps.map((step) => {
+      const item = document.createElement("li");
+      item.textContent = step;
+      return item;
+    }),
+  );
   activeKey = savedKey(providerSelect.value);
   keyInput.value = activeKey;
   try {
@@ -152,10 +168,13 @@ function appendMessage(text, role) {
 
 async function askGemini(key, messages) {
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${providers.gemini.model}:generateContent?key=${encodeURIComponent(key)}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${providers.gemini.model}:generateContent`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": key,
+      },
       body: JSON.stringify({
         systemInstruction: {
           parts: [
@@ -251,6 +270,23 @@ saveButton.addEventListener("click", () => {
   }
 });
 
+clearButton.addEventListener("click", () => {
+  const provider = providerSelect.value;
+  try {
+    sessionStorage.removeItem(`personal-ai-key-${provider}`);
+    localStorage.removeItem(`personal-ai-key-${provider}`);
+    activeKey = "";
+    keyInput.value = "";
+    rememberInput.checked = false;
+    historyByProvider[provider].length = 0;
+    chat.replaceChildren();
+    status.textContent = `${providers[provider].label} API Key 已從此瀏覽器清除。`;
+  } catch (error) {
+    console.error("清除本機 AI 設定失敗：", error);
+    status.textContent = "無法清除 API Key，請檢查瀏覽器儲存空間設定。";
+  }
+});
+
 chatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const prompt = promptInput.value.trim();
@@ -301,8 +337,33 @@ chatForm.addEventListener("submit", async (event) => {
 window.addEventListener("yuan-progress-sync-error", (event) => {
   const notice = document.createElement("div");
   notice.setAttribute("role", "alert");
-  notice.textContent =
-    "Google 雲端進度同步失敗；請確認 Firestore 規則允許本人存取 users/{uid}/checklists/{roleId}。";
+  const message = document.createElement("p");
+  message.textContent =
+    "雲端進度同步失敗；目前進度仍保存在這台裝置。請確認 Firebase Firestore 規則允許登入者存取自己的 users/{uid}/checklists/{roleId}。";
+  const link = document.createElement("a");
+  link.href =
+    "https://console.firebase.google.com/project/lucky-agility-38gvj/firestore/databases/ai-studio-ai-dfb05f7b-225a-4fac-b095-eac45c1951ab/rules";
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "開啟 Firestore 規則設定";
+  const rulesHelp = document.createElement("details");
+  rulesHelp.style.marginTop = "8px";
+  const rulesSummary = document.createElement("summary");
+  rulesSummary.textContent = "檢核進度規則範例";
+  rulesSummary.style.cursor = "pointer";
+  const rules = document.createElement("pre");
+  rules.textContent =
+    "match /users/{userId}/checklists/{roleId} {\n  allow read, write: if request.auth != null && request.auth.uid == userId;\n}";
+  Object.assign(rules.style, {
+    margin: "6px 0 0",
+    padding: "8px",
+    background: "#fffaf1",
+    borderRadius: "8px",
+    whiteSpace: "pre-wrap",
+    overflowWrap: "anywhere",
+    font: "11px/1.5 ui-monospace, monospace",
+  });
+  rulesHelp.append(rulesSummary, rules);
   Object.assign(notice.style, {
     position: "fixed",
     left: "20px",
@@ -317,6 +378,9 @@ window.addEventListener("yuan-progress-sync-error", (event) => {
     boxShadow: "0 8px 24px #0002",
     font: "13px/1.5 system-ui, sans-serif",
   });
+  Object.assign(message.style, { margin: "0 0 6px" });
+  Object.assign(link.style, { color: "#315e50", fontWeight: "600" });
+  notice.append(message, link, rulesHelp);
   document.body.append(notice);
-  window.setTimeout(() => notice.remove(), 7000);
+  window.setTimeout(() => notice.remove(), 20000);
 });

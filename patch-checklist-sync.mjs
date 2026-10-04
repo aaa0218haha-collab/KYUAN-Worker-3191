@@ -50,14 +50,19 @@ if (!bundle.includes("function syncChecklistProgressToCloud")) {
 
 const genericAuthError =
   'e?.message?.includes(`popup-closed-by-user`)?`登入視窗已關閉。`:`Google 登入時遇到問題，請確認已允許彈出式視窗並再試一次。`';
-const specificAuthError =
+const previousSpecificAuthError =
   'e?.code===`auth/unauthorized-domain`||e?.message?.includes(`auth/unauthorized-domain`)?`此網站網域尚未加入 Firebase 授權清單，請管理員將 aaa0218haha-collab.github.io 加入 Firebase Authentication 的「授權網域」。`:e?.message?.includes(`popup-closed-by-user`)?`登入視窗已關閉。`:`Google 登入時遇到問題，請確認已允許彈出式視窗並再試一次。`';
-if (!bundle.includes("此網站網域尚未加入 Firebase 授權清單")) {
+const specificAuthError =
+  'e?.code===`auth/unauthorized-domain`||e?.message?.includes(`auth/unauthorized-domain`)?`此網站網域尚未加入 Firebase 授權清單。請至 Firebase Authentication 設定（https://console.firebase.google.com/project/lucky-agility-38gvj/authentication/settings）加入 aaa0218haha-collab.github.io，並確認 Google 登入提供者已啟用。`:e?.message?.includes(`popup-closed-by-user`)?`登入視窗已關閉。`:`Google 登入時遇到問題，請確認已允許彈出式視窗並再試一次。`';
+if (!bundle.includes("https://console.firebase.google.com/project/lucky-agility-38gvj/authentication/settings")) {
+  const oldAuthMessage = bundle.includes("此網站網域尚未加入 Firebase 授權清單")
+    ? previousSpecificAuthError
+    : genericAuthError;
   bundle = replaceOnce(
     bundle,
-    genericAuthError,
+    oldAuthMessage,
     specificAuthError,
-    "generic Google login error message",
+    "Google login error guidance",
   );
 }
 
