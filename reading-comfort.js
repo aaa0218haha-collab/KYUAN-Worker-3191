@@ -47,10 +47,6 @@ const originalControls = [
     label: "匯出與存檔",
   },
   {
-    selector: 'button[title^="查看 Google 雲端同步"]',
-    label: "同步與隱私說明",
-  },
-  {
     selector: "#personal-ai-trigger",
     label: "連接自己的 AI",
   },
@@ -59,12 +55,13 @@ const originalControls = [
 function addMoreMenu() {
   const header = document.querySelector("#root header");
   if (!header) return;
-  const googleButton = [...header.querySelectorAll("button")].find((button) =>
-    button.innerText.includes("Google 同步") ||
-    button.title.includes("了解同步目的") ||
-    button.innerText.trim() === "登入" ||
-    button.title.includes("登出 Google"),
-  );
+  const googleButton = header.querySelector("#google-drive-connect") ||
+    [...header.querySelectorAll("button")].find((button) =>
+      button.innerText.includes("Google 同步") ||
+      button.title.includes("了解同步目的") ||
+      button.innerText.trim() === "登入" ||
+      button.title.includes("登出 Google"),
+    );
   if (!googleButton) return;
 
   let details = document.querySelector("#reading-more");

@@ -76,7 +76,7 @@ dialog.innerHTML = `
     <section class="pai-guide" aria-label="API Key 使用步驟">
       <strong id="pai-guide-heading">申請步驟</strong>
       <ol id="pai-guide-steps"></ol>
-      <p class="pai-note">複製金鑰貼到下方後按「在本機使用」，再輸入問題送出。金鑰直接傳給所選 AI 服務，不會上傳到本 App 的 Firebase。</p>
+      <p class="pai-note">複製金鑰貼到下方後按「在本機使用」，再輸入問題送出。金鑰直接傳給所選 AI 服務，不會上傳至本 App。</p>
     </section>
     <div class="pai-row">
       <label for="pai-provider">AI 服務</label>
@@ -92,7 +92,7 @@ dialog.innerHTML = `
       <div class="pai-actions"><button id="pai-clear-key" type="button">清除金鑰</button><button id="pai-save-key" class="pai-primary" type="button">在本機使用</button></div>
       <label class="pai-check"><input id="pai-remember" type="checkbox"><span>在這台裝置記住金鑰（儲存在此瀏覽器；公用裝置請勿勾選）</span></label>
     </div>
-    <p class="pai-warning">API Key 等同帳號憑證。本功能在瀏覽器直接連線，金鑰不會上傳到本 App 的 Firebase；但若勾選「記住」，會以瀏覽器儲存，並非伺服器代管的保管方式。不要在公用裝置使用或輸入個資、雇主機密。提問會送交所選 AI 服務，可能產生費用並依供應商政策處理。</p>
+    <p class="pai-warning">API Key 等同帳號憑證。本功能在瀏覽器直接連線，金鑰不會上傳至本 App；但若勾選「記住」，會以瀏覽器儲存，並非伺服器代管的保管方式。不要在公用裝置使用或輸入個資、雇主機密。提問會送交所選 AI 服務，可能產生費用並依供應商政策處理。</p>
     <div id="pai-chat" class="pai-chat" aria-live="polite"></div>
     <form id="pai-chat-form" class="pai-chat-form">
       <label for="pai-prompt"><strong>想請 AI 協助什麼？</strong></label>
@@ -332,55 +332,4 @@ chatForm.addEventListener("submit", async (event) => {
     sendButton.disabled = false;
     promptInput.focus();
   }
-});
-
-window.addEventListener("yuan-progress-sync-error", (event) => {
-  const notice = document.createElement("div");
-  notice.setAttribute("role", "alert");
-  const message = document.createElement("p");
-  message.textContent =
-    "雲端進度同步失敗；目前進度仍保存在這台裝置。請確認 Firebase Firestore 規則允許登入者存取自己的 users/{uid}/checklists/{roleId}。";
-  const link = document.createElement("a");
-  link.href =
-    "https://console.firebase.google.com/project/lucky-agility-38gvj/firestore/databases/ai-studio-ai-dfb05f7b-225a-4fac-b095-eac45c1951ab/rules";
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.textContent = "開啟 Firestore 規則設定";
-  const rulesHelp = document.createElement("details");
-  rulesHelp.style.marginTop = "8px";
-  const rulesSummary = document.createElement("summary");
-  rulesSummary.textContent = "檢核進度規則範例";
-  rulesSummary.style.cursor = "pointer";
-  const rules = document.createElement("pre");
-  rules.textContent =
-    "match /users/{userId}/checklists/{roleId} {\n  allow read, write: if request.auth != null && request.auth.uid == userId;\n}";
-  Object.assign(rules.style, {
-    margin: "6px 0 0",
-    padding: "8px",
-    background: "#fffaf1",
-    borderRadius: "8px",
-    whiteSpace: "pre-wrap",
-    overflowWrap: "anywhere",
-    font: "11px/1.5 ui-monospace, monospace",
-  });
-  rulesHelp.append(rulesSummary, rules);
-  Object.assign(notice.style, {
-    position: "fixed",
-    left: "20px",
-    bottom: "20px",
-    zIndex: "1001",
-    maxWidth: "min(520px, calc(100vw - 40px))",
-    padding: "12px 16px",
-    background: "#fff0ed",
-    color: "#8b3023",
-    border: "1px solid #e6b6ac",
-    borderRadius: "12px",
-    boxShadow: "0 8px 24px #0002",
-    font: "13px/1.5 system-ui, sans-serif",
-  });
-  Object.assign(message.style, { margin: "0 0 6px" });
-  Object.assign(link.style, { color: "#315e50", fontWeight: "600" });
-  notice.append(message, link, rulesHelp);
-  document.body.append(notice);
-  window.setTimeout(() => notice.remove(), 20000);
 });
