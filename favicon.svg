@@ -1,0 +1,20 @@
+<svg viewBox="0 0 1000 1000" width="1000" height="1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Green Circle -->
+  <circle cx="500" cy="500" r="470" fill="#E5ECE7" stroke="#547363" stroke-width="40" />
+  <!-- Inner White Thin Ring -->
+  <circle cx="500" cy="500" r="446" fill="none" stroke="#FFFFFF" stroke-width="8" />
+
+  <!-- Diagonal Arms Base Green -->
+  <path d="M 675,275 L 390,500 L 675,725" stroke="#547363" stroke-width="144" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Diagonal Arms White Track -->
+  <path d="M 675,275 L 390,500 L 675,725" stroke="#FFFFFF" stroke-width="96" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Diagonal Arms Green Core -->
+  <path d="M 675,275 L 390,500 L 675,725" stroke="#547363" stroke-width="64" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Vertical Stem Base Green -->
+  <path d="M 320,265 L 320,735" stroke="#547363" stroke-width="144" stroke-linecap="round" />
+  <!-- Vertical Stem White Track -->
+  <path d="M 320,265 L 320,735" stroke="#FFFFFF" stroke-width="96" stroke-linecap="round" />
+  <!-- Vertical Stem Green Core -->
+  <path d="M 320,265 L 320,735" stroke="#547363" stroke-width="64" stroke-linecap="round" />
+</svg>
