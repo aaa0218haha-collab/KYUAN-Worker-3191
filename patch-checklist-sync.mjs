@@ -61,5 +61,15 @@ if (!bundle.includes("此網站網域尚未加入 Firebase 授權清單")) {
   );
 }
 
+const unauthenticatedProbe = "JC();function YC";
+if (bundle.includes(unauthenticatedProbe)) {
+  bundle = replaceOnce(
+    bundle,
+    unauthenticatedProbe,
+    "function YC",
+    "unauthenticated Firestore connectivity probe",
+  );
+}
+
 writeFileSync(bundlePath, bundle);
-console.log(`Verified Google login guidance and checklist sync in ${bundles[0]}.`);
+console.log(`Verified Firebase guidance and progress sync in ${bundles[0]}.`);
