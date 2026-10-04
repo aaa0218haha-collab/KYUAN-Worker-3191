@@ -114,6 +114,8 @@ const observer = new MutationObserver(addMoreMenu);
 
 observer.observe(document.body, { childList: true, subtree: true });
 addMoreMenu();
+window.addEventListener("resize", addMoreMenu);
+window.addEventListener("scroll", addMoreMenu, { passive: true });
 
 document.addEventListener("click", (event) => {
   const menu = document.querySelector("#reading-more");
