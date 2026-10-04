@@ -18,7 +18,7 @@ const providers = {
 
 const styles = document.createElement("style");
 styles.textContent = `
-  #personal-ai-trigger{position:fixed;right:20px;bottom:20px;z-index:1000;border:0;border-radius:999px;background:#2e3d37;color:#fff;padding:12px 18px;font:600 14px system-ui,sans-serif;box-shadow:0 8px 24px #0003;cursor:pointer}
+  #personal-ai-trigger{position:fixed;right:20px;bottom:20px;z-index:2147483647;border:0;border-radius:999px;background:#2e3d37;color:#fff;padding:12px 18px;font:600 14px system-ui,sans-serif;box-shadow:0 8px 24px #0003;cursor:pointer}
   #personal-ai-trigger:hover{background:#1e2b26}
   #personal-ai-dialog{width:min(560px,calc(100vw - 24px));max-width:none;max-height:min(85vh,760px);padding:0;border:1px solid #e7e1d8;border-radius:20px;color:#241d17;background:#fffdf9;box-shadow:0 24px 80px #0004;font:14px/1.55 system-ui,"Noto Sans TC",sans-serif}
   #personal-ai-dialog::backdrop{background:#171a18a8;backdrop-filter:blur(2px)}
