@@ -1,20 +1,89 @@
-<svg viewBox="0 0 1000 1000" width="1000" height="1000" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Outer Green Circle -->
-  <circle cx="500" cy="500" r="470" fill="#E5ECE7" stroke="#547363" stroke-width="40" />
-  <!-- Inner White Thin Ring -->
-  <circle cx="500" cy="500" r="446" fill="none" stroke="#FFFFFF" stroke-width="8" />
-
-  <!-- Diagonal Arms Base Green -->
-  <path d="M 675,275 L 390,500 L 675,725" stroke="#547363" stroke-width="144" stroke-linecap="round" stroke-linejoin="round" />
-  <!-- Diagonal Arms White Track -->
-  <path d="M 675,275 L 390,500 L 675,725" stroke="#FFFFFF" stroke-width="96" stroke-linecap="round" stroke-linejoin="round" />
-  <!-- Diagonal Arms Green Core -->
-  <path d="M 675,275 L 390,500 L 675,725" stroke="#547363" stroke-width="64" stroke-linecap="round" stroke-linejoin="round" />
-
-  <!-- Vertical Stem Base Green -->
-  <path d="M 320,265 L 320,735" stroke="#547363" stroke-width="144" stroke-linecap="round" />
-  <!-- Vertical Stem White Track -->
-  <path d="M 320,265 L 320,735" stroke="#FFFFFF" stroke-width="96" stroke-linecap="round" />
-  <!-- Vertical Stem Green Core -->
-  <path d="M 320,265 L 320,735" stroke="#547363" stroke-width="64" stroke-linecap="round" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254" role="img" aria-labelledby="kyuan-logo-title kyuan-logo-description">
+  <title id="kyuan-logo-title">KYUAN 知序工作版</title>
+  <desc id="kyuan-logo-description">依原始 Logo 手繪向量化的圓形金色徽章，象牙色中央與鏤空金色 K。圓形外部透明。</desc>
+  <defs>
+    <linearGradient id="outer-gold" x1="93" y1="823" x2="1046" y2="116" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D6A037"/>
+      <stop offset="0.23" stop-color="#F3C95F"/>
+      <stop offset="0.49" stop-color="#FFE28A"/>
+      <stop offset="0.75" stop-color="#F6CA60"/>
+      <stop offset="1" stop-color="#F9D777"/>
+    </linearGradient>
+    <linearGradient id="rim-recess" x1="623" y1="69" x2="623" y2="1157" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#935A0B"/>
+      <stop offset="0.045" stop-color="#BA8220"/>
+      <stop offset="0.13" stop-color="#E8B94C"/>
+      <stop offset="0.35" stop-color="#F8D776"/>
+      <stop offset="0.63" stop-color="#ECC257"/>
+      <stop offset="0.84" stop-color="#F0C95F"/>
+      <stop offset="1" stop-color="#BD861F"/>
+    </linearGradient>
+    <linearGradient id="rim-side-light" x1="79" y1="613" x2="1167" y2="613" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B77C12" stop-opacity="0.44"/>
+      <stop offset="0.18" stop-color="#FFE29A" stop-opacity="0.10"/>
+      <stop offset="0.48" stop-color="#FFF3C3" stop-opacity="0"/>
+      <stop offset="0.8" stop-color="#DBA73B" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#A36910" stop-opacity="0.43"/>
+    </linearGradient>
+    <linearGradient id="ivory-bevel" x1="623" y1="125" x2="623" y2="1101" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C5AB74"/>
+      <stop offset="0.05" stop-color="#F4EAD0"/>
+      <stop offset="0.16" stop-color="#FAF5E4"/>
+      <stop offset="0.72" stop-color="#FFFCEF"/>
+      <stop offset="1" stop-color="#F2E9D0"/>
+    </linearGradient>
+    <radialGradient id="ivory-center" cx="616" cy="624" r="452" fx="616" fy="624" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBF7E9"/>
+      <stop offset="0.71" stop-color="#F9F4E4"/>
+      <stop offset="0.90" stop-color="#F4ECD8"/>
+      <stop offset="1" stop-color="#DFCB9F"/>
+    </radialGradient>
+    <linearGradient id="center-inset" x1="623" y1="169" x2="623" y2="1057" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#A67D3F" stop-opacity="0.51"/>
+      <stop offset="0.10" stop-color="#C4A567" stop-opacity="0.13"/>
+      <stop offset="0.26" stop-color="#FFFBEF" stop-opacity="0"/>
+      <stop offset="0.79" stop-color="#FFFBEF" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#FFFBEF" stop-opacity="0.58"/>
+    </linearGradient>
+    <linearGradient id="letter-gold" x1="472" y1="307" x2="760" y2="954" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE28A"/>
+      <stop offset="0.18" stop-color="#F4CD6D"/>
+      <stop offset="0.47" stop-color="#D7A341"/>
+      <stop offset="0.78" stop-color="#CC9838"/>
+      <stop offset="1" stop-color="#AA7017"/>
+    </linearGradient>
+    <linearGradient id="letter-edge" x1="331" y1="339" x2="869" y2="930" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#AF7D25"/>
+      <stop offset="0.19" stop-color="#D4A451"/>
+      <stop offset="0.43" stop-color="#9B650F"/>
+      <stop offset="1" stop-color="#9A6719"/>
+    </linearGradient>
+    <linearGradient id="letter-recess" x1="411" y1="339" x2="793" y2="928" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FBF5E3"/>
+      <stop offset="0.50" stop-color="#FFF9EB"/>
+      <stop offset="1" stop-color="#F5EDDA"/>
+    </linearGradient>
+    <clipPath id="circular-silhouette">
+      <circle cx="623" cy="620" r="604"/>
+    </clipPath>
+    <path id="sculpted-k-outline" d="M321 400 C321 336 373 285 437 285 C503 284 555 335 555 400 L555 497 L736 318 C781 273 851 274 897 320 C943 366 944 436 899 482 L751 623 L893 779 C937 827 934 896 887 941 C841 983 772 975 730 930 L554 752 L554 834 C554 899 504 949 439 950 C373 951 321 900 321 835 Z"/>
+    <path id="sculpted-k-recess" d="M370 400 C370 362 399 332 437 332 C475 332 503 360 503 398 L503 549 L464 587 L464 397 C464 381 453 369 437 369 C421 369 410 382 410 397 L410 835 C410 851 422 863 438 863 C454 863 464 851 464 835 L464 698 C464 670 475 646 495 624 L773 351 C796 330 832 331 856 351 C888 377 892 419 863 449 L693 614 C686 621 686 629 693 636 L853 811 C884 842 882 882 852 907 C823 932 782 923 754 895 L562 695 L589 661 L787 869 C799 882 817 884 830 873 C841 863 841 848 830 835 L628 623 L835 418 C846 406 846 390 835 380 C824 370 809 372 798 383 L528 650 C512 665 503 682 503 699 L503 835 C503 872 475 901 438 901 C400 901 370 872 370 835 Z"/>
+  </defs>
+  <g clip-path="url(#circular-silhouette)">
+    <circle cx="623" cy="620" r="604" fill="url(#outer-gold)"/>
+    <circle cx="623" cy="613" r="544" fill="url(#rim-recess)"/>
+    <circle cx="623" cy="613" r="544" fill="url(#rim-side-light)"/>
+    <circle cx="623" cy="613" r="544" fill="none" stroke="#FFE8A3" stroke-width="2.5"/>
+    <circle cx="623" cy="613" r="487.5" fill="url(#ivory-bevel)" stroke="#FFF0BC" stroke-width="2.5"/>
+    <circle cx="623" cy="613" r="444" fill="url(#ivory-center)"/>
+    <circle cx="623" cy="613" r="444" fill="url(#center-inset)"/>
+    <circle cx="623" cy="613" r="444" fill="none" stroke="#FFFBEF" stroke-width="2.4"/>
+    <use href="#sculpted-k-outline" transform="translate(1.2 2.4)" fill="#C29B55" opacity="0.17"/>
+    <use href="#sculpted-k-outline" fill="url(#letter-gold)" stroke="url(#letter-edge)" stroke-width="3" stroke-linejoin="round"/>
+    <use href="#sculpted-k-outline" transform="translate(-0.8 -0.8)" fill="none" stroke="#FFE9A5" stroke-width="1.25" opacity="0.58"/>
+    <use href="#sculpted-k-recess" fill="url(#letter-recess)" stroke="#B38432" stroke-width="1.7" stroke-linejoin="round"/>
+    <path d="M410 835 L410 398 C410 382 421 369 437 369 C453 369 464 381 464 397 M628 623 L835 418 C846 406 846 390 835 380 C824 370 809 372 798 383 M503 835 L503 699 C503 682 512 665 528 650 M693 614 C686 621 686 629 693 636 M628 623 L830 835 C841 848 841 863 830 873" fill="none" stroke="#8F5B12" stroke-width="3.7" stroke-linecap="round" opacity="0.76"/>
+    <path d="M371 836 C371 872 401 900 438 900 C475 900 502 872 502 835 M755 895 C783 923 823 931 852 907 C882 882 883 842 853 811" fill="none" stroke="#FFF9E2" stroke-width="1.5" stroke-linecap="round" opacity="0.72"/>
+  </g>
 </svg>
