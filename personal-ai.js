@@ -52,6 +52,8 @@ styles.textContent = `
   .pai-row{display:grid;gap:6px}.pai-row label{font-weight:600}
   .pai-row[hidden]{display:none}
   .pai-row select,.pai-row input,.pai-chat-form textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9d2c9;border-radius:10px;background:#fff;color:#241d17;font:inherit}
+  .pai-chat-form textarea::placeholder{color:#938a7e;opacity:1}
+  .pai-chat-scope{margin:0;color:#756c60;font-size:12px;line-height:1.6}
   .pai-model-help{margin:0;color:#625c55;font-size:12px}
   .pai-note{margin:0;color:#625c55;font-size:12px}
   .pai-warning{padding:10px 12px;border-left:3px solid #bd8b37;background:#fff8e9;color:#59451f;font-size:12px}
@@ -117,7 +119,8 @@ dialog.innerHTML = `
     <div id="pai-chat" class="pai-chat" aria-live="polite"></div>
     <form id="pai-chat-form" class="pai-chat-form">
       <label for="pai-prompt"><strong>想請 AI 協助什麼？</strong></label>
-      <textarea id="pai-prompt" maxlength="4000" placeholder="例如：請協助我把目前的工作任務拆成可執行的小步驟。"></textarea>
+      <textarea id="pai-prompt" maxlength="4000" placeholder="例如：我明天想向主管請病假，請幫我寫一段簡短、有禮貌的訊息。"></textarea>
+      <p class="pai-chat-scope">可詢問網站內容以外的一般問題。問題會直接送到你選擇的 Gemini 或 OpenAI；AI 不會自動讀取本網站所有內容。</p>
       <div class="pai-actions"><button id="pai-send" class="pai-primary" type="submit">送出給 AI</button></div>
     </form>
     <div id="personal-ai-status" role="status"></div>
