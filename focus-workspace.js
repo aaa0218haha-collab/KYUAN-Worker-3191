@@ -12,11 +12,9 @@ export function createYuanWorkspace(React, runtime) {
     return jsxs('svg',{className:'yw-preview',viewBox:'0 0 72 56','aria-hidden':true,children:shapes.map((shape,i)=>jsx('g',{children:shape},i))});
   }
   function Navigation({activeTab,onNavigate}) {
-    const [previews,setPreviews]=React.useState(()=>{try{return localStorage.getItem('kyuan-navigation-previews')!=='false'}catch{return true}});
     return jsxs('div',{className:'yw-navigation',children:[
       jsx('p',{className:'yw-eyebrow',children:'選擇功能'}),
-      jsx('nav',{'aria-label':'主要功能',children:pages.map(page=>jsxs('button',{type:'button','data-tab':page.id,'aria-current':activeTab===page.id?'page':undefined,onClick:()=>onNavigate(page.id),children:[previews&&jsx(Preview,{type:page.type}),jsxs('span',{children:[jsx('strong',{children:page.title}),jsx('small',{children:page.hint})]})]},page.id))}),
-      jsxs('label',{className:'yw-preview-switch',children:[jsx('input',{type:'checkbox',checked:previews,onChange:e=>{setPreviews(e.target.checked);try{localStorage.setItem('kyuan-navigation-previews',String(e.target.checked))}catch{}}}),'顯示功能縮圖']}),
+      jsx('nav',{'aria-label':'主要功能',children:pages.map(page=>jsxs('button',{type:'button','data-tab':page.id,'aria-label':`${page.title}，${page.hint}`,'aria-current':activeTab===page.id?'page':undefined,title:page.title,onClick:()=>onNavigate(page.id),children:[jsx(Preview,{type:page.type}),jsxs('span',{children:[jsx('strong',{children:page.title}),jsx('small',{children:page.hint})]})]},page.id))}),
     ]});
   }
   function SectionNotes({noteKey,label}) {
