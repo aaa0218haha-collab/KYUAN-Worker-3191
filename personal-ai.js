@@ -48,7 +48,9 @@ styles.textContent = `
   .pai-close{border:0;background:transparent;font-size:22px;cursor:pointer;color:#514b44}
   .pai-body{padding:18px 20px;display:grid;gap:14px}
   .pai-guide{padding:13px 14px;background:#f5f2eb;border-radius:12px}
-  .pai-guide ol{margin:8px 0 0;padding-left:22px}.pai-guide li+li{margin-top:5px}
+  .pai-guide ol,.pai-guide ul{margin:8px 0 0;padding-left:22px}
+  .pai-guide ol{list-style:decimal}.pai-guide ul{list-style:disc}
+  .pai-guide li+li{margin-top:5px}
   .pai-guide a,.pai-links a{color:#315e50;text-decoration:underline;text-underline-offset:2px;font-weight:600}
   .pai-row{display:grid;gap:6px}.pai-row label{font-weight:600}
   .pai-row[hidden]{display:none}
@@ -98,7 +100,10 @@ dialog.innerHTML = `
     <section class="pai-guide" aria-label="API Key 使用步驟">
       <strong id="pai-guide-heading">申請步驟</strong>
       <ol id="pai-guide-steps"></ol>
-      <p class="pai-note">複製金鑰貼到下方後按「在本機使用」，再輸入問題送出。金鑰直接傳給所選 AI 服務，不會上傳至本 App。</p>
+      <ul class="pai-note">
+        <li>複製金鑰貼到下方，按「在本機使用」，再輸入問題並送出。</li>
+        <li>金鑰會由瀏覽器直接傳給所選 AI 服務；本網站伺服器不會收到金鑰。</li>
+      </ul>
     </section>
     <div class="pai-row">
       <label for="pai-provider">AI 服務</label>
