@@ -28,12 +28,12 @@ welcome.innerHTML = `
 <li><strong>實用工具：</strong>運用工作輔助工具，協助整理與執行任務。</li>
 <li><strong>薪水權益：</strong>查看薪資與勞動權益資訊。</li>
 <li><strong>更多功能：</strong>調整文字大小、查看歷史紀錄、匯出 PDF，或連接自己的 AI。</li>
-<li><strong>Google 雲端：</strong>備份進度或匯入備份；需要時再連結即可。</li>
+<li><strong>Google 登入：</strong>把檢核進度依帳號分開保存在這台裝置；不會自動連結雲端。</li>
 </ul>
-<strong>要連結 Google 帳號嗎？</strong>
-<p class="welcome-note">可以選擇不要，直接使用網站。之後仍可從右上角「Google 雲端」連結。</p>
+<strong>登入 Google 帳號</strong>
+<p class="welcome-note">登入只用來分開管理此裝置上的個人進度，不會授權 Google 雲端或 AI。要在其他裝置使用，請另外選擇「雲端備份」。</p>
 <div class="welcome-actions">
-<button type="button" data-welcome-google>綁定 Google</button>
+<button type="button" data-welcome-google>Google 登入</button>
 <button type="button" data-welcome-skip autofocus>暫時不要，直接開始</button>
 </div>
 <p class="welcome-note" id="welcome-google-status"></p>
@@ -45,12 +45,15 @@ function showWelcome(){const more=document.querySelector('#reading-more');if(mor
 welcome.querySelector('[data-welcome-skip]').addEventListener('click',()=>welcome.close());
 welcome.addEventListener('close',rememberChoice);
 welcome.querySelector('[data-welcome-google]').addEventListener('click',()=>{
-  const trigger=document.querySelector('#google-drive-connect');
-  if(!trigger){welcome.querySelector('#welcome-google-status').textContent='連結功能正在準備中，請稍後再試，或先開始使用。';return}
+  const trigger=document.querySelector('#yuan-google-sign-in');
+  if(!trigger){welcome.querySelector('#welcome-google-status').textContent='Google 登入正在準備中，請稍後再試，或先開始使用。';return}
+  if(trigger.disabled){welcome.querySelector('#welcome-google-status').textContent='Google 登入目前無法連線，請稍後再試；進度仍會保存在這台裝置。';return}
   welcome.close();trigger.click();
 });
 if(!document.querySelector('meta[name="google-oauth-client-id"]')?.content.trim()){
   welcome.querySelector('#welcome-google-status').textContent='Google 登入目前尚未開放。你可以先使用所有本機功能。';
+}else{
+  welcome.querySelector('#welcome-google-status').textContent='登入若未成功，進度仍會保存在這台裝置。';
 }
 function mountHelp(){
   const menu=document.querySelector('#reading-more-menu');

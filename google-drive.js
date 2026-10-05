@@ -49,7 +49,7 @@ function mountConnectButton() {
   button.id = "google-drive-connect";
   button.type = "button";
   button.title = "Google 雲端進度備份";
-  button.textContent = "Google 雲端";
+  button.textContent = "雲端備份";
   button.addEventListener("click", () => {
     dialog.showModal();
     updateConnectionState();
@@ -73,14 +73,14 @@ dialog.innerHTML = `
     <button type="button" data-gd-close aria-label="關閉">×</button>
   </header>
   <div id="google-drive-content">
-    <p id="google-drive-status" role="status" aria-live="polite">Google 雲端備份目前尚未開放；檢核進度仍保存在這台裝置。</p>
+    <p id="google-drive-status" role="status" aria-live="polite">登入與雲端備份分開。需要備份時，再連結 Google 雲端即可。</p>
     <div id="google-drive-actions">
-      <button type="button" data-gd-connect data-primary="true">登入 Google</button>
+      <button type="button" data-gd-connect data-primary="true">連結 Google 雲端</button>
       <button type="button" data-gd-save disabled>備份進度</button>
       <button type="button" data-gd-import disabled>匯入進度</button>
       <button type="button" data-gd-disconnect hidden>解除連結</button>
     </div>
-    <p id="google-drive-privacy">備份功能開放後，你可以把進度存到 Google 雲端，再從其他裝置載入。</p>
+    <p id="google-drive-privacy">登入和雲端備份分開。選擇連結後，Google 會另外詢問是否允許存取備份檔。</p>
   </div>
 `;
 document.body.append(dialog);
@@ -111,20 +111,20 @@ function updateConnectionState() {
   const connected = hasLiveToken();
   const connectTrigger = document.querySelector("#google-drive-connect");
   if (connectTrigger) {
-    connectTrigger.textContent = connected ? "Google 已連結" : "雲端備份";
+    connectTrigger.textContent = connected ? "雲端已連結" : "雲端備份";
   }
-  connectButton.textContent = "Google 登入";
+  connectButton.textContent = "連結 Google 雲端";
   connectButton.disabled = !clientId || connected;
   connectButton.hidden = connected;
   saveButton.disabled = !connected;
   importButton.disabled = !connected;
   disconnectButton.hidden = !connected;
   if (!clientId) {
-    setStatus("Google 雲端備份目前尚未開放；檢核進度仍保存在這台裝置。");
+    setStatus("雲端備份目前無法使用；Google 登入與本機進度不受影響。");
   } else if (connected) {
-    setStatus("已連結 Google。可以備份進度，或匯入其他裝置的進度。");
+    setStatus("Google 雲端已連結。可以備份進度，或匯入其他裝置的進度。");
   } else if (status.dataset.error !== "true") {
-    setStatus("登入 Google 後，就能備份或匯入檢核進度。");
+    setStatus("登入和雲端備份分開。選擇連結後，Google 會另外詢問是否允許存取備份檔。");
   }
 }
 
@@ -139,7 +139,7 @@ function loadGoogleIdentityServices() {
       existingScript.addEventListener("load", resolve, { once: true });
       existingScript.addEventListener(
         "error",
-        () => reject(new Error("Google 登入元件載入失敗。")),
+        () => reject(new Error("Google 雲端連線元件載入失敗。")),
         { once: true },
       );
       return;
@@ -150,7 +150,7 @@ function loadGoogleIdentityServices() {
     script.async = true;
     script.defer = true;
     script.onload = resolve;
-    script.onerror = () => reject(new Error("Google 登入元件載入失敗。"));
+    script.onerror = () => reject(new Error("Google 雲端連線元件載入失敗。"));
     document.head.append(script);
   });
 }
@@ -167,7 +167,7 @@ connectButton.addEventListener("click", async () => {
   }
 
   connectButton.disabled = true;
-  setStatus("正在開啟 Google 登入…");
+  setStatus("正在連結 Google 雲端…");
   try {
     await loadGoogleIdentityServices();
     tokenClient ??= window.google.accounts.oauth2.initTokenClient({
@@ -192,7 +192,7 @@ connectButton.addEventListener("click", async () => {
       },
       error_callback: (error) => {
         connectButton.disabled = false;
-        reportGoogleError(new Error(`Google 登入視窗無法開啟：${error.type}`));
+        reportGoogleError(new Error(`Google 雲端連線視窗無法開啟：${error.type}`));
       },
     });
     tokenClient.requestAccessToken({ prompt: "select_account" });
@@ -216,7 +216,7 @@ async function driveRequest(url, options = {}) {
     accessToken = "";
     tokenExpiresAt = 0;
     updateConnectionState();
-    throw new Error("Google 授權已逾時，請重新連結帳號。");
+    throw new Error("Google 雲端授權已逾時，請重新連結雲端。");
   }
 
   const response = await fetch(url, {
