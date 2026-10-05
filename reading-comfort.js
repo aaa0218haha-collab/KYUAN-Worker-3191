@@ -164,8 +164,14 @@ function updateScenarioLists() {
       const button = document.createElement("button");
       button.type = "button";
       button.addEventListener("click", () => {
-        grid.dataset.scenarioExpanded =
-          grid.dataset.scenarioExpanded === "true" ? "false" : "true";
+        const current = Number(grid.dataset.scenarioVisibleCount) || 0;
+        const pageSize = Number(grid.dataset.scenarioPageSize) || 8;
+        const total = [...grid.children].filter((child) =>
+          child.classList.contains("scenario-card")
+        ).length;
+        grid.dataset.scenarioVisibleCount = String(
+          current >= total ? pageSize : Math.min(total, current + pageSize),
+        );
         updateScenarioLists();
       });
       controls.append(count, button);
@@ -176,35 +182,33 @@ function updateScenarioLists() {
     const signature = cards.map((card) =>
       card.querySelector(".scenario-card-term")?.textContent || ""
     ).join("|");
+    const pageSize = mobile ? 8 : 12;
     if (grid.dataset.scenarioSignature !== signature) {
       grid.dataset.scenarioSignature = signature;
-      grid.dataset.scenarioExpanded = "false";
+      grid.dataset.scenarioVisibleCount = String(pageSize);
     }
-
-    const pageSize = mobile ? 8 : 12;
     if (grid.dataset.scenarioPageSize !== String(pageSize)) {
       if (grid.dataset.scenarioPageSize) {
-        grid.dataset.scenarioExpanded = "false";
+        grid.dataset.scenarioVisibleCount = String(pageSize);
       }
       grid.dataset.scenarioPageSize = String(pageSize);
     }
-    const expanded = grid.dataset.scenarioExpanded === "true";
-    const visibleCount = Math.min(pageSize, cards.length);
+    const visibleCount = Math.min(
+      cards.length,
+      Number(grid.dataset.scenarioVisibleCount) || pageSize,
+    );
     cards.forEach((card, cardIndex) => {
-      card.hidden = !expanded && cardIndex >= visibleCount;
+      card.hidden = cardIndex >= visibleCount;
     });
-    controls.hidden = cards.length <= visibleCount;
-    const count = expanded
-      ? `目前顯示全部 ${cards.length} 筆`
-      : `目前顯示 ${visibleCount} / ${cards.length} 筆`;
+    controls.hidden = cards.length <= pageSize;
+    const count = `目前顯示 ${visibleCount} / ${cards.length} 筆`;
     const countElement = controls.querySelector(".scenario-list-count");
     if (countElement.textContent !== count) countElement.textContent = count;
     const button = controls.querySelector("button");
-    const buttonText = expanded
+    const buttonText = visibleCount >= cards.length
       ? `收合清單，只看前 ${pageSize} 筆`
-      : `再看 ${cards.length - visibleCount} 筆`;
+      : `再顯示 ${Math.min(pageSize, cards.length - visibleCount)} 筆`;
     if (button.textContent !== buttonText) button.textContent = buttonText;
-    button.setAttribute("aria-expanded", String(expanded));
     button.setAttribute("aria-controls", grid.id);
   }
 }
