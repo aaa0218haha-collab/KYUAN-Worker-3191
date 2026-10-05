@@ -147,8 +147,11 @@ function loadGoogleIdentityServices() {
   return identityScriptPromise;
 }
 
-function reportLoginFailure() {
-  showStatus("Google 登入未完成，尚未登入；你的進度仍保存在這台裝置。", true);
+function reportLoginFailure(errorType = "") {
+  const message = String(errorType).includes("origin_mismatch")
+    ? "Google 尚未允許這個網站登入。請網站管理員設定登入來源；你的進度仍保存在這台裝置。"
+    : "Google 登入未完成。如畫面顯示授權錯誤，請聯絡網站管理員；你的進度仍保存在這台裝置。";
+  showStatus(message, true);
   if (!dialog.open) dialog.showModal();
 }
 
@@ -165,7 +168,7 @@ function requestSignIn() {
     scope: "openid email profile",
     callback: async (response) => {
       if (response.error || !response.access_token) {
-        reportLoginFailure();
+        reportLoginFailure(response.error);
         loginButton.disabled = false;
         return;
       }
@@ -197,9 +200,9 @@ function requestSignIn() {
         loginButton.disabled = false;
       }
     },
-    error_callback: () => {
+    error_callback: (error) => {
       loginButton.disabled = false;
-      reportLoginFailure();
+      reportLoginFailure(error?.type || "");
     },
   });
 

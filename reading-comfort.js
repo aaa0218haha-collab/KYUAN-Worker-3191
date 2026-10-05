@@ -10,6 +10,7 @@ readingStyles.textContent = `
   #root main p{max-width:76ch}
   #root main h2,#root main h3{line-height:1.4}
   #root main input,#root main select,#root main textarea{font-size:15px}
+  #root main [class~="overflow-x-auto"]{overflow-x:visible!important;overflow-y:visible!important;flex-wrap:wrap!important;flex-shrink:1!important;min-width:0;max-width:100%}
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{box-shadow:0 1px 4px #3025160a}
   #root header [data-reading-hidden="true"],#personal-ai-trigger[data-reading-hidden="true"]{display:none!important}

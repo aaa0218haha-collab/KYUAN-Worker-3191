@@ -135,9 +135,8 @@
         <!-- 右側內容主體與單行標籤導覽系統 -->
         <main class="w-full lg:pl-[360px] flex-1 min-h-screen flex flex-col">
             
-            <!-- 單行水平標籤列 -->
-            <nav class="sticky top-0 bg-cafe-50/95 backdrop-blur border-b border-cafe-200/60 p-4 z-20 overflow-x-auto whitespace-nowrap">
-                <div class="max-w-3xl mx-auto flex space-x-1.5 px-2">
+            <nav class="sticky top-0 bg-cafe-50/95 backdrop-blur border-b border-cafe-200/60 p-4 z-20">
+                <div class="max-w-3xl mx-auto flex flex-wrap gap-1.5 px-2">
                     <button onclick="switchSection('advantages')" id="tab-advantages" class="main-tab px-4 py-2 rounded-xl text-xs font-medium border border-cafe-200 bg-white text-cafe-700 hover:border-cafe-600 transition-all duration-150 main-tab-active">
                         優勢定位
                     </button>
@@ -335,7 +334,7 @@
                         
                         <!-- 論文互動展示區 -->
                         <div class="bg-white rounded-xl border border-cafe-200/60 p-4 shadow-sm">
-                            <div class="flex overflow-x-auto gap-1.5 border-b border-cafe-100 pb-2.5 mb-3.5">
+                            <div class="flex flex-wrap gap-1.5 border-b border-cafe-100 pb-2.5 mb-3.5">
                                 <button onclick="switchArtTab('mask')" id="art-tab-mask" class="art-tab shrink-0 px-3 py-1 text-[11px] rounded-lg border border-cafe-200 bg-cafe-50 text-cafe-700 art-tab-active">
                                     社交面具
                                 </button>
