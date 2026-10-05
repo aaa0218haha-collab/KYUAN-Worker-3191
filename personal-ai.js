@@ -42,9 +42,10 @@ styles.textContent = `
   #personal-ai-dialog{width:min(560px,calc(100vw - 24px));max-width:none;max-height:min(85vh,760px);padding:0;border:1px solid #e7e1d8;border-radius:20px;color:#241d17;background:#fffdf9;box-shadow:0 24px 80px #0004;font:14px/1.55 system-ui,"Noto Sans TC",sans-serif}
   #personal-ai-dialog::backdrop{background:#171a18a8;backdrop-filter:blur(2px)}
   .pai-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #eee8df}
-  .pai-head-brand{display:flex;align-items:center;gap:10px;min-width:0}
-  .pai-head-brand img{width:44px;height:44px;flex:none;object-fit:cover;border:1px solid #e5ded2;border-radius:10px}
-  .pai-head h2{margin:0;font-size:18px}.pai-close{border:0;background:transparent;font-size:22px;cursor:pointer;color:#514b44}
+  .pai-head-brand{display:flex;align-items:center;gap:14px;min-width:0}
+  .pai-head-brand img{width:72px;height:72px;flex:none;object-fit:cover;border:1px solid #e5ded2;border-radius:14px}
+  .pai-head-copy{min-width:0}.pai-head h2{margin:0;font-size:18px}.pai-head-note{margin:4px 0 0;color:#756c60;font-size:12px;line-height:1.5}
+  .pai-close{border:0;background:transparent;font-size:22px;cursor:pointer;color:#514b44}
   .pai-body{padding:18px 20px;display:grid;gap:14px}
   .pai-guide{padding:13px 14px;background:#f5f2eb;border-radius:12px}
   .pai-guide ol{margin:8px 0 0;padding-left:22px}.pai-guide li+li{margin-top:5px}
@@ -68,7 +69,7 @@ styles.textContent = `
   .pai-primary{border:0;border-radius:10px;background:#2e3d37;color:#fff;padding:10px 15px;font:600 14px system-ui,sans-serif;cursor:pointer}
   .pai-primary:disabled{opacity:.55;cursor:wait}
   #personal-ai-status{min-height:1.3em;color:#625c55;font-size:12px}
-  @media(max-width:520px){#personal-ai-trigger{right:12px;bottom:12px}.pai-body{padding:14px}.pai-head{padding:14px}}
+  @media(max-width:520px){#personal-ai-trigger{right:12px;bottom:12px}.pai-body{padding:14px}.pai-head{padding:14px}.pai-head-brand{gap:10px}.pai-head-brand img{width:60px;height:60px}.pai-head h2{font-size:16px}}
 `;
 document.head.append(styles);
 
@@ -85,8 +86,11 @@ dialog.setAttribute("aria-labelledby", "personal-ai-title");
 dialog.innerHTML = `
   <div class="pai-head">
     <div class="pai-head-brand">
-      <img src="./karen-header.png" alt="凱倫與虎夥伴">
-      <h2 id="personal-ai-title">連接自己的 AI 助理</h2>
+      <img src="./karen-header.png" alt="凱倫和虎夥伴一起揮手問候">
+      <div class="pai-head-copy">
+        <h2 id="personal-ai-title">連接自己的 AI 助理</h2>
+        <p class="pai-head-note">凱倫與虎夥伴陪你整理想法</p>
+      </div>
     </div>
     <button class="pai-close" type="button" aria-label="關閉">&times;</button>
   </div>
