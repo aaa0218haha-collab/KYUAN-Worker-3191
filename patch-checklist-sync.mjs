@@ -57,6 +57,27 @@ function replaceFunctionOrVerify(
   throw new Error(`Could not verify ${startMarker}; bundle unchanged.`);
 }
 
+function replaceRegionOrVerify(
+  source,
+  startMarker,
+  endMarker,
+  replacement,
+  verificationMarker,
+  description,
+) {
+  if (source.includes(verificationMarker)) return source;
+  const start = source.indexOf(startMarker);
+  const end = source.indexOf(endMarker, start + startMarker.length);
+  if (
+    start < 0 ||
+    end < 0 ||
+    source.indexOf(startMarker, start + startMarker.length) >= 0
+  ) {
+    throw new Error(`Could not uniquely find ${description}; bundle unchanged.`);
+  }
+  return source.slice(0, start) + replacement + source.slice(end);
+}
+
 const localChecklist =
   '(0,S.useEffect)(()=>{let loadProgress=user=>{let key=user?"checklist_"+user.uid+"_"+e.id:"checklist_"+e.id;try{let saved=localStorage.getItem(key);if(!saved&&user){saved=localStorage.getItem("checklist_"+e.id);if(saved)localStorage.setItem(key,saved)}o(saved?JSON.parse(saved):{})}catch(error){console.error("載入職務檢核進度失敗：",error);o({})}};loadProgress(window.YUAN_GOOGLE_ACCOUNT||null);let handleAccount=e=>loadProgress(e.detail?.user||null);window.addEventListener("yuan-google-account-change",handleAccount);return()=>window.removeEventListener("yuan-google-account-change",handleAccount)},[e.id]),(0,S.useEffect)(()=>{m(0)},[s,e.id]);let h=t=>{o(n=>{let r={...n,[t]:!n[t]};let user=window.YUAN_GOOGLE_ACCOUNT;localStorage.setItem(user?"checklist_"+user.uid+"_"+e.id:"checklist_"+e.id,JSON.stringify(r));return r})}';
 const localOnlyChecklist =
@@ -140,6 +161,36 @@ if (bundle.includes(taskSyncTail)) {
     "trailing comma after removing automatic task sync",
   );
 }
+
+const scenarioCardReplacement = String.raw`children:Ie.map(e=>(0,k.jsxs)("article",{className:"scenario-card",children:[
+  (0,k.jsxs)("div",{className:"scenario-card-header",children:[
+    (0,k.jsxs)("div",{className:"scenario-card-heading",children:[
+      (0,k.jsx)("span",{className:"scenario-card-term",children:e.term}),
+      (0,k.jsxs)("div",{className:"scenario-card-badges",children:[
+        (0,k.jsx)("span",{className:"scenario-card-category",children:e.categoryLabel}),
+        e.relatedDomainIds&&e.relatedDomainIds.includes(l.domainId)&&(0,k.jsx)("span",{className:"scenario-card-required",children:"必懂"})
+      ]})
+    ]}),
+    (0,k.jsxs)("p",{className:"scenario-card-summary","aria-hidden":!0,children:["白話：",e.plainMeaning]})
+  ]}),
+  (0,k.jsxs)("details",{className:"scenario-card-details scenario-card-details-v2",children:[
+    (0,k.jsx)("summary",{children:"看工作例子與安全回覆"}),
+    (0,k.jsxs)("div",{className:"scenario-card-detail-list",children:[
+      (0,k.jsxs)("p",{className:"scenario-card-detail scenario-card-definition",children:[(0,k.jsx)("strong",{children:"完整說明"}),e.plainMeaning]}),
+      (0,k.jsxs)("p",{className:"scenario-card-detail scenario-card-example",children:[(0,k.jsx)("strong",{children:"工作情境"}),e.workplaceContext]}),
+      (0,k.jsxs)("p",{className:"scenario-card-detail scenario-card-safe",children:[(0,k.jsx)("strong",{children:"安全回覆"}),e.newcomerSafeResponse]}),
+      e.pitfallWarning&&(0,k.jsxs)("p",{className:"scenario-card-detail scenario-card-warning",children:[(0,k.jsx)("strong",{children:"注意事項"}),e.pitfallWarning]})
+    ]})
+  ]})
+]},e.id))})]})`;
+bundle = replaceRegionOrVerify(
+  bundle,
+  "children:Ie.map(e=>",
+  ",a===" + String.fromCharCode(96) + "resources" + String.fromCharCode(96),
+  scenarioCardReplacement,
+  'className:"scenario-card-details scenario-card-details-v2"',
+  "work glossary card renderer",
+);
 
 if (
   !bundle.includes('localStorage.getItem(key);if(!saved&&user)') ||
