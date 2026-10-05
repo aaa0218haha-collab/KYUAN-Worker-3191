@@ -4,16 +4,20 @@ const providers = {
     keyUrl: "https://aistudio.google.com/app/apikey",
     guideUrl: "https://ai.google.dev/gemini-api/docs/api-key",
     guideLabel: "Google AI Studio 申請 API Key",
-    model: "gemini-2.5-flash",
+    model: "gemini-3.8-flash",
     models: [
-      { id: "gemini-2.5-flash", label: "Gemini 2.5 Flash（速度快、適合日常）" },
-      { id: "gemini-2.5-pro", label: "Gemini 2.5 Pro（適合較複雜的問題）" },
+      { id: "gemini-3.8-flash", label: "Gemini 3.8 Flash（建議，速度快）" },
+      { id: "gemini-3.7-flash", label: "Gemini 3.7 Flash" },
+      { id: "gemini-3.6-flash", label: "Gemini 3.6 Flash" },
+      { id: "gemini-3.5-flash", label: "Gemini 3.5 Flash" },
+      { id: "gemini-3.1-pro-preview", label: "Gemini 3.1 Pro Preview（預覽版）" },
+      { id: "gemini-3.1-flash-lite", label: "Gemini 3.1 Flash-Lite（輕量版）" },
     ],
     steps: [
       "按「Google AI Studio 申請 API Key」，登入自己的 Google 帳號。",
       "在 API keys 頁面按「Create API key」建立金鑰；若出現專案選擇，選取或建立專案。",
       "複製金鑰貼在下方欄位，按「在本機使用」。不要把金鑰貼在公開對話或傳給網站管理員。",
-      "選擇 Gemini 2.5 Flash 或 Pro；不同模型的可用額度與費用依 Google AI Studio 帳戶方案為準。",
+      "選擇清單中的 Gemini 3.x 文字模型。可用額度、模型狀態與費用依 Google AI Studio 帳戶方案為準；Preview 為預覽版。",
     ],
   },
   openai: {
@@ -96,7 +100,7 @@ dialog.innerHTML = `
     <div class="pai-row" id="pai-gemini-model-row">
       <label for="pai-gemini-model">Gemini 模型</label>
       <select id="pai-gemini-model"></select>
-      <p class="pai-model-help">可隨時切換。Pro 的可用額度與費用可能不同，請以 Google AI Studio 顯示為準。</p>
+      <p class="pai-model-help">僅提供 Gemini 3.x 文字對話模型。Preview 為預覽版；各模型可用額度及費用請以 Google AI Studio 顯示為準。</p>
     </div>
     <div class="pai-row">
       <label for="pai-key">貼上您自己的 API Key</label>
@@ -359,7 +363,7 @@ chatForm.addEventListener("submit", async (event) => {
         : await askOpenAI(activeKey, messages);
     history.push({ role: "assistant", content: answer });
     appendMessage(answer, "assistant");
-    status.textContent = `已收到 ${provider === "gemini" ? `Gemini ${modelSelect.value.replace("gemini-", "")}` : providers[provider].label} 回覆。`;
+    status.textContent = `已收到 ${provider === "gemini" ? modelSelect.selectedOptions[0].textContent : providers[provider].label} 回覆。`;
   } catch (error) {
     console.error(`${providers[provider].label} API 呼叫失敗：`, error);
     history.pop();
