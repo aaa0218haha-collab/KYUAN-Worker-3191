@@ -22,7 +22,8 @@ driveStyles.textContent = `
   #google-drive-actions{display:flex;flex-wrap:wrap;gap:8px}
   #google-drive-actions button{min-height:46px;padding:9px 14px;border:1px solid #d8cca8;border-radius:10px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #google-drive-actions button[data-primary="true"]{border-color:#b88e3e;background:#b88e3e;color:white}
-  #google-drive-actions button:disabled{opacity:.5;cursor:not-allowed}
+  #google-drive-actions button:disabled{border-color:#ded6c8;background:#f5f1e9;color:#514a40;opacity:1;cursor:not-allowed}
+  #google-drive-actions button[data-primary="true"]:disabled{border-color:#ded6c8;background:#f5f1e9;color:#514a40}
   #google-drive-privacy{margin:0;color:#514a40;font-size:14px}
   @media(max-width:640px){#google-drive-connect{min-height:36px;padding:0 9px;font-size:12px}#google-drive-dialog header{padding:14px 16px}#google-drive-content{padding:15px 16px 18px}#google-drive-actions{display:grid;grid-template-columns:1fr}#google-drive-actions button{width:100%}}
 `;
@@ -79,7 +80,7 @@ dialog.innerHTML = `
       <button type="button" data-gd-import disabled>匯入進度</button>
       <button type="button" data-gd-disconnect hidden>解除連結</button>
     </div>
-    <p id="google-drive-privacy">進度平時保存在這台裝置。啟用後，可備份到自己的 Google 雲端，或匯入其他裝置的進度。</p>
+    <p id="google-drive-privacy">備份功能開放後，你可以把進度存到 Google 雲端，再從其他裝置載入。</p>
   </div>
 `;
 document.body.append(dialog);
@@ -112,7 +113,7 @@ function updateConnectionState() {
   if (connectTrigger) {
     connectTrigger.textContent = connected ? "Google 已連結" : "雲端備份";
   }
-  connectButton.textContent = clientId ? "登入 Google" : "Google 尚未開放";
+  connectButton.textContent = "Google 登入";
   connectButton.disabled = !clientId || connected;
   connectButton.hidden = connected;
   saveButton.disabled = !connected;
