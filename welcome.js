@@ -1,7 +1,8 @@
 ﻿const styles = document.createElement('style');
 styles.textContent = `
-#welcome-dialog{width:min(520px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:22px;border:1px solid #e3d6bd;border-radius:20px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:15px/1.6 system-ui,"Noto Sans TC",sans-serif}
+#welcome-dialog{width:min(520px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:16px;border:1px solid #e3d6bd;border-radius:20px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:15px/1.6 system-ui,"Noto Sans TC",sans-serif}
 #welcome-dialog::backdrop{background:#241d1780}
+#welcome-dialog .welcome-hero{display:block;width:100%;height:auto;max-height:220px;aspect-ratio:3/2;object-fit:cover;object-position:center 48%;border-radius:12px;margin:0 0 16px}
 #welcome-dialog h2{font-size:22px;font-weight:700;margin:0 0 5px}
 #welcome-dialog p{margin:0 0 14px}
 #welcome-dialog ul{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
@@ -12,7 +13,7 @@ styles.textContent = `
 #welcome-dialog [data-welcome-google]{background:#3a4e44;color:white;border-color:#3a4e44}
 #welcome-dialog .welcome-note{font-size:13px;color:#746b60;margin:9px 0 0}
 #welcome-dialog button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
-@media(max-width:360px){#welcome-dialog{padding:16px}#welcome-dialog h2{font-size:20px}}
+@media(max-width:360px){#welcome-dialog{padding:12px}#welcome-dialog h2{font-size:20px}#welcome-dialog .welcome-hero{max-height:170px;margin-bottom:12px}}
 `;
 document.head.append(styles);
 const welcome = document.createElement('dialog');
@@ -20,6 +21,7 @@ welcome.id = 'welcome-dialog';
 welcome.setAttribute('aria-labelledby','welcome-title');
 welcome.setAttribute('aria-describedby','welcome-description');
 welcome.innerHTML = `
+<img class="welcome-hero" src="./karen-welcome.png" alt="凱倫與戴著耳機的老虎夥伴，一起查看工作檢核清單">
 <h2 id="welcome-title">歡迎使用凱倫知序工作</h2>
 <p id="welcome-description">選職位、拆步驟、勾進度，讓工作更容易開始。</p>
 <ul>
