@@ -83,23 +83,12 @@ dialog.innerHTML = `
       <button type="button" data-gd-import disabled>從 Google 雲端匯入</button>
       <button type="button" data-gd-disconnect hidden>解除連結</button>
     </div>
-    <section id="google-drive-setup">
-      <p><strong>首次使用需由網站管理者設定 Google OAuth 用戶端 ID：</strong></p>
-      <ol>
-        <li>啟用 Google Drive API，並完成 OAuth 同意畫面設定；測試階段須加入測試帳號。</li>
-        <li>建立 OAuth 2.0「網頁應用程式」用戶端，將 <code>https://aaa0218haha-collab.github.io</code> 加入「已授權的 JavaScript 來源」。</li>
-        <li>把用戶端 ID 設定到網站 <code>index.html</code> 的 <code>google-oauth-client-id</code> meta 標籤。</li>
-      </ol>
-      <p><a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer">開啟 Google Cloud OAuth 憑證設定</a></p>
-      <p>OAuth 用戶端 ID 可公開；請勿把 Client Secret 放進網頁。</p>
-    </section>
     <p id="google-drive-privacy">檢核進度直接備份到 Google Drive，不透過 Firebase；僅讀寫此 App 建立或使用者授權的備份檔。匯入會以雲端進度取代此瀏覽器的檢核進度，並重新載入頁面。</p>
   </div>
 `;
 document.body.append(dialog);
 
 const status = dialog.querySelector("#google-drive-status");
-const setup = dialog.querySelector("#google-drive-setup");
 const connectButton = dialog.querySelector("[data-gd-connect]");
 const saveButton = dialog.querySelector("[data-gd-save]");
 const importButton = dialog.querySelector("[data-gd-import]");
@@ -132,9 +121,8 @@ function updateConnectionState() {
   saveButton.disabled = !connected;
   importButton.disabled = !connected;
   disconnectButton.hidden = !connected;
-  setup.hidden = Boolean(clientId);
   if (!clientId) {
-    setStatus("Google 登入尚未啟用：請網站管理者先設定 OAuth 用戶端 ID。");
+    setStatus("Google 雲端功能目前無法使用。");
   } else if (connected) {
     setStatus("Google 帳號已連結。你可以備份目前進度，或匯入先前的備份。");
   } else if (status.dataset.error !== "true") {
