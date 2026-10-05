@@ -42,6 +42,8 @@ styles.textContent = `
   #personal-ai-dialog{width:min(560px,calc(100vw - 24px));max-width:none;max-height:min(85vh,760px);padding:0;border:1px solid #e7e1d8;border-radius:20px;color:#241d17;background:#fffdf9;box-shadow:0 24px 80px #0004;font:14px/1.55 system-ui,"Noto Sans TC",sans-serif}
   #personal-ai-dialog::backdrop{background:#171a18a8;backdrop-filter:blur(2px)}
   .pai-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #eee8df}
+  .pai-head-brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .pai-head-brand img{width:44px;height:44px;flex:none;object-fit:cover;border:1px solid #e5ded2;border-radius:10px}
   .pai-head h2{margin:0;font-size:18px}.pai-close{border:0;background:transparent;font-size:22px;cursor:pointer;color:#514b44}
   .pai-body{padding:18px 20px;display:grid;gap:14px}
   .pai-guide{padding:13px 14px;background:#f5f2eb;border-radius:12px}
@@ -80,7 +82,10 @@ dialog.id = "personal-ai-dialog";
 dialog.setAttribute("aria-labelledby", "personal-ai-title");
 dialog.innerHTML = `
   <div class="pai-head">
-    <h2 id="personal-ai-title">連接自己的 AI 助理</h2>
+    <div class="pai-head-brand">
+      <img src="./karen-header.png" alt="凱倫與虎夥伴">
+      <h2 id="personal-ai-title">連接自己的 AI 助理</h2>
+    </div>
     <button class="pai-close" type="button" aria-label="關閉">&times;</button>
   </div>
   <div class="pai-body">

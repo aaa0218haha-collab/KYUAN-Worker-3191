@@ -169,7 +169,13 @@ function loadGoogleIdentityServices() {
 
 function reportGoogleError(error) {
   console.error("Google Drive 進度備份失敗：", error);
-  setStatus("連線失敗，請稍後再試；檢核進度仍保存在這台裝置。", true);
+  const detail = error instanceof Error
+    ? error.message
+    : "Google 雲端連線發生未知錯誤。";
+  setStatus(
+    `連線失敗：${detail} 檢核進度仍保存在這台裝置；請依錯誤訊息檢查設定後再試。`,
+    true,
+  );
 }
 
 connectButton.addEventListener("click", async () => {
