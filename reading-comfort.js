@@ -13,17 +13,18 @@ readingStyles.textContent = `
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{box-shadow:0 1px 4px #3025160a}
   #root header [data-reading-hidden="true"],#personal-ai-trigger[data-reading-hidden="true"]{display:none!important}
-  #reading-more{position:fixed;z-index:2147483000;flex:none;font:500 13px/1.4 system-ui,"Noto Sans TC",sans-serif}
+  #reading-more{position:relative;flex:none;font:500 13px/1.4 system-ui,"Noto Sans TC",sans-serif}
   #reading-more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border:1px solid #e3ded4;border-radius:12px;background:#fff;color:#514a40}
   #reading-more summary::-webkit-details-marker{display:none}
   #reading-more summary::after{content:"";width:7px;height:7px;margin:0 0 3px 9px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg)}
   #reading-more[open] summary::after{margin-bottom:-4px;transform:rotate(225deg)}
-  #reading-more-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:2147483000;display:grid;gap:4px;width:max-content;min-width:190px;max-width:min(250px,calc(100vw - 24px));padding:7px;border:1px solid #e8e2d8;border-radius:14px;background:#fffefa;box-shadow:0 12px 32px #241d171c}
+  #reading-more-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:40;display:grid;gap:4px;width:max-content;min-width:190px;max-width:min(250px,calc(100vw - 24px));padding:7px;border:1px solid #e8e2d8;border-radius:14px;background:#fffefa;box-shadow:0 12px 32px #241d171c}
   #reading-more-menu button{width:100%;min-height:42px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#352f28;text-align:left;font:500 14px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #reading-more-menu button:hover{background:#f5f1e9}
   @media(max-width:640px){
     #root>div{font-size:15px}
-    #root header>div{gap:6px}
+    #root header>div:first-child{gap:6px;flex-wrap:wrap}
+    #root header>div:first-child>div:last-child{margin-left:auto}
     #root header>div>div:first-child{gap:7px}
     #root header h1{font-size:14px}
     #root main{padding-top:12px;padding-bottom:20px}
@@ -70,7 +71,7 @@ function addMoreMenu() {
     details.id = "reading-more";
     details.innerHTML =
       '<summary aria-label="開啟更多功能">更多</summary><div id="reading-more-menu"></div>';
-    document.body.append(details);
+    googleButton.before(details);
   }
 
   const menu = details.querySelector("#reading-more-menu");
@@ -99,12 +100,10 @@ function addMoreMenu() {
   }
 
   details.hidden = available === 0;
-  const buttonRect = googleButton.getBoundingClientRect();
-  const summaryHeight = window.matchMedia("(max-width:640px)").matches
-    ? 36
-    : 38;
-  details.style.top = `${Math.max(4, buttonRect.top + (buttonRect.height - summaryHeight) / 2)}px`;
-  details.style.right = `${Math.max(8, document.documentElement.clientWidth - buttonRect.left + 8)}px`;
+  if (details.parentElement !== googleButton.parentElement ||
+      details.nextElementSibling !== googleButton) {
+    googleButton.before(details);
+  }
 }
 
 const observer = new MutationObserver(addMoreMenu);
