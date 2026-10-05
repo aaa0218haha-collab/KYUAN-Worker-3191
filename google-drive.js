@@ -19,6 +19,10 @@ driveStyles.textContent = `
   #google-drive-content{display:grid;gap:14px;padding:18px 20px 22px}
   #google-drive-status{margin:0;padding:13px 14px;border-radius:11px;background:#f5f1e9;color:#352f28;overflow-wrap:anywhere;font-size:16px}
   #google-drive-status[data-error="true"]{background:#fff0ed;color:#9b352a}
+  #google-drive-guide{padding:13px 15px;border:1px solid #e5ded2;border-radius:12px;background:#fff}
+  #google-drive-guide h3{margin:0 0 6px;font-size:16px}
+  #google-drive-guide ol{margin:0;padding-left:22px}
+  #google-drive-guide li+li{margin-top:6px}
   #google-drive-actions{display:flex;flex-wrap:wrap;gap:8px}
   #google-drive-actions button{min-height:46px;padding:9px 14px;border:1px solid #d8cca8;border-radius:10px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #google-drive-actions button[data-primary="true"]{border-color:#b88e3e;background:#b88e3e;color:white}
@@ -73,14 +77,22 @@ dialog.innerHTML = `
     <button type="button" data-gd-close aria-label="關閉">×</button>
   </header>
   <div id="google-drive-content">
-    <p id="google-drive-status" role="status" aria-live="polite">登入與雲端備份分開。需要備份時，再連結 Google 雲端即可。</p>
+    <p id="google-drive-status" role="status" aria-live="polite">第一次使用請先授權 Google Drive，再按「備份進度」；登入網站本身不會自動備份。</p>
+    <section id="google-drive-guide" aria-labelledby="google-drive-guide-title">
+      <h3 id="google-drive-guide-title">如何授權與備份</h3>
+      <ol>
+        <li>按「連結 Google 雲端」，選擇自己的 Google 帳號，並在 Google 視窗按「允許」。這是備份的另外授權，和網站登入分開。</li>
+        <li>看到「Google 雲端已連結」後，按「備份進度」。備份會存成 Google Drive 裡的 App 專用檔案。</li>
+        <li>換裝置時，在新裝置開啟此網站、連結同一個 Google 帳號，再按「匯入進度」。匯入會取代新裝置目前的檢核進度。</li>
+      </ol>
+    </section>
     <div id="google-drive-actions">
       <button type="button" data-gd-connect data-primary="true">連結 Google 雲端</button>
       <button type="button" data-gd-save disabled>備份進度</button>
       <button type="button" data-gd-import disabled>匯入進度</button>
       <button type="button" data-gd-disconnect hidden>解除連結</button>
     </div>
-    <p id="google-drive-privacy">登入和雲端備份分開。選擇連結後，Google 會另外詢問是否允許存取備份檔。</p>
+    <p id="google-drive-privacy">此功能只要求管理本 App 建立或由你開啟的 Drive 檔案，不會讀取整個雲端硬碟。若不想連結，進度仍保存在目前裝置。</p>
   </div>
 `;
 document.body.append(dialog);
@@ -124,7 +136,7 @@ function updateConnectionState() {
   } else if (connected) {
     setStatus("Google 雲端已連結。可以備份進度，或匯入其他裝置的進度。");
   } else if (status.dataset.error !== "true") {
-    setStatus("登入和雲端備份分開。選擇連結後，Google 會另外詢問是否允許存取備份檔。");
+    setStatus("按「連結 Google 雲端」並在 Google 視窗按「允許」，完成後再按「備份進度」。");
   }
 }
 

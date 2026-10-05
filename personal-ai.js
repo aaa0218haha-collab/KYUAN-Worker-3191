@@ -5,10 +5,15 @@ const providers = {
     guideUrl: "https://ai.google.dev/gemini-api/docs/api-key",
     guideLabel: "Google AI Studio 申請 API Key",
     model: "gemini-2.5-flash",
+    models: [
+      { id: "gemini-2.5-flash", label: "Gemini 2.5 Flash（速度快、適合日常）" },
+      { id: "gemini-2.5-pro", label: "Gemini 2.5 Pro（適合較複雜的問題）" },
+    ],
     steps: [
-      "登入 Google AI Studio，開啟「API keys」。",
-      "按「Create API key」建立金鑰；若看不到專案，先匯入或建立 Google Cloud 專案。",
-      "複製金鑰貼到下方。Gemini 用量與可用額度依 Google 帳戶及方案為準。",
+      "按「Google AI Studio 申請 API Key」，登入自己的 Google 帳號。",
+      "在 API keys 頁面按「Create API key」建立金鑰；若出現專案選擇，選取或建立專案。",
+      "複製金鑰貼在下方欄位，按「在本機使用」。不要把金鑰貼在公開對話或傳給網站管理員。",
+      "選擇 Gemini 2.5 Flash 或 Pro；不同模型的可用額度與費用依 Google AI Studio 帳戶方案為準。",
     ],
   },
   openai: {
@@ -39,7 +44,9 @@ styles.textContent = `
   .pai-guide ol{margin:8px 0 0;padding-left:22px}.pai-guide li+li{margin-top:5px}
   .pai-guide a,.pai-links a{color:#315e50;text-decoration:underline;text-underline-offset:2px;font-weight:600}
   .pai-row{display:grid;gap:6px}.pai-row label{font-weight:600}
+  .pai-row[hidden]{display:none}
   .pai-row select,.pai-row input,.pai-chat-form textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9d2c9;border-radius:10px;background:#fff;color:#241d17;font:inherit}
+  .pai-model-help{margin:0;color:#625c55;font-size:12px}
   .pai-note{margin:0;color:#625c55;font-size:12px}
   .pai-warning{padding:10px 12px;border-left:3px solid #bd8b37;background:#fff8e9;color:#59451f;font-size:12px}
   .pai-check{display:flex;gap:8px;align-items:flex-start;font-size:12px}
@@ -86,9 +93,14 @@ dialog.innerHTML = `
       </select>
       <div class="pai-links"><a id="pai-key-link" target="_blank" rel="noopener noreferrer"></a> · <a id="pai-guide-link" target="_blank" rel="noopener noreferrer">API Key 說明</a></div>
     </div>
+    <div class="pai-row" id="pai-gemini-model-row">
+      <label for="pai-gemini-model">Gemini 模型</label>
+      <select id="pai-gemini-model"></select>
+      <p class="pai-model-help">可隨時切換。Pro 的可用額度與費用可能不同，請以 Google AI Studio 顯示為準。</p>
+    </div>
     <div class="pai-row">
-      <label for="pai-key">您的 API Key</label>
-      <input id="pai-key" type="password" autocomplete="new-password" autocapitalize="off" spellcheck="false" placeholder="貼上您自己的 API Key">
+      <label for="pai-key">貼上您自己的 API Key</label>
+      <input id="pai-key" type="password" autocomplete="new-password" autocapitalize="off" spellcheck="false" placeholder="只貼在這個欄位，不要傳給任何人">
       <div class="pai-actions"><button id="pai-clear-key" type="button">清除金鑰</button><button id="pai-save-key" class="pai-primary" type="button">在本機使用</button></div>
       <label class="pai-check"><input id="pai-remember" type="checkbox"><span>在這台裝置記住金鑰（儲存在此瀏覽器；公用裝置請勿勾選）</span></label>
     </div>
@@ -106,6 +118,8 @@ dialog.innerHTML = `
 document.body.append(trigger, dialog);
 
 const providerSelect = dialog.querySelector("#pai-provider");
+const modelSelect = dialog.querySelector("#pai-gemini-model");
+const modelRow = dialog.querySelector("#pai-gemini-model-row");
 const keyInput = dialog.querySelector("#pai-key");
 const rememberInput = dialog.querySelector("#pai-remember");
 const keyLink = dialog.querySelector("#pai-key-link");
@@ -137,6 +151,7 @@ function savedKey(provider) {
 
 function updateProvider() {
   const provider = providers[providerSelect.value];
+  modelRow.hidden = providerSelect.value !== "gemini";
   keyLink.href = provider.keyUrl;
   keyLink.textContent = provider.guideLabel;
   guideLink.href = provider.guideUrl;
@@ -149,6 +164,25 @@ function updateProvider() {
   );
   activeKey = savedKey(providerSelect.value);
   keyInput.value = activeKey;
+  if (providerSelect.value === "gemini") {
+    modelSelect.replaceChildren(
+      ...provider.models.map(({ id, label }) => {
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = label;
+        return option;
+      }),
+    );
+    try {
+      const savedModel = localStorage.getItem("personal-ai-gemini-model");
+      modelSelect.value = provider.models.some(({ id }) => id === savedModel)
+        ? savedModel
+        : provider.model;
+    } catch (error) {
+      console.error("讀取 Gemini 模型設定失敗：", error);
+      modelSelect.value = provider.model;
+    }
+  }
   try {
     rememberInput.checked =
       localStorage.getItem(`personal-ai-key-${providerSelect.value}`) !== null;
@@ -166,9 +200,9 @@ function appendMessage(text, role) {
   chat.scrollTop = chat.scrollHeight;
 }
 
-async function askGemini(key, messages) {
+async function askGemini(key, messages, model) {
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${providers.gemini.model}:generateContent`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: "POST",
       headers: {
@@ -245,6 +279,14 @@ dialog.addEventListener("click", (event) => {
   if (event.target === dialog) dialog.close();
 });
 providerSelect.addEventListener("change", updateProvider);
+modelSelect.addEventListener("change", () => {
+  try {
+    localStorage.setItem("personal-ai-gemini-model", modelSelect.value);
+  } catch (error) {
+    console.error("儲存 Gemini 模型設定失敗：", error);
+    status.textContent = "模型已切換，但瀏覽器無法記住此設定。";
+  }
+});
 
 saveButton.addEventListener("click", () => {
   const key = keyInput.value.trim();
@@ -313,11 +355,11 @@ chatForm.addEventListener("submit", async (event) => {
     const messages = history.slice(-12);
     const answer =
       provider === "gemini"
-        ? await askGemini(activeKey, messages)
+        ? await askGemini(activeKey, messages, modelSelect.value)
         : await askOpenAI(activeKey, messages);
     history.push({ role: "assistant", content: answer });
     appendMessage(answer, "assistant");
-    status.textContent = `已收到 ${providers[provider].label} 回覆。`;
+    status.textContent = `已收到 ${provider === "gemini" ? `Gemini ${modelSelect.value.replace("gemini-", "")}` : providers[provider].label} 回覆。`;
   } catch (error) {
     console.error(`${providers[provider].label} API 呼叫失敗：`, error);
     history.pop();
