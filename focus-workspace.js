@@ -1,4 +1,4 @@
-﻿const pages = [
+const pages = [
   {id:'checklist',title:'職位要求',hint:'了解職位與能力',type:'profile'},
   {id:'tasks',title:'拆解任務',hint:'一步一步完成工作',type:'steps'},
   {id:'toolkit',title:'實用工具',hint:'需要時選一項工具',type:'tools'},
@@ -234,7 +234,7 @@ export function createYuanWorkspace(React, runtime) {
       picker.addEventListener('change',closeAfterRoleSelection);
       const handleReselect=event=>{
         const button=event.target instanceof Element?event.target.closest('button'):null;
-        if(!button||button.textContent.trim()!=='重選')return;
+        if(!button||!(button.textContent.trim()==='重選'||(button.getAttribute('aria-label')||'').includes('返回行業領域與職位挑選')))return;
         event.preventDefault();
         event.stopImmediatePropagation();
         if(selects.length<2){
