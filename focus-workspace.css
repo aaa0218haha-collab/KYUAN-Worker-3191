@@ -1,4 +1,4 @@
-﻿/* Mobile first: context and content stay visible; side panels open on demand. */
+/* Mobile first: context and content stay visible; side panels open on demand. */
 :root{--yw-header-height:54px;--yw-bar-height:86px}
 #yuan-workspace{color:#352f28;font-family:system-ui,"Noto Sans TC",sans-serif;max-width:1600px;margin:auto}
 #yuan-workspace [data-yuan-original-navigation]{display:none!important}
@@ -144,8 +144,11 @@
 #yuan-workspace .yw-context{margin:0;line-height:1.4;max-width:100%;min-width:0}
 @media(max-width:767px){#yuan-workspace .yw-topbar{padding:4px 12px}#yuan-workspace .yw-current{display:block}#yuan-workspace .yw-context{margin-top:2px}#yuan-workspace .yw-top-actions button{padding:4px 10px}}
 
-/* Mindset cards use the same 18px reading size as body copy. */
-#root .yw-confidence-cards button,#root .yw-confidence-cards button :is(span,p,strong){font-size:18px!important;line-height:1.65}
+/* Mindset cards: compact title (fits in two lines) and a small white tag with brown text. */
+#root .yw-confidence-cards button{padding:8px 10px}
+#root .yw-confidence-cards button>div>span:first-child{font-size:13px!important;line-height:1.5!important;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+@media(max-width:360px){#root .yw-confidence-cards button>div>span:first-child{font-size:12px!important;line-height:1.4!important;-webkit-line-clamp:3;line-clamp:3}}
+#root .yw-confidence-cards button>div>span:last-child{font-size:11px!important;line-height:1.3!important;background:#fff!important;color:#7a5230!important;border:1px solid #e6d9c8;padding:1px 6px!important;border-radius:6px}
 
 .yw-karen-kyuan-link{display:inline-flex;align-items:center;min-height:36px;margin-top:6px;padding:4px 12px;border:1px solid #c1d0c5;border-radius:9px;background:#edf3ee;color:#30453a;font-size:18px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .yw-karen-kyuan-link:hover{background:#dde9df}
