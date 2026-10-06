@@ -48,6 +48,12 @@ readingStyles.textContent = `
   #reading-more-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:40;display:grid;gap:4px;width:max-content;min-width:190px;max-width:min(250px,calc(100vw - 24px));padding:7px;border:1px solid #e8e2d8;border-radius:14px;background:#fffefa;box-shadow:0 12px 32px #241d171c}
   #reading-more-menu button{width:100%;min-height:42px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#352f28;text-align:left;font:500 14px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #reading-more-menu button:hover{background:#f5f1e9}
+  #reading-more-menu button.reading-about-card{display:flex;align-items:center;gap:10px;margin-top:3px;padding:10px;border:1px solid #d9e3da;background:#f3f7f3}
+  #reading-more-menu button.reading-about-card:hover{border-color:#aebfae;background:#eaf1eb}
+  #reading-more-menu .reading-about-mark{display:grid;width:36px;height:36px;flex:none;place-items:center;border:1px solid #d8cca8;border-radius:10px;background:#fffefa;color:#846429;font-family:Georgia,serif;font-size:19px}
+  #reading-more-menu .reading-about-copy{display:grid;gap:2px}
+  #reading-more-menu .reading-about-copy strong{font-size:13px}
+  #reading-more-menu .reading-about-copy small{color:#756c60;font-size:11px}
   @media(max-width:640px){
     #root>div{font-size:16px}
     #root header>div:first-child{gap:6px;flex-wrap:wrap}
@@ -132,6 +138,21 @@ function addMoreMenu() {
     }
     available += 1;
   }
+
+  let aboutCard=menu.querySelector("#reading-about-karen");
+  if(!aboutCard){
+    aboutCard=document.createElement("button");
+    aboutCard.id="reading-about-karen";
+    aboutCard.type="button";
+    aboutCard.className="reading-about-card";
+    aboutCard.innerHTML='<span class="reading-about-mark" aria-hidden="true">K</span><span class="reading-about-copy"><strong>認識凱倫</strong><small>經歷、專長與生活</small></span>';
+    aboutCard.addEventListener("click",()=>{
+      details.open=false;
+      window.dispatchEvent(new CustomEvent("yuan:toggle-about"));
+    });
+    menu.append(aboutCard);
+  }
+  available += 1;
 
   details.hidden = available === 0;
   if (details.parentElement !== googleButton.parentElement ||
