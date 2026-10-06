@@ -9,27 +9,27 @@ let tokenExpiresAt = 0;
 const driveStyles = document.createElement("style");
 driveStyles.textContent = `
   #root header [data-yuan-firebase-controls="true"]{display:none!important}
-  #google-drive-connect{min-height:36px;padding:0 11px;border:1px solid #d8cca8;border-radius:11px;background:#fff;color:#352f28;font:600 13px/1.4 system-ui,"Noto Sans TC",sans-serif;white-space:nowrap;cursor:pointer}
+  #google-drive-connect{min-height:36px;padding:0 11px;border:1px solid #d8cca8;border-radius:11px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;white-space:nowrap;cursor:pointer}
   #google-drive-connect:hover{background:#faf6ed}
   #google-drive-dialog{width:min(520px,calc(100vw - 28px));max-height:min(85vh,720px);padding:0;border:1px solid #e8e2d8;border-radius:18px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:16px/1.7 system-ui,"Noto Sans TC",sans-serif}
   #google-drive-dialog::backdrop{background:#1c1711a6;backdrop-filter:blur(3px)}
   #google-drive-dialog header{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #eee8dd;background:#fffefa}
-  #google-drive-dialog h2{margin:0;font-size:20px}
-  #google-drive-dialog [data-gd-close]{width:34px;height:34px;border:0;border-radius:10px;background:#f5f1e9;font-size:20px;cursor:pointer}
+  #google-drive-dialog h2{margin:0;font-size:22px}
+  #google-drive-dialog [data-gd-close]{width:34px;height:34px;border:0;border-radius:10px;background:#f5f1e9;font-size:22px;cursor:pointer}
   #google-drive-content{display:grid;gap:14px;padding:18px 20px 22px}
-  #google-drive-status{margin:0;padding:13px 14px;border-radius:11px;background:#f5f1e9;color:#352f28;overflow-wrap:anywhere;font-size:16px}
+  #google-drive-status{margin:0;padding:13px 14px;border-radius:11px;background:#f5f1e9;color:#352f28;overflow-wrap:anywhere;font-size:18px}
   #google-drive-status[data-error="true"]{background:#fff0ed;color:#9b352a}
   #google-drive-guide{padding:13px 15px;border:1px solid #e5ded2;border-radius:12px;background:#fff}
-  #google-drive-guide h3{margin:0 0 6px;font-size:16px}
+  #google-drive-guide h3{margin:0 0 6px;font-size:18px}
   #google-drive-guide ol{margin:0;padding-left:22px}
   #google-drive-guide li+li{margin-top:6px}
   #google-drive-actions{display:flex;flex-wrap:wrap;gap:8px}
-  #google-drive-actions button{min-height:46px;padding:9px 14px;border:1px solid #d8cca8;border-radius:10px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
+  #google-drive-actions button{min-height:46px;padding:9px 14px;border:1px solid #d8cca8;border-radius:10px;background:#fff;color:#352f28;font:600 17px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #google-drive-actions button[data-primary="true"]{border-color:#b88e3e;background:#b88e3e;color:white}
   #google-drive-actions button:disabled{border-color:#ded6c8;background:#f5f1e9;color:#514a40;opacity:1;cursor:not-allowed}
   #google-drive-actions button[data-primary="true"]:disabled{border-color:#ded6c8;background:#f5f1e9;color:#514a40}
-  #google-drive-privacy{margin:0;color:#514a40;font-size:14px}
-  @media(max-width:640px){#google-drive-connect{min-height:36px;padding:0 9px;font-size:12px}#google-drive-dialog header{padding:14px 16px}#google-drive-content{padding:15px 16px 18px}#google-drive-actions{display:grid;grid-template-columns:1fr}#google-drive-actions button{width:100%}}
+  #google-drive-privacy{margin:0;color:#514a40;font-size:16px}
+  @media(max-width:640px){#google-drive-connect{min-height:36px;padding:0 9px;font-size:14px}#google-drive-dialog header{padding:14px 16px}#google-drive-content{padding:15px 16px 18px}#google-drive-actions{display:grid;grid-template-columns:1fr}#google-drive-actions button{width:100%}}
 `;
 document.head.append(driveStyles);
 

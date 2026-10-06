@@ -1,76 +1,76 @@
 const readingStyles = document.createElement("style");
 readingStyles.textContent = `
-  #root>div{font-family:"Noto Sans TC",system-ui,sans-serif;font-size:16px;line-height:1.75}
+  #root>div{font-family:"Noto Sans TC",system-ui,sans-serif;font-size:18px;line-height:1.75}
   #root main{max-width:70rem}
-  #root [class~="text-xs"]{font-size:14px!important;line-height:1.7}
-  #root [class~="text-sm"]{font-size:16px!important;line-height:1.65}
-  #root [class*="text-[11px]"]{font-size:13px!important;line-height:1.65}
-  #root [class*="text-[10px]"]{font-size:12px!important;line-height:1.55}
+  #root [class~="text-xs"]{font-size:16px!important;line-height:1.7}
+  #root [class~="text-sm"]{font-size:18px!important;line-height:1.65}
+  #root [class*="text-[11px]"]{font-size:15px!important;line-height:1.65}
+  #root [class*="text-[10px]"]{font-size:14px!important;line-height:1.55}
   #root main p,#root main li{line-height:1.8}
   #root main p{max-width:76ch}
   #root main h2,#root main h3{line-height:1.4}
-  #root main input,#root main select,#root main textarea{font-size:15px}
+  #root main input,#root main select,#root main textarea{font-size:17px}
   #root main [class~="overflow-x-auto"]{overflow-x:visible!important;overflow-y:visible!important;flex-wrap:wrap!important;flex-shrink:1!important;min-width:0;max-width:100%}
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{box-shadow:0 1px 4px #3025160a}
   #root header [data-reading-hidden="true"],#personal-ai-trigger[data-reading-hidden="true"]{display:none!important}
-  #reading-more{position:relative;flex:none;font:500 13px/1.4 system-ui,"Noto Sans TC",sans-serif}
+  #reading-more{position:relative;flex:none;font:500 15px/1.4 system-ui,"Noto Sans TC",sans-serif}
   #reading-more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border:1px solid #e3ded4;border-radius:12px;background:#fff;color:#514a40}
   #reading-more summary::-webkit-details-marker{display:none}
   #reading-more summary::after{content:"";width:7px;height:7px;margin:0 0 3px 9px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg)}
   #reading-more[open] summary::after{margin-bottom:-4px;transform:rotate(225deg)}
-  #root .scenario-card{display:flex;min-width:0;flex-direction:column;align-self:start;gap:12px;padding:16px;border:1px solid #d9d2c7;border-radius:18px;background:#fffefa;color:#352f28;box-shadow:0 2px 8px #241d1708;font-size:15px;line-height:1.75}
+  #root .scenario-card{display:flex;min-width:0;flex-direction:column;align-self:start;gap:12px;padding:16px;border:1px solid #d9d2c7;border-radius:18px;background:#fffefa;color:#352f28;box-shadow:0 2px 8px #241d1708;font-size:17px;line-height:1.75}
   #root .scenario-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-  #root .scenario-card-term{min-width:0;color:#282f2a;font-size:17px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+  #root .scenario-card-term{min-width:0;color:#282f2a;font-size:19px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
   #root .scenario-card-badges{display:flex;flex-shrink:0;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:5px}
-  #root .scenario-card-category,#root .scenario-card-required{padding:4px 7px;border-radius:8px;font-size:12px;font-weight:700;line-height:1.35}
+  #root .scenario-card-category,#root .scenario-card-required{padding:4px 7px;border-radius:8px;font-size:14px;font-weight:700;line-height:1.35}
   #root .scenario-card-category{background:#edf1ed;color:#34483d}
   #root .scenario-card-required{background:#f7edce;color:#624d1d}
-  #root .scenario-card-summary{display:-webkit-box;margin:8px 0 0;overflow:hidden;color:#3f4b43;font-size:15px;line-height:1.8;-webkit-box-orient:vertical;-webkit-line-clamp:3}
+  #root .scenario-card-summary{display:-webkit-box;margin:8px 0 0;overflow:hidden;color:#3f4b43;font-size:17px;line-height:1.8;-webkit-box-orient:vertical;-webkit-line-clamp:3}
   #root .scenario-card-details{border-top:1px solid #e3ded4}
-  #root .scenario-card-details>summary{display:flex;min-height:44px;align-items:center;justify-content:space-between;gap:10px;padding:7px 2px;color:#31533f;font-size:14px;font-weight:700;line-height:1.5;cursor:pointer;list-style:none}
+  #root .scenario-card-details>summary{display:flex;min-height:44px;align-items:center;justify-content:space-between;gap:10px;padding:7px 2px;color:#31533f;font-size:16px;font-weight:700;line-height:1.5;cursor:pointer;list-style:none}
   #root .scenario-card-details>summary::-webkit-details-marker{display:none}
   #root .scenario-card-details>summary::after{content:"";display:inline-flex;width:24px;height:24px;flex-shrink:0;border:1px solid #d7e0d8;border-radius:50%;background:linear-gradient(#31533f,#31533f) center/11px 2px no-repeat,linear-gradient(#31533f,#31533f) center/2px 11px no-repeat,#f2f6f2}
   #root .scenario-card-details[open]>summary::after{background:linear-gradient(#31533f,#31533f) center/11px 2px no-repeat,#f2f6f2}
   #root .scenario-card-details>summary:focus-visible{outline:3px solid #9b762f;outline-offset:2px;border-radius:6px}
   #root .scenario-card-detail-list{display:grid;gap:9px;padding:2px 0 4px}
-  #root .scenario-card-detail{margin:0;padding:10px 12px;border-radius:12px;color:#3e4841;font-size:14px;line-height:1.8;overflow-wrap:anywhere}
-  #root .scenario-card-detail strong{display:block;margin:0 0 3px;color:#31533f;font-size:13px;line-height:1.5}
+  #root .scenario-card-detail{margin:0;padding:10px 12px;border-radius:12px;color:#3e4841;font-size:16px;line-height:1.8;overflow-wrap:anywhere}
+  #root .scenario-card-detail strong{display:block;margin:0 0 3px;color:#31533f;font-size:15px;line-height:1.5}
   #root .scenario-card-definition{background:#f7f3e9}
   #root .scenario-card-example{background:#f1f4f2}
   #root .scenario-card-safe{background:#edf4ee}
   #root .scenario-card-warning{background:#fbf2e4}
   #root .scenario-list-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 14px;border:1px solid #e1dbd0;border-radius:14px;background:#fffefa}
-  #root .scenario-list-count{color:#5a675f;font-size:13px;line-height:1.5}
-  #root .scenario-list-controls button{min-height:44px;padding:9px 14px;border:1px solid #31533f;border-radius:11px;background:#31533f;color:#fff;font:700 14px/1.4 "Noto Sans TC",system-ui,sans-serif;cursor:pointer}
+  #root .scenario-list-count{color:#5a675f;font-size:15px;line-height:1.5}
+  #root .scenario-list-controls button{min-height:44px;padding:9px 14px;border:1px solid #31533f;border-radius:11px;background:#31533f;color:#fff;font:700 16px/1.4 "Noto Sans TC",system-ui,sans-serif;cursor:pointer}
   #root .scenario-list-controls button:hover{background:#243f30}
   #root .scenario-list-controls button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #reading-more-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:40;display:grid;gap:4px;width:max-content;min-width:190px;max-width:min(250px,calc(100vw - 24px));padding:7px;border:1px solid #e8e2d8;border-radius:14px;background:#fffefa;box-shadow:0 12px 32px #241d171c}
-  #reading-more-menu button{width:100%;min-height:42px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#352f28;text-align:left;font:500 14px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
+  #reading-more-menu button{width:100%;min-height:42px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#352f28;text-align:left;font:500 16px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #reading-more-menu button:hover{background:#f5f1e9}
   #reading-more-menu button.reading-about-card{display:flex;align-items:center;gap:10px;margin-top:3px;padding:10px;border:1px solid #d9e3da;background:#f3f7f3}
   #reading-more-menu button.reading-about-card:hover{border-color:#aebfae;background:#eaf1eb}
-  #reading-more-menu .reading-about-mark{display:grid;width:36px;height:36px;flex:none;place-items:center;border:1px solid #d8cca8;border-radius:10px;background:#fffefa;color:#846429;font-family:Georgia,serif;font-size:19px}
+  #reading-more-menu .reading-about-mark{display:grid;width:36px;height:36px;flex:none;place-items:center;border:1px solid #d8cca8;border-radius:10px;background:#fffefa;color:#846429;font-family:Georgia,serif;font-size:21px}
   #reading-more-menu .reading-about-copy{display:grid;gap:2px}
-  #reading-more-menu .reading-about-copy strong{font-size:13px}
-  #reading-more-menu .reading-about-copy small{color:#756c60;font-size:11px}
+  #reading-more-menu .reading-about-copy strong{font-size:15px}
+  #reading-more-menu .reading-about-copy small{color:#756c60;font-size:13px}
   @media(max-width:640px){
-    #root>div{font-size:16px}
+    #root>div{font-size:18px}
     #root header>div:first-child{gap:6px;flex-wrap:wrap}
     #root header>div:first-child>div:last-child{margin-left:auto}
     #root header>div:first-child>div:last-child:has(#reading-more[open]){flex:1 1 100%;min-width:0;flex-wrap:wrap}
     #root header>div:first-child>div:last-child>div:has(#reading-more[open]){flex:1 1 100%;min-width:0;flex-wrap:wrap}
     #root header>div>div:first-child{gap:7px}
-    #root header h1{font-size:14px}
+    #root header h1{font-size:16px}
     #root main{padding-top:12px;padding-bottom:20px}
     #reading-more[open]{position:static;flex:1 1 100%;min-width:0}
     #reading-more-menu{position:static;top:auto;right:auto;width:100%;min-width:0;max-width:none;box-sizing:border-box;box-shadow:0 4px 14px #241d170a}
     #root main [class~="grid-cols-3"][class~="max-h-[500px]"]{grid-template-columns:minmax(0,1fr)!important;max-height:none!important;overflow:visible!important;padding-right:0!important}
     #root .scenario-card{gap:10px;padding:14px;border-radius:16px}
-    #root .scenario-card-term{font-size:16px}
-    #root .scenario-card-summary{font-size:14px;line-height:1.8;-webkit-line-clamp:2}
-    #root .scenario-card-details>summary{min-height:48px;font-size:14px}
-    #root .scenario-card-detail{font-size:14px}
+    #root .scenario-card-term{font-size:18px}
+    #root .scenario-card-summary{font-size:16px;line-height:1.8;-webkit-line-clamp:2}
+    #root .scenario-card-details>summary{min-height:48px;font-size:16px}
+    #root .scenario-card-detail{font-size:16px}
     #root .scenario-list-controls{align-items:flex-start;flex-direction:column;padding:12px}
     #root .scenario-list-controls button{width:100%;min-height:48px}
     #reading-more summary{min-height:36px;padding:0 10px}

@@ -31,24 +31,24 @@ window.YUAN_GOOGLE_ACCOUNT = account;
 
 const accountStyles = document.createElement("style");
 accountStyles.textContent = `
-  #yuan-google-sign-in{min-height:38px;padding:0 12px;border:1px solid #d8cca8;border-radius:11px;background:#fff;color:#352f28;font:600 13px/1.4 system-ui,"Noto Sans TC",sans-serif;white-space:nowrap;cursor:pointer}
+  #yuan-google-sign-in{min-height:38px;padding:0 12px;border:1px solid #d8cca8;border-radius:11px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;white-space:nowrap;cursor:pointer}
   #yuan-google-sign-in:hover:not(:disabled){background:#faf6ed}
   #yuan-google-sign-in:disabled{border-color:#ded6c8;background:#f5f1e9;color:#514a40;opacity:1;cursor:not-allowed}
   #yuan-google-account-dialog{width:min(480px,calc(100vw - 28px));max-height:min(85vh,680px);padding:0;border:1px solid #ded6c8;border-radius:18px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:16px/1.7 system-ui,"Noto Sans TC",sans-serif}
   #yuan-google-account-dialog::backdrop{background:#1c1711a6;backdrop-filter:blur(3px)}
   #yuan-google-account-dialog header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #e5ded2;background:#fffefa}
-  #yuan-google-account-dialog h2{margin:0;font-size:20px}
-  #yuan-google-account-dialog [data-account-close]{width:38px;height:38px;border:0;border-radius:10px;background:#f5f1e9;font-size:20px;cursor:pointer}
+  #yuan-google-account-dialog h2{margin:0;font-size:22px}
+  #yuan-google-account-dialog [data-account-close]{width:38px;height:38px;border:0;border-radius:10px;background:#f5f1e9;font-size:22px;cursor:pointer}
   #yuan-google-account-content{display:grid;gap:14px;padding:18px 20px 22px}
   #yuan-google-account-status{margin:0;padding:13px 14px;border-radius:11px;background:#f5f1e9;color:#352f28;overflow-wrap:anywhere}
   #yuan-google-account-status[data-error="true"]{background:#fff0ed;color:#8b3023}
   #yuan-google-account-identity{margin:0;color:#514a40}
   #yuan-google-account-actions{display:grid;gap:9px}
-  #yuan-google-account-actions button{width:100%;min-height:46px;padding:10px 14px;border:1px solid #ded6c8;border-radius:11px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
+  #yuan-google-account-actions button{width:100%;min-height:46px;padding:10px 14px;border:1px solid #ded6c8;border-radius:11px;background:#fff;color:#352f28;font:600 17px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #yuan-google-account-actions [data-account-login]{border-color:#3a4e44;background:#3a4e44;color:#fff}
   #yuan-google-account-actions button:focus-visible,#yuan-google-account-dialog [data-account-close]:focus-visible,#yuan-google-sign-in:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
-  #yuan-google-account-explanation{margin:0;color:#514a40;font-size:14px}
-  @media(max-width:640px){#yuan-google-sign-in{min-height:38px;padding:0 9px;font-size:12px}#yuan-google-account-dialog header{padding:14px 16px}#yuan-google-account-content{padding:15px 16px 18px}}
+  #yuan-google-account-explanation{margin:0;color:#514a40;font-size:16px}
+  @media(max-width:640px){#yuan-google-sign-in{min-height:38px;padding:0 9px;font-size:14px}#yuan-google-account-dialog header{padding:14px 16px}#yuan-google-account-content{padding:15px 16px 18px}}
 `;
 document.head.append(accountStyles);
 

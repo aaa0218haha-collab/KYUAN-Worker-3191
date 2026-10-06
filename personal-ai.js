@@ -44,8 +44,8 @@ styles.textContent = `
   .pai-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid #eee8df}
   .pai-head-brand{display:flex;align-items:center;gap:14px;min-width:0}
   .pai-head-brand img{width:72px;height:72px;flex:none;object-fit:cover;border:1px solid #e5ded2;border-radius:14px}
-  .pai-head-copy{min-width:0}.pai-head h2{margin:0;font-size:18px}.pai-head-note{margin:4px 0 0;color:#756c60;font-size:12px;line-height:1.5}
-  .pai-close{border:0;background:transparent;font-size:22px;cursor:pointer;color:#514b44}
+  .pai-head-copy{min-width:0}.pai-head h2{margin:0;font-size:20px}.pai-head-note{margin:4px 0 0;color:#756c60;font-size:14px;line-height:1.5}
+  .pai-close{border:0;background:transparent;font-size:24px;cursor:pointer;color:#514b44}
   .pai-body{padding:18px 20px;display:grid;gap:14px}
   .pai-guide{padding:13px 14px;background:#f5f2eb;border-radius:12px}
   .pai-guide ol,.pai-guide ul{margin:8px 0 0;padding-left:22px}
@@ -56,11 +56,11 @@ styles.textContent = `
   .pai-row[hidden]{display:none}
   .pai-row select,.pai-row input,.pai-chat-form textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d9d2c9;border-radius:10px;background:#fff;color:#241d17;font:inherit}
   .pai-chat-form textarea::placeholder{color:#938a7e;opacity:1}
-  .pai-chat-scope{margin:0;color:#756c60;font-size:12px;line-height:1.6}
-  .pai-model-help{margin:0;color:#625c55;font-size:12px}
-  .pai-note{margin:0;color:#625c55;font-size:12px}
-  .pai-warning{padding:10px 12px;border-left:3px solid #bd8b37;background:#fff8e9;color:#59451f;font-size:12px}
-  .pai-check{display:flex;gap:8px;align-items:flex-start;font-size:12px}
+  .pai-chat-scope{margin:0;color:#756c60;font-size:14px;line-height:1.6}
+  .pai-model-help{margin:0;color:#625c55;font-size:14px}
+  .pai-note{margin:0;color:#625c55;font-size:14px}
+  .pai-warning{padding:10px 12px;border-left:3px solid #bd8b37;background:#fff8e9;color:#59451f;font-size:14px}
+  .pai-check{display:flex;gap:8px;align-items:flex-start;font-size:14px}
   .pai-check input{margin-top:4px}
   .pai-chat{display:grid;gap:8px;max-height:230px;overflow:auto;padding:2px}
   .pai-msg{white-space:pre-wrap;overflow-wrap:anywhere;padding:10px 12px;border-radius:12px;max-width:92%}
@@ -70,8 +70,8 @@ styles.textContent = `
   .pai-actions button:not(.pai-primary){border:1px solid #d9d2c9;border-radius:10px;background:#fff;color:#514b44;padding:9px 12px;font:500 13px system-ui,sans-serif;cursor:pointer}
   .pai-primary{border:0;border-radius:10px;background:#2e3d37;color:#fff;padding:10px 15px;font:600 14px system-ui,sans-serif;cursor:pointer}
   .pai-primary:disabled{opacity:.55;cursor:wait}
-  #personal-ai-status{min-height:1.3em;color:#625c55;font-size:12px}
-  @media(max-width:520px){#personal-ai-trigger{right:12px;bottom:12px}.pai-body{padding:14px}.pai-head{padding:14px}.pai-head-brand{gap:10px}.pai-head-brand img{width:60px;height:60px}.pai-head h2{font-size:16px}}
+  #personal-ai-status{min-height:1.3em;color:#625c55;font-size:14px}
+  @media(max-width:520px){#personal-ai-trigger{right:12px;bottom:12px}.pai-body{padding:14px}.pai-head{padding:14px}.pai-head-brand{gap:10px}.pai-head-brand img{width:60px;height:60px}.pai-head h2{font-size:18px}}
 `;
 document.head.append(styles);
 
