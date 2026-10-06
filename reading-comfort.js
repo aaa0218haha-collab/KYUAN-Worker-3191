@@ -58,9 +58,14 @@ readingStyles.textContent = `
     #root>div{font-size:16px}
     #root header>div:first-child{gap:6px;flex-wrap:wrap}
     #root header>div:first-child>div:last-child{margin-left:auto}
+    #root header>div:first-child>div:last-child:has(#reading-more[open]){flex:1 1 100%;min-width:0;flex-wrap:wrap}
+    #root header>div:first-child>div:last-child>div:has(#reading-more[open]){flex:1 1 100%;min-width:0;flex-wrap:wrap}
     #root header>div>div:first-child{gap:7px}
     #root header h1{font-size:14px}
     #root main{padding-top:12px;padding-bottom:20px}
+    #reading-more[open]{position:static;flex:1 1 100%;min-width:0}
+    #reading-more-menu{position:static;top:auto;right:auto;width:100%;min-width:0;max-width:none;box-sizing:border-box;box-shadow:0 4px 14px #241d170a}
+    #root main [class~="grid-cols-3"][class~="max-h-[500px]"]{grid-template-columns:minmax(0,1fr)!important;max-height:none!important;overflow:visible!important;padding-right:0!important}
     #root .scenario-card{gap:10px;padding:14px;border-radius:16px}
     #root .scenario-card-term{font-size:16px}
     #root .scenario-card-summary{font-size:14px;line-height:1.8;-webkit-line-clamp:2}
@@ -69,6 +74,9 @@ readingStyles.textContent = `
     #root .scenario-list-controls{align-items:flex-start;flex-direction:column;padding:12px}
     #root .scenario-list-controls button{width:100%;min-height:48px}
     #reading-more summary{min-height:36px;padding:0 10px}
+  }
+  @media(min-width:641px) and (max-width:900px){
+    #root main [class~="grid-cols-3"][class~="max-h-[500px]"]{grid-template-columns:minmax(0,1fr)!important;max-height:none!important;overflow:visible!important;padding-right:0!important}
   }
   @media(prefers-reduced-motion:reduce){#root *,#reading-more-menu *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 `;
