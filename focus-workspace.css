@@ -146,3 +146,7 @@
 
 /* Mindset cards use the same 18px reading size as body copy. */
 #root .yw-confidence-cards button,#root .yw-confidence-cards button :is(span,p,strong){font-size:18px!important;line-height:1.65}
+
+.yw-karen-kyuan-link{display:inline-flex;align-items:center;min-height:36px;margin-top:6px;padding:4px 12px;border:1px solid #c1d0c5;border-radius:9px;background:#edf3ee;color:#30453a;font-size:18px;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.yw-karen-kyuan-link:hover{background:#dde9df}
+.yw-karen-kyuan-link:focus-visible{outline:3px solid #9b762f;outline-offset:2px}

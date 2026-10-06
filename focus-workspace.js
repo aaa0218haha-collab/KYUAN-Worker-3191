@@ -59,7 +59,7 @@ export function createYuanWorkspace(React, runtime) {
     return jsxs('article',{className:'yw-karen-page',children:[
       jsxs('header',{className:'yw-karen-intro',children:[
         jsx('img',{src:'./karen-header.png',alt:'凱倫與元元的插畫形象',width:1254,height:1254,loading:'eager'}),
-        jsxs('div',{children:[jsx('p',{className:'yw-karen-eyebrow',children:'認識凱倫'}),jsx('h2',{children:'Karen Yuan'}),jsx('p',{className:'yw-karen-tagline',children:'醫療資訊行銷企劃 · 專案協作 · 自立生活倡議'})]}),
+        jsxs('div',{children:[jsx('p',{className:'yw-karen-eyebrow',children:'認識凱倫'}),jsx('h2',{children:'Karen Yuan'}),jsx('a',{className:'yw-karen-kyuan-link',href:'https://job-redesign-131419.onrender.com/',target:'_blank',rel:'noopener noreferrer',children:'KYUAN'}),jsx('p',{className:'yw-karen-tagline',children:'醫療資訊行銷企劃 · 專案協作 · 自立生活倡議'})]}),
       ]}),
       jsxs('div',{className:'yw-karen-tabs',role:'tablist','aria-label':'凱倫介紹內容',children:[
         ['自我介紹','服務與聯絡'].map((label,index)=>jsx('button',{type:'button',role:'tab',id:`yw-karen-tab-${index}`,'aria-selected':tab===index,'aria-controls':`yw-karen-panel-${index}`,tabIndex:tab===index?0:-1,onClick:()=>setTab(index),onKeyDown:event=>{
