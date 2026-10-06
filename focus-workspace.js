@@ -129,6 +129,7 @@ export function createYuanWorkspace(React, runtime) {
     const [sidebarVisible,setSidebarVisible]=React.useState(false);
     const [notesVisible,setNotesVisible]=React.useState(false);
     const [aboutVisible,setAboutVisible]=React.useState(false);
+    const [roleSelectionVisible,setRoleSelectionVisible]=React.useState(false);
     const [wideSidebar,setWideSidebar]=React.useState(()=>matchMedia('(min-width:768px)').matches);
     const [wideNotes,setWideNotes]=React.useState(()=>matchMedia('(min-width:1200px)').matches);
     const navDialog=React.useRef(null),notesDialog=React.useRef(null),bar=React.useRef(null),positions=React.useRef({}),previous=React.useRef(activeTab);
@@ -190,6 +191,7 @@ export function createYuanWorkspace(React, runtime) {
       if(wasAbout)requestAnimationFrame(()=>window.scrollTo({top:positions.current[id]||0,behavior:'instant'}));
     };
     const sectionKey=`kyuan-section-note-v1:${activeTab}:${['checklist','tasks'].includes(activeTab)?role.id:'general'}`;
+    const showNotes=activeTab!=='toolkit';
     const notes=session&&activeTab==='tasks'?taskNotes:jsx(SectionNotes,{noteKey:sectionKey,label:`${page.title}的備註`},sectionKey);
     const context=session&&activeTab==='tasks'?session.taskTitle:['checklist','tasks'].includes(activeTab)?roleLabel(role):page.hint;
     const notesBody=jsxs('div',{className:'yw-notes-body',children:[jsx('p',{className:'yw-notes-context',children:context}),notes]});
@@ -207,7 +209,7 @@ export function createYuanWorkspace(React, runtime) {
     };
     React.useEffect(()=>{
       const selector=document.querySelector('[data-yuan-selector]');
-      if(!selector)return;
+      if(!selector||roleSelectionVisible)return;
       const hideLegacyFields=()=>{
         const selects=Array.from(selector.querySelectorAll('select'));
         if(selects.length<2)return;
@@ -219,7 +221,47 @@ export function createYuanWorkspace(React, runtime) {
       const observer=new MutationObserver(hideLegacyFields);
       observer.observe(selector,{childList:true,subtree:true});
       return()=>observer.disconnect();
-    },[activeTab]);
+    },[activeTab,roleSelectionVisible]);
+    React.useEffect(()=>{
+      if(activeTab!=='checklist'||aboutVisible)return;
+      const main=document.querySelector('#root main');
+      const picker=document.querySelector('#root [data-yuan-selector]');
+      if(!main||!picker)return;
+      const selects=Array.from(picker.querySelectorAll('select'));
+      const closeAfterRoleSelection=event=>{
+        if(event.target===selects[1])setRoleSelectionVisible(false);
+      };
+      picker.addEventListener('change',closeAfterRoleSelection);
+      const handleReselect=event=>{
+        const button=event.target instanceof Element?event.target.closest('button'):null;
+        if(!button||button.textContent.trim()!=='重選')return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if(selects.length<2){
+          console.error('Unable to return to role selection: the industry and role selectors are unavailable.');
+          return;
+        }
+        setRoleSelectionVisible(true);
+        picker.open=true;
+        let fields=selects[0].parentElement;
+        while(fields&&fields!==picker&&!fields.contains(selects[1]))fields=fields.parentElement;
+        if(!fields||fields===picker){
+          console.error('Unable to return to role selection: the selector fields are unavailable.');
+          return;
+        }
+        fields.hidden=false;
+        requestAnimationFrame(()=>{
+          picker.scrollIntoView({block:'center',behavior:'smooth'});
+          selects[0].focus({preventScroll:true});
+          selects[0].click();
+        });
+      };
+      main.addEventListener('click',handleReselect,true);
+      return()=>{
+        main.removeEventListener('click',handleReselect,true);
+        picker.removeEventListener('change',closeAfterRoleSelection);
+      };
+    },[activeTab,aboutVisible,roleSelectionVisible]);
     React.useEffect(()=>{
       const main=document.querySelector('#root main');
       if(!main)return;
@@ -235,22 +277,22 @@ export function createYuanWorkspace(React, runtime) {
     React.useEffect(()=>{
       document.querySelectorAll('#root main .yw-common-titles, #root main .yw-checklist-progress, #root main .yw-progress-detail').forEach(disclosure=>{disclosure.open=false});
     },[activeTab,role?.id]);
-    return jsxs('div',{id:'yuan-workspace',children:[
+    return jsxs('div',{id:'yuan-workspace',className:roleSelectionVisible?'yw-role-selection-open':undefined,children:[
       jsxs('section',{className:'yw-topbar',ref:bar,'aria-label':'目前瀏覽位置',children:[
         jsxs('div',{className:'yw-current',children:[jsx('span',{className:'yw-eyebrow',children:'現在瀏覽'}),jsx('h2',{id:'yuan-current-page',children:page.title}),jsx('p',{className:'yw-context',title:context,children:context})]}),
-        jsxs('div',{className:'yw-top-actions',children:[!wideSidebar&&jsx('button',{id:'yuan-navigation-open',type:'button','aria-haspopup':'dialog','aria-controls':'yuan-navigation-dialog','aria-expanded':sidebarVisible,onClick:()=>setSidebarVisible(true),children:'功能'}),!wideNotes&&jsx('button',{id:'yuan-notes-open',type:'button','aria-haspopup':'dialog','aria-controls':'yuan-notes-dialog','aria-expanded':notesVisible,onClick:()=>setNotesVisible(true),children:'備註'})]}),
+        jsxs('div',{className:'yw-top-actions',children:[        !wideSidebar&&jsx('button',{id:'yuan-navigation-open',type:'button','aria-haspopup':'dialog','aria-controls':'yuan-navigation-dialog','aria-expanded':sidebarVisible,onClick:()=>setSidebarVisible(true),children:'功能'}),showNotes&&!wideNotes&&jsx('button',{id:'yuan-notes-open',type:'button','aria-haspopup':'dialog','aria-controls':'yuan-notes-dialog','aria-expanded':notesVisible,onClick:()=>setNotesVisible(true),children:'備註'})]}),
       ]}),
-      jsxs('div',{className:'yw-columns',children:[
+      jsxs('div',{className:wideNotes&&showNotes?'yw-columns yw-columns-with-notes':'yw-columns yw-columns-no-notes',children:[
         wideSidebar&&jsx('aside',{className:'yw-sidebar','aria-label':'功能側欄',children:jsx(Navigation,{activeTab,onNavigate:navigate,onResponse:openResponse})}),
         jsxs('div',{className:aboutVisible?'yw-content yw-about-content':'yw-content',children:[
           !aboutVisible&&activeTab==='checklist'&&jsx('figure',{className:'yw-home-illustration',children:jsx('img',{src:'./karen-menu01.png',alt:'凱倫工作助理與檢核清單',width:1536,height:1024,loading:'eager'})}),
           !aboutVisible&&['checklist','tasks'].includes(activeTab)&&jsx(RolePicker,{domains,role,onSelectDomain,onSelectRole}),
           aboutVisible?jsx(KarenAbout,{}):children,
         ]}),
-        wideNotes&&jsxs('aside',{className:'yw-notes','aria-label':'備註欄',children:[jsx('h2',{children:'備註'}),notesBody]}),
+        showNotes&&wideNotes&&jsxs('aside',{className:'yw-notes','aria-label':'備註欄',children:[jsx('h2',{children:'備註'}),notesBody]}),
       ]}),
       !wideSidebar&&jsxs('dialog',{id:'yuan-navigation-dialog',className:'yw-drawer yw-navigation-drawer',ref:navDialog,'aria-labelledby':'yuan-navigation-title',onClose:()=>setSidebarVisible(false),children:[jsxs('div',{className:'yw-drawer-heading',children:[jsx('h2',{id:'yuan-navigation-title',children:'功能側欄'}),jsx('button',{type:'button','data-close':true,onClick:()=>setSidebarVisible(false),children:'關閉'})]}),jsx(Navigation,{activeTab,onNavigate:navigate,onResponse:openResponse})]}),
-      !wideNotes&&jsxs('dialog',{id:'yuan-notes-dialog',className:'yw-drawer yw-notes-drawer',ref:notesDialog,'aria-labelledby':'yuan-notes-title',onClose:()=>setNotesVisible(false),children:[jsxs('div',{className:'yw-drawer-heading',children:[jsx('h2',{id:'yuan-notes-title',children:'備註'}),jsx('button',{type:'button','data-close':true,onClick:()=>setNotesVisible(false),children:'關閉'})]}),notesBody]}),
+      showNotes&&!wideNotes&&jsxs('dialog',{id:'yuan-notes-dialog',className:'yw-drawer yw-notes-drawer',ref:notesDialog,'aria-labelledby':'yuan-notes-title',onClose:()=>setNotesVisible(false),children:[jsxs('div',{className:'yw-drawer-heading',children:[jsx('h2',{id:'yuan-notes-title',children:'備註'}),jsx('button',{type:'button','data-close':true,onClick:()=>setNotesVisible(false),children:'關閉'})]}),notesBody]}),
     ]});
   };
 }

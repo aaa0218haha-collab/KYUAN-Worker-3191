@@ -13,7 +13,7 @@
 #yuan-workspace main [class*="rounded-2xl"],#yuan-workspace main [class*="rounded-3xl"]{box-shadow:none}
 #yuan-workspace main [data-yuan-selector]{border:1px solid #ded6c8;border-radius:14px;background:#fffefa}
 [data-yuan-selector]>summary{padding:12px 14px;font-size:14px;cursor:pointer;color:#514a40;font-weight:600;overflow-wrap:anywhere}
-[data-yuan-selector]{display:none!important}
+[data-yuan-selector]{display:none!important}.yw-role-selection-open [data-yuan-selector]{display:block!important;position:relative;z-index:5;margin-bottom:12px}
 [data-yuan-selector]>summary:focus-visible,#yuan-workspace button:focus-visible,#yuan-workspace textarea:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
 [data-yuan-selector]>div{border:0!important;border-radius:0!important}
 .yw-drawer{border:1px solid #e5ded2;background:#fffefa;color:#352f28;padding:18px;max-width:100vw;width:min(340px,calc(100vw - 24px));height:100dvh;max-height:100dvh;overflow:auto;margin:0;border-radius:0 18px 18px 0;font:14px/1.6 system-ui,"Noto Sans TC",sans-serif}
@@ -99,6 +99,7 @@
 .yw-content p,.yw-content li{color:#655d53}
 .yw-content h2{min-width:0;max-width:100%;overflow-wrap:anywhere}
 .yw-content{overflow-wrap:anywhere}
+.yw-content [data-mindset-details]{scroll-margin-top:calc(var(--yw-header-height) + var(--yw-bar-height) + 16px)}
 .yuan-quick-adjust{position:relative;min-width:0}
 .yuan-quick-adjust>summary{display:inline-flex;align-items:center;min-height:26px;padding:3px 7px;border:1px solid #e5ded2;border-radius:7px;background:#fbf9f5;color:#756c60;font-size:10px;line-height:1.3;cursor:pointer;list-style:none;white-space:nowrap}
 .yuan-quick-adjust>summary::-webkit-details-marker{display:none}
@@ -120,7 +121,7 @@
 .yw-notes-body>div[class]{font-size:14px}.yw-notes-body>div[class*="rounded-3xl"]{border:0;box-shadow:none;padding:0;border-radius:0;background:transparent}
 .yw-notes-body h3{font-family:inherit;font-size:15px!important}.yw-notes-body textarea{font-size:16px!important;max-width:100%}
 @media(min-width:768px){.yw-columns{display:grid;grid-template-columns:188px minmax(0,1fr);gap:20px;padding:20px}.yw-sidebar{position:sticky;top:calc(var(--yw-header-height) + var(--yw-bar-height) + 16px);align-self:start;max-height:calc(100dvh - var(--yw-header-height) - var(--yw-bar-height) - 32px);overflow:auto;padding-right:12px;border-right:1px solid #e5ded2}.yw-topbar{padding-inline:24px}.yw-context{max-width:650px}#root #yuan-workspace main{padding:0}.yw-navigation nav button{gap:9px;padding:10px 8px}.yw-preview{width:40px;height:40px}}
-@media(min-width:1200px){.yw-columns{grid-template-columns:188px minmax(0,1fr) 264px;gap:24px;padding:24px}.yw-notes{position:sticky;top:calc(var(--yw-header-height) + var(--yw-bar-height) + 20px);align-self:start;padding-left:18px;border-left:1px solid #e5ded2;max-height:calc(100dvh - var(--yw-header-height) - var(--yw-bar-height) - 40px);overflow:auto}.yw-topbar{padding-block:16px}}
+@media(min-width:1200px){.yw-columns-with-notes{grid-template-columns:188px minmax(0,1fr) 264px;gap:24px;padding:24px}.yw-columns-no-notes{grid-template-columns:188px minmax(0,1fr);gap:24px;padding:24px}.yw-notes{position:sticky;top:calc(var(--yw-header-height) + var(--yw-bar-height) + 20px);align-self:start;padding-left:18px;border-left:1px solid #e5ded2;max-height:calc(100dvh - var(--yw-header-height) - var(--yw-bar-height) - 40px);overflow:auto}.yw-topbar{padding-block:16px}}
 @media(max-width:540px){.yw-topbar{gap:8px;padding:4px 12px}.yw-eyebrow{font-size:10px;line-height:1.2;margin-bottom:1px}.yw-current h2{font-size:16px;line-height:1.2}.yw-context{margin-top:2px;font-size:11px;line-height:1.25}.yw-top-actions button{min-height:44px;padding:6px 10px}.yw-role-picker select{width:calc(100% - 178px);font-size:12px}.yw-quick-nav{width:174px}.yw-quick-nav button{padding:4px 5px;font-size:11px}.yw-response-link{min-height:60px}}
 @media(max-width:767px){.yw-content{padding-top:100px}.yw-role-picker{width:100%}.yw-role-picker select{width:100%;height:44px}.yw-quick-nav{inset:auto;width:100%;justify-content:space-between;flex-wrap:nowrap}.yw-quick-nav>div:first-child{width:auto;justify-content:flex-start}.yw-quick-nav button{padding-inline:8px}}
 @media(max-width:540px){.yw-karen-page{padding-inline:0}.yw-karen-intro{grid-template-columns:76px minmax(0,1fr);gap:12px;padding:12px}.yw-karen-intro img{width:76px;max-height:96px}.yw-karen-intro h2{font-size:21px}.yw-karen-tagline{font-size:12px}.yw-karen-story{padding:13px}.yw-karen-cards,.yw-karen-approach{grid-template-columns:minmax(0,1fr)}}
