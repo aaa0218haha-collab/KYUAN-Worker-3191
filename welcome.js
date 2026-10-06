@@ -1,12 +1,12 @@
-﻿const styles = document.createElement('style');
+const styles = document.createElement('style');
 styles.textContent = `
-#welcome-dialog{width:min(520px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:16px;border:1px solid #e3d6bd;border-radius:20px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:15px/1.6 system-ui,"Noto Sans TC",sans-serif}
+#welcome-dialog{width:min(600px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;margin:auto;padding:16px;border:1px solid #e3d6bd;border-radius:20px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:15px/1.6 system-ui,"Noto Sans TC",sans-serif}
 #welcome-dialog::backdrop{background:#241d1780}
 #welcome-dialog .welcome-hero{display:block;width:100%;height:auto;max-height:220px;aspect-ratio:3/2;object-fit:cover;object-position:center 48%;border-radius:12px;margin:0 0 16px}
 #welcome-dialog h2{font-size:24px;font-weight:700;margin:0 0 5px}
 #welcome-dialog p{margin:0 0 14px}
 #welcome-dialog ul{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
-#welcome-dialog li{padding:9px 12px;border-radius:10px;background:#f6f1e8;font-size:16px}
+#welcome-dialog li{display:grid;gap:3px;padding:10px 12px;border-radius:10px;background:#f6f1e8;font-size:15px;line-height:1.6;overflow-wrap:anywhere}#welcome-dialog li span{color:#4a423a}
 #welcome-dialog strong{font-weight:700}
 #welcome-dialog .welcome-actions{display:grid;gap:9px;margin-top:14px}
 #welcome-dialog button{min-height:44px;padding:10px 14px;border:1px solid #d8cca8;border-radius:11px;background:white;cursor:pointer;font-weight:600}
@@ -40,18 +40,19 @@ welcome.setAttribute('aria-describedby','welcome-description');
 welcome.innerHTML = `
 <img class="welcome-hero" src="./karen-welcome.png" alt="凱倫與戴著耳機的老虎夥伴，一起查看工作檢核清單">
 <h2 id="welcome-title">歡迎使用凱倫知序工作</h2>
-<p id="welcome-description">選職位、拆步驟、勾進度，讓工作更容易開始。</p>
+<p id="welcome-description">這是給剛進職場、轉換跑道，或常常不知道「這件事要從哪裡開始」的人。下面列出你可能遇到的困擾，以及這裡能幫你做什麼。</p>
 <ul>
-<li><strong>職位要求：</strong>搜尋職位，了解工作內容與需要的能力。</li>
-<li><strong>拆解任務：</strong>把工作拆成小步驟，逐項檢核進度。</li>
-<li><strong>實用工具：</strong>運用工作輔助工具，協助整理與執行任務。</li>
-<li><strong>薪水權益：</strong>查看薪資與勞動權益資訊。</li>
-<li><strong>Google 雲端備份：</strong>按「連結 Google 雲端」並在 Google 視窗按「允許」，再按「備份進度」。換裝置時連結同一帳號後按「匯入進度」。</li>
-<li><strong>連接自己的 AI：</strong>按「Google AI Studio 申請 API Key」取得金鑰，貼到 AI 視窗並按「在本機使用」。金鑰不需要、也不要傳給網站管理員；使用可能產生供應商費用。</li>
-<li><strong>更多功能：</strong>調整文字大小、查看歷史紀錄或匯出 PDF。</li>
-<li><strong>Google 登入：</strong>把檢核進度依帳號分開保存在這台裝置；不會自動連結雲端或 AI。</li>
+<li><strong>不知道這份工作在做什麼？</strong><span>到「職位要求」搜尋職位，用白話看工作內容、常見任務和需要的能力，面試或入職前先有底。</span></li>
+<li><strong>主管交辦的事太大、不知從何下手？</strong><span>到「拆解任務」，把一件工作拆成小步驟，每步有第一個動作、完成標準和預估時間，還能計時、打勾。</span></li>
+<li><strong>步驟還是太籠統？</strong><span>按步驟旁的「拆細」，你自己的 AI（Gemini 或 OpenAI）會幫你切成 2 到 5 個更小的步驟。需先連接自己的 AI。</span></li>
+<li><strong>聽不懂行話、怕回錯話？</strong><span>「實用工具」的行話字典，解釋 FYI、對齊、落地等用語，也收錄「這很簡單啦」「我們是一家人」這類常見說法，並附上可直接用的回覆。</span></li>
+<li><strong>覺得自己做的事不夠厲害？</strong><span>「實用工具」的信心轉換，把「只是整理資料」翻成履歷和面試能用的專業說法，也幫你面對冒牌者心態。</span></li>
+<li><strong>請假、遲到、加班不知道怎麼算？</strong><span>「薪水權益」可試算薪資、加班費與請假扣款，並說明勞保、健保、勞退，也提供官方資源連結。</span></li>
+<li><strong>換裝置怕進度不見？</strong><span>按「連結 Google 雲端」並在 Google 視窗按「允許」，再按「備份進度」；換裝置時連結同一帳號後按「匯入進度」。</span></li>
+<li><strong>想用自己的 AI？</strong><span>按「Google AI Studio 申請 API Key」取得金鑰，貼到 AI 視窗並按「在本機使用」。金鑰不要傳給任何人；使用可能產生供應商費用。</span></li>
+<li><strong>其他小幫手：</strong><span>「更多」可調整文字大小、查看歷史紀錄或匯出 PDF；「備註」可記下疑問。Google 登入只用來把進度依帳號分開保存在這台裝置。</span></li>
 </ul>
-<strong>登入 Google 帳號</strong>
+<p class="welcome-note">本系統提供的是整理與參考資訊，不是法律或醫療意見。遇到勞資爭議，可撥打勞動部 1955 專線。</p><strong>登入 Google 帳號</strong>
 <p class="welcome-note">登入只用來分開管理此裝置上的個人進度，不會授權 Google 雲端或 AI。要在其他裝置使用，請另外選擇「雲端備份」。</p>
 <div class="welcome-actions">
 <button type="button" data-welcome-google>Google 登入</button>
