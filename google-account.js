@@ -48,6 +48,7 @@ accountStyles.textContent = `
   #yuan-google-account-actions [data-account-login]{border-color:#3a4e44;background:#3a4e44;color:#fff}
   #yuan-google-account-actions button:focus-visible,#yuan-google-account-dialog [data-account-close]:focus-visible,#yuan-google-sign-in:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #yuan-google-account-explanation{margin:0;color:#514a40;font-size:16px}
+  #yuan-google-account-guide{margin:12px 0;padding:12px 14px;border:1px solid #e6d9c8;border-radius:12px;background:#fffaf0;color:#514a40;font-size:15px;line-height:1.6}#yuan-google-account-guide ol{margin:6px 0 0;padding-left:20px}
   @media(max-width:640px){#yuan-google-sign-in{min-height:38px;padding:0 9px;font-size:14px}#yuan-google-account-dialog header{padding:14px 16px}#yuan-google-account-content{padding:15px 16px 18px}}
 `;
 document.head.append(accountStyles);
@@ -64,6 +65,15 @@ dialog.innerHTML = `
     <p id="yuan-google-account-status" role="status" aria-live="polite">訪客進度保存在這台裝置。</p>
     <p id="yuan-google-account-identity" hidden></p>
     <p id="yuan-google-account-explanation">登入後，檢核進度會依 Google 帳號分開保存在這台裝置。第一次登入會先複製目前的訪客進度；之後兩邊分開保存。登入只確認帳號，不會連結 Google 雲端硬碟，也不會連接 AI。要在其他裝置使用進度，請另外選擇「雲端備份」。</p>
+    <div id="yuan-google-account-guide" data-account-guide>
+      <strong>登入前先看這裡（1 分鐘）</strong>
+      <ol>
+        <li>按「使用 Google 登入」後，會跳出 Google 的選擇帳號視窗，請選你自己的 Gmail。</li>
+        <li>本站只確認你是誰，不會讀取信件、雲端硬碟或密碼。</li>
+        <li>若出現「已封鎖存取權：授權錯誤」或「錯誤 400：origin_mismatch」，代表網站管理員尚未在 Google 登記此網址，<b>不是你的帳號或操作有問題</b>。請關閉該頁回到本站，不用重試。</li>
+        <li>不登入也能完整使用，進度會保存在這台裝置；請把此錯誤畫面截圖回報管理員，修好後即可登入。</li>
+      </ol>
+    </div>
     <div id="yuan-google-account-actions">
       <button type="button" data-account-login>使用 Google 登入</button>
       <button type="button" data-account-logout hidden>登出 Google</button>
