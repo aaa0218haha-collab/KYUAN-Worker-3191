@@ -232,6 +232,9 @@ export function createYuanWorkspace(React, runtime) {
       observer.observe(main,{childList:true,subtree:true});
       return()=>observer.disconnect();
     },[activeTab]);
+    React.useEffect(()=>{
+      document.querySelectorAll('#root main .yw-common-titles, #root main .yw-checklist-progress, #root main .yw-progress-detail').forEach(disclosure=>{disclosure.open=false});
+    },[activeTab,role?.id]);
     return jsxs('div',{id:'yuan-workspace',children:[
       jsxs('section',{className:'yw-topbar',ref:bar,'aria-label':'目前瀏覽位置',children:[
         jsxs('div',{className:'yw-current',children:[jsx('span',{className:'yw-eyebrow',children:'現在瀏覽'}),jsx('h2',{id:'yuan-current-page',children:page.title}),jsx('p',{className:'yw-context',title:context,children:context})]}),
