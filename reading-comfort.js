@@ -76,6 +76,8 @@ readingStyles.textContent = `
     #reading-more summary{min-height:36px;padding:0 10px}
   }
   @media(min-width:641px) and (max-width:900px){
+    #root main div[class~="md:flex-row"]:has(h2){flex-direction:column!important;align-items:stretch!important}
+    #root main div[class~="md:flex-row"]:has(h2)>*{width:100%;min-width:0}
     #root main [class~="grid-cols-3"][class~="max-h-[500px]"]{grid-template-columns:minmax(0,1fr)!important;max-height:none!important;overflow:visible!important;padding-right:0!important}
   }
   @media(prefers-reduced-motion:reduce){#root *,#reading-more-menu *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
