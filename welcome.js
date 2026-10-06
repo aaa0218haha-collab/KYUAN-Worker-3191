@@ -14,8 +14,25 @@ styles.textContent = `
 #welcome-dialog .welcome-note{font-size:13px;color:#746b60;margin:9px 0 0}
 #welcome-dialog button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
 @media(max-width:360px){#welcome-dialog{padding:12px}#welcome-dialog h2{font-size:20px}#welcome-dialog .welcome-hero{max-height:170px;margin-bottom:12px}}
+#welcome-landing{box-sizing:border-box;min-height:100svh;display:grid;place-items:center;padding:clamp(20px,5vw,56px);background:radial-gradient(ellipse at 50% 12%,#fffefa 0,#f7f1e6 72%,#f1eadc 100%);color:#352f28;font-family:system-ui,"Noto Sans TC",sans-serif}
+#welcome-landing[hidden],#root[hidden]{display:none!important}
+.welcome-landing-card{width:min(100%,820px);display:grid;justify-items:center;gap:14px;padding:clamp(18px,4vw,34px);border:1px solid #e3d6bd;border-radius:26px;background:#fffefa;box-shadow:0 18px 55px #241d1712;text-align:center}
+.welcome-landing-image{display:block;width:min(100%,620px);height:auto;object-fit:contain}
+.welcome-landing-title{margin:0;color:#30453a;font-size:clamp(25px,5vw,38px);line-height:1.25}
+.welcome-landing-copy{max-width:38ch;margin:0;color:#655d53;font-size:clamp(14px,2.5vw,17px);line-height:1.75}
+.welcome-landing-start{min-height:48px;padding:11px 25px;border:0;border-radius:12px;background:#30453a;color:#fffefa;font:700 16px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
+.welcome-landing-start:hover{background:#24372d}
+.welcome-landing-start:focus-visible{outline:3px solid #9b762f;outline-offset:3px}
+@media(max-width:480px){#welcome-landing{padding:16px}.welcome-landing-card{gap:11px;padding:15px;border-radius:20px}.welcome-landing-image{width:100%}}
 `;
 document.head.append(styles);
+const landing=document.querySelector('#welcome-landing');
+const root=document.querySelector('#root');
+if(!landing||!root)throw new Error('迎賓頁或應用程式容器不存在，無法初始化首頁。');
+landing.querySelector('[data-welcome-enter]').addEventListener('click',()=>{
+  landing.hidden=true;
+  root.hidden=false;
+});
 const welcome = document.createElement('dialog');
 welcome.id = 'welcome-dialog';
 welcome.setAttribute('aria-labelledby','welcome-title');
@@ -78,5 +95,3 @@ function mountHelp(){
 }
 new MutationObserver(mountHelp).observe(document.body,{childList:true,subtree:true});
 mountHelp();
-let seen=false;try{seen=localStorage.getItem(seenKey)==='true'}catch{}
-if(!seen)showWelcome();
