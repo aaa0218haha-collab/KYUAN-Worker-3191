@@ -17,6 +17,7 @@ readingStyles.textContent = `
   #root main :is(button,span)[class*="rounded-md"][class*="px-"],
   #root main :is(button,span)[class*="rounded-lg"][class*="px-"],
   #root main :is(button,span)[class*="rounded-full"][class*="px-"]{color:#30453a!important;overflow-wrap:anywhere}
+  #root main :is(button,span):is([class*="rounded-md"],[class*="rounded-lg"],[class*="rounded-full"])[class*="px-"]:is([class*="bg-[#1E2E26]"],[class*="bg-[#23382F]"],[class*="bg-[#25392D]"],[class*="bg-[#2D453B]"],[class*="bg-[#2E3D37]"],[class*="bg-[#2E4738]"],[class*="bg-[#3A4E44]"],[class*="bg-[#3D524E]"],[class*="bg-[#3E5A47]"],[class*="bg-[#4D6561]"],[class*="bg-[#4D6E57]"],[class*="bg-[#6E5320]"],[class*="bg-[#846429]"],[class*="bg-[#9E5750]"],[class*="bg-amber-600"],[class*="bg-slate-700"],[class*="bg-slate-800"],[class*="bg-slate-900"],[class*="bg-stone-900"],[class*="bg-teal-600"],[class*="bg-teal-700"],[class*="bg-teal-800"]){color:#fff!important}
   #root main button[class*="rounded-md"][class*="px-"]:focus-visible,
   #root main button[class*="rounded-lg"][class*="px-"]:focus-visible,
   #root main button[class*="rounded-full"][class*="px-"]:focus-visible{outline:3px solid #846429;outline-offset:2px}
