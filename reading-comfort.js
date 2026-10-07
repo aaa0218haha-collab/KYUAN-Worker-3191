@@ -14,6 +14,14 @@ readingStyles.textContent = `
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{z-index:60;box-shadow:0 1px 4px #3025160a}
   #root .fixed.inset-0.z-50{z-index:70}
+  #root main :is(button,span)[class*="rounded-md"][class*="px-"],
+  #root main :is(button,span)[class*="rounded-lg"][class*="px-"],
+  #root main :is(button,span)[class*="rounded-full"][class*="px-"]{color:#30453a!important;overflow-wrap:anywhere}
+  #root main button[class*="rounded-md"][class*="px-"]:focus-visible,
+  #root main button[class*="rounded-lg"][class*="px-"]:focus-visible,
+  #root main button[class*="rounded-full"][class*="px-"]:focus-visible{outline:3px solid #846429;outline-offset:2px}
+  #root main .yw-communication-scenarios{max-height:45vh;overflow-y:auto;overscroll-behavior:contain;padding-right:4px;scrollbar-color:#c1d0c5 transparent;scrollbar-width:thin}
+  @media(min-width:768px){#root main .yw-communication-scenarios{max-height:420px}}
   #root header [data-reading-hidden="true"],#personal-ai-trigger[data-reading-hidden="true"]{display:none!important}
   #reading-more{position:relative;flex:none;font:500 15px/1.4 system-ui,"Noto Sans TC",sans-serif}
   #reading-more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border:1px solid #e3ded4;border-radius:12px;background:#fff;color:#514a40}
