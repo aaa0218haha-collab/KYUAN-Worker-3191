@@ -13,6 +13,7 @@ readingStyles.textContent = `
   #root main [class~="overflow-x-auto"]{overflow-x:visible!important;overflow-y:visible!important;flex-wrap:wrap!important;flex-shrink:1!important;min-width:0;max-width:100%}
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{z-index:60;box-shadow:0 1px 4px #3025160a}
+  #root .fixed.inset-0.z-50{z-index:70}
   #root header [data-reading-hidden="true"],#personal-ai-trigger[data-reading-hidden="true"]{display:none!important}
   #reading-more{position:relative;flex:none;font:500 15px/1.4 system-ui,"Noto Sans TC",sans-serif}
   #reading-more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border:1px solid #e3ded4;border-radius:12px;background:#fff;color:#514a40}
