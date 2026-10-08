@@ -66,6 +66,7 @@
 .yw-progress-item{display:flex;align-items:flex-start;gap:6px;padding:2px 0;font-size:13px;line-height:1.4;color:#655d53}
 .yw-progress-item-status{flex:none;font-weight:700;color:#547363}
 .yw-karen-page{max-width:840px;margin:0 auto;padding:0 12px 28px}
+.yw-karen-welcome-image{display:block;width:100%;height:auto;margin:0 0 16px;border-radius:16px}
 .yw-karen-intro{display:grid;grid-template-columns:104px minmax(0,1fr);align-items:center;gap:18px;margin-bottom:16px;padding:16px;border:1px solid #ded6c8;border-radius:18px;background:linear-gradient(135deg,#fffefa,#f6f1e9)}
 .yw-karen-intro img{display:block;width:104px;height:auto;max-height:132px;object-fit:contain}
 .yw-karen-eyebrow{margin:0 0 4px;color:#846429;font-size:13px;font-weight:700;letter-spacing:.08em}

@@ -57,6 +57,7 @@ export function createYuanWorkspace(React, runtime) {
   function KarenAbout() {
     const [tab,setTab]=React.useState(0);
     return jsxs('article',{className:'yw-karen-page',children:[
+      jsx('img',{className:'yw-karen-welcome-image',src:'./karen-welcome.png',alt:'凱倫與戴著耳機的老虎夥伴，一起查看工作檢核清單',width:1536,height:1024,loading:'eager'}),
       jsxs('header',{className:'yw-karen-intro',children:[
         jsx('img',{src:'./karen-header.png',alt:'凱倫與元元的插畫形象',width:1254,height:1254,loading:'eager'}),
         jsxs('div',{children:[jsx('p',{className:'yw-karen-eyebrow',children:'認識凱倫'}),jsx('h2',{children:'Karen Yuan'}),jsx('a',{className:'yw-karen-kyuan-link',href:'https://job-redesign-131419.onrender.com/',target:'_blank',rel:'noopener noreferrer',children:'KYUAN'}),jsx('p',{className:'yw-karen-tagline',children:'醫療資訊行銷企劃 · 專案協作 · 自立生活倡議'})]}),
@@ -128,7 +129,7 @@ export function createYuanWorkspace(React, runtime) {
   return function YuanWorkspace({activeTab,role,domain,domains,onSelectDomain,onSelectRole,session,taskNotes,children}) {
     const [sidebarVisible,setSidebarVisible]=React.useState(false);
     const [notesVisible,setNotesVisible]=React.useState(false);
-    const [aboutVisible,setAboutVisible]=React.useState(false);
+    const [aboutVisible,setAboutVisible]=React.useState(true);
     const [roleSelectionVisible,setRoleSelectionVisible]=React.useState(false);
     const [wideSidebar,setWideSidebar]=React.useState(()=>matchMedia('(min-width:768px)').matches);
     const [wideNotes,setWideNotes]=React.useState(()=>matchMedia('(min-width:1200px)').matches);
