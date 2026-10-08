@@ -33,6 +33,14 @@ landing.querySelector('[data-welcome-enter]').addEventListener('click',()=>{
   landing.hidden=true;
   root.hidden=false;
 });
+const enterWhenReady=new MutationObserver(()=>{
+  if(root.querySelector('#yuan-workspace')){
+    enterWhenReady.disconnect();
+    landing.querySelector('[data-welcome-enter]').click();
+  }
+});
+if(root.querySelector('#yuan-workspace'))landing.querySelector('[data-welcome-enter]').click();
+else enterWhenReady.observe(root,{childList:true,subtree:true});
 const welcome = document.createElement('dialog');
 welcome.id = 'welcome-dialog';
 welcome.setAttribute('aria-labelledby','welcome-title');
