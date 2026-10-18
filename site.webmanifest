@@ -1,6 +1,6 @@
 {
-  "name": "凱倫知序工作",
-  "short_name": "知序工作",
+  "name": "凱倫知序 | 工作拆解",
+  "short_name": "凱倫知序",
   "description": "工作助理 · 步驟拆解與職能支持",
   "start_url": "./",
   "scope": "./",
@@ -9,19 +9,10 @@
   "theme_color": "#FBF9F5",
   "icons": [
     {
-      "src": "./icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "./favicon.svg",
+      "src": "./icon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
-    },
-    {
-      "src": "./icon.ico",
-      "sizes": "16x16 24x24 32x32 48x48 64x64 128x128 256x256",
-      "type": "image/x-icon"
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }

@@ -1,4 +1,4 @@
-const pages = [
+﻿const pages = [
   {id:'checklist',title:'職位要求',hint:'了解職位與能力',type:'profile'},
   {id:'tasks',title:'拆解任務',hint:'一步一步完成工作',type:'steps'},
   {id:'toolkit',title:'實用工具',hint:'需要時選一項工具',type:'tools'},
@@ -55,66 +55,52 @@ export function createYuanWorkspace(React, runtime) {
     return jsx('svg',{className:'yw-preview',viewBox:'0 0 48 48','aria-hidden':true,children:shapes});
   }
   function KarenAbout() {
-    const [tab,setTab]=React.useState(0);
     return jsxs('article',{className:'yw-karen-page',children:[
-      jsx('img',{className:'yw-karen-welcome-image',src:'./karen-welcome.png',alt:'凱倫與戴著耳機的老虎夥伴，一起查看工作檢核清單',width:1536,height:1024,loading:'eager'}),
       jsxs('header',{className:'yw-karen-intro',children:[
-        jsx('img',{src:'./karen-header.png',alt:'凱倫與元元的插畫形象',width:1254,height:1254,loading:'eager'}),
-        jsxs('div',{children:[jsx('p',{className:'yw-karen-eyebrow',children:'認識凱倫'}),jsx('h2',{children:'Karen Yuan'}),jsx('a',{className:'yw-karen-kyuan-link',href:'https://job-redesign-131419.onrender.com/',target:'_blank',rel:'noopener noreferrer',children:'KYUAN'}),jsx('p',{className:'yw-karen-tagline',children:'醫療資訊行銷企劃 · 專案協作 · 自立生活倡議'})]}),
-      ]}),
-      jsxs('div',{className:'yw-karen-tabs',role:'tablist','aria-label':'凱倫介紹內容',children:[
-        ['自我介紹','服務與聯絡'].map((label,index)=>jsx('button',{type:'button',role:'tab',id:`yw-karen-tab-${index}`,'aria-selected':tab===index,'aria-controls':`yw-karen-panel-${index}`,tabIndex:tab===index?0:-1,onClick:()=>setTab(index),onKeyDown:event=>{
-          const next=event.key==='Home'?0:event.key==='End'?1:['ArrowRight','ArrowLeft'].includes(event.key)?1-tab:undefined;
-          if(next!==undefined){event.preventDefault();setTab(next);document.getElementById(`yw-karen-tab-${next}`)?.focus()}
-        },children:label},label)),
-      ]}),
-      jsxs('section',{id:'yw-karen-panel-0',role:'tabpanel','aria-labelledby':'yw-karen-tab-0',hidden:tab!==0,children:[
-        jsxs('div',{className:'yw-karen-story',children:[
-          jsx('h3',{children:'嗨，我是 Karen'}),karenIntroduction.map((paragraph,index)=>jsx('p',{children:paragraph},index)),
+        jsx('img',{src:'./Karen menu02.png',alt:'凱倫與元元的插畫形象',width:1254,height:1254}),
+        jsxs('div',{children:[
+          jsx('h2',{children:'Karen Yuan'}),
+          jsx('p',{className:'yw-karen-tagline',children:'醫療資訊行銷企劃 · 專案協作 · 自立生活倡議'}),
+          jsx('a',{className:'yw-karen-kyuan-link',href:'https://job-redesign-131419.onrender.com/',target:'_blank',rel:'noopener noreferrer',children:'前往凱倫工作需求評估頁面'}),
         ]}),
-        karenProfile.map(section=>jsxs('section',{className:'yw-karen-section','aria-labelledby':`yw-karen-${section.id}`,children:[
-          jsx('h3',{id:`yw-karen-${section.id}`,children:section.title}),
-          jsx('div',{className:'yw-karen-cards',children:section.items.map(item=>jsxs('article',{className:'yw-karen-card',children:[
-            jsx('h4',{children:item.title}),jsx('p',{children:item.text}),
-          ]},item.title))}),
-        ]},section.id)),
       ]}),
-      jsxs('section',{id:'yw-karen-panel-1',role:'tabpanel','aria-labelledby':'yw-karen-tab-1',hidden:tab!==1,children:[
-        jsx('div',{className:'yw-karen-approach',children:karenApproach.map(step=>jsxs('details',{className:'yw-karen-step',children:[
-          jsxs('summary',{children:[jsx('span',{className:'yw-karen-step-label',children:step.label}),jsx('strong',{children:step.title})]}),
-          jsx('p',{className:'yw-karen-step-description',children:step.description}),jsx('p',{children:step.detail}),
-          step.id==='connection'&&jsx('a',{className:'yw-karen-line-link',href:'https://line.me/ti/p/@951rfeit',target:'_blank',rel:'noopener noreferrer',children:'透過 LINE 聯絡凱倫 ↗'}),
-        ]},step.id))}),
+      jsx('p',{className:'yw-karen-first-paragraph',children:karenIntroduction[0]}),
+      jsxs('details',{className:'yw-karen-more',children:[
+        jsx('summary',{children:'看更多'}),
+        jsx('p',{children:karenIntroduction[1]}),
+        karenProfile.map(section=>jsxs('section',{className:'yw-karen-section',children:[
+          jsx('h3',{children:section.title}),
+          jsx('div',{className:'yw-karen-cards',children:section.items.map(item=>jsxs('article',{className:'yw-karen-card',children:[jsx('h4',{children:item.title}),jsx('p',{children:item.text})]},item.title))}),
+        ]},section.id)),
+        karenApproach.filter(step=>step.id!=='connection').map(step=>jsxs('details',{className:'yw-karen-step',children:[
+          jsx('summary',{children:step.title}),jsx('p',{children:step.detail}),
+        ]},step.id)),
+      ]}),
+      jsxs('details',{className:'yw-karen-more',children:[
+        jsx('summary',{children:'聯繫凱倫'}),
+        jsx('p',{children:karenApproach.find(step=>step.id==='connection').detail}),
+        jsx('a',{className:'yw-karen-line-link',href:'https://line.me/ti/p/@951rfeit',target:'_blank',rel:'noopener noreferrer',children:'透過 LINE 聯繫凱倫 ↗'}),
       ]}),
     ]});
   }
-  function Navigation({activeTab,onNavigate,onResponse}) {
+  function Navigation({activeTab,onNavigate,onResponse,roleReady=true}) {
     return jsxs('div',{className:'yw-navigation',children:[
       jsx('p',{className:'yw-eyebrow',children:'選擇功能'}),
-      jsx('nav',{'aria-label':'主要功能',children:pages.map(page=>jsxs('button',{type:'button','data-tab':page.id,'aria-current':activeTab===page.id?'page':undefined,onClick:()=>onNavigate(page.id),children:[jsx(Preview,{type:page.type}),jsxs('span',{children:[jsx('strong',{children:page.title}),jsx('small',{children:page.hint})]})]},page.id))}),
-      jsxs('button',{type:'button','data-tab':'responses',className:'yw-response-link',onClick:onResponse,children:[jsx('span',{className:'yw-response-icon','aria-hidden':true,children:'↗'}),jsxs('span',{children:[jsx('strong',{children:'應對範本'}),jsx('small',{children:'職場溝通回覆參考'})]})]}),
+      jsx('nav',{'aria-label':'主要功能',children:pages.map(page=>jsxs('button',{type:'button','data-tab':page.id,disabled:!roleReady&&page.id!=='rights','aria-current':activeTab===page.id?'page':undefined,onClick:()=>onNavigate(page.id),children:[jsx(Preview,{type:page.type}),jsxs('span',{children:[jsx('strong',{children:page.title}),jsx('small',{children:page.hint})]})]},page.id))}),
+      jsxs('button',{type:'button','data-tab':'responses',disabled:!roleReady,className:'yw-response-link',onClick:onResponse,children:[jsx('span',{className:'yw-response-icon','aria-hidden':true,children:'↗'}),jsxs('span',{children:[jsx('strong',{children:'應對範本'}),jsx('small',{children:'職場溝通回覆參考'})]})]}),
     ]});
   }
-  function RolePicker({domains,role,onSelectDomain,onSelectRole}) {
+  function RolePicker({domains,role,onSelectDomain,onSelectRole,industry,setIndustry,chosenRole}) {
     if(!Array.isArray(domains)||!role)return null;
-    return jsxs('label',{className:'yw-role-picker',children:[
-      jsx('select',{
-        value:role.id,
-        'aria-label':'選擇行業與職位',
-        onChange:event=>{
-          const selectedId=event.target.value;
-          const selectedDomain=domains.find(item=>item.roles?.some(itemRole=>itemRole.id===selectedId));
-          const selectedRole=selectedDomain?.roles.find(itemRole=>itemRole.id===selectedId);
-          if(selectedDomain&&selectedRole){onSelectDomain(selectedDomain.id);onSelectRole(selectedRole)}
-        },
-        children:domains.map((item,index)=>jsx('optgroup',{
-          label:`${index+1}. ${item.name}`,
-          children:item.roles.map((itemRole,roleIndex)=>jsx('option',{
-            value:itemRole.id,
-            children:`${roleIndex+1}. ${roleLabel(itemRole)}`,
-          },itemRole.id)),
-        },item.id)),
-      }),
+    const selected=domains.find(item=>item.id===industry);
+    return jsxs('div',{className:'yw-role-picker',children:[
+      jsxs('label',{children:['1. 選擇行業',jsxs('select',{'aria-label':'選擇行業',value:industry,onChange:event=>{
+        setIndustry(event.target.value);
+      },children:[jsx('option',{value:'',children:'請先選擇行業'}),domains.map(item=>jsx('option',{value:item.id,children:item.name},item.id))]})]}),
+      jsxs('label',{children:['2. 選擇職業',jsxs('select',{'aria-label':'選擇職業',disabled:!selected,value:chosenRole,onChange:event=>{
+        const next=selected?.roles.find(item=>item.id===event.target.value);
+        if(next){onSelectDomain(selected.id);onSelectRole(next)}
+      },children:[jsx('option',{value:'',disabled:true,children:selected?'請選擇職業':'先選行業，再選職業'}),selected?.roles.map(item=>jsx('option',{value:item.id,children:roleLabel(item)},item.id))]})]}),
     ]});
   }
   function SectionNotes({noteKey,label}) {
@@ -126,40 +112,40 @@ export function createYuanWorkspace(React, runtime) {
       jsx('p',{className:'yw-save-status',role:'status',children:status}),
     ]});
   }
-  return function YuanWorkspace({activeTab,role,domain,domains,onSelectDomain,onSelectRole,session,taskNotes,children}) {
-    const [sidebarVisible,setSidebarVisible]=React.useState(false);
-    const [notesVisible,setNotesVisible]=React.useState(false);
-    const [aboutVisible,setAboutVisible]=React.useState(true);
-    const [roleSelectionVisible,setRoleSelectionVisible]=React.useState(false);
-    const [wideSidebar,setWideSidebar]=React.useState(()=>matchMedia('(min-width:768px)').matches);
-    const [wideNotes,setWideNotes]=React.useState(()=>matchMedia('(min-width:1200px)').matches);
-    const navDialog=React.useRef(null),notesDialog=React.useRef(null),bar=React.useRef(null),positions=React.useRef({}),previous=React.useRef(activeTab);
-    const page=aboutVisible?{id:'about',title:'認識凱倫',hint:'經歷、專長與生活',type:'about'}:pages.find(p=>p.id===activeTab)||pages[0];
+  return function YuanWorkspace({activeTab,role,domain,domains,onSelectDomain,onSelectRole,onNavigate,session,taskNotes,children}) {
+    const [aboutVisible,setAboutVisible]=React.useState(()=>document.querySelector('#root')?.dataset.entered==='true');
+    const [homeVisible,setHomeVisible]=React.useState(true);
+    const [industry,setIndustry]=React.useState('');
+    const [chosenRole,setChosenRole]=React.useState('');
+    const aboutDialog=React.useRef(null),bar=React.useRef(null),positions=React.useRef({}),previous=React.useRef(activeTab),previousRole=React.useRef(role.id);
+    const page=homeVisible?{id:'home',title:'選擇職業',hint:'選好職業，再選擇需要的協助'}:pages.find(p=>p.id===activeTab)||pages[0];
     React.useEffect(()=>{
-      const side=matchMedia('(min-width:768px)'),notes=matchMedia('(min-width:1200px)');
-      const sync=()=>{setWideSidebar(side.matches);setWideNotes(notes.matches);setSidebarVisible(false);setNotesVisible(false)};
-      side.addEventListener('change',sync);notes.addEventListener('change',sync);
-      window.addEventListener('resize',sync);
-      return()=>{side.removeEventListener('change',sync);notes.removeEventListener('change',sync);window.removeEventListener('resize',sync)};
+      if(previousRole.current===role.id)return;
+      previousRole.current=role.id;
+      const nextDomain=domains.find(item=>item.roles.some(itemRole=>itemRole.id===role.id));
+      if(nextDomain){setIndustry(nextDomain.id);setChosenRole(role.id)}
+    },[role.id,domains]);
+    React.useEffect(()=>{
+      const enter=()=>setAboutVisible(true);
+      window.addEventListener('yuan:enter-workspace',enter);
+      if(document.querySelector('#root')?.dataset.entered==='true')enter();
+      return()=>window.removeEventListener('yuan:enter-workspace',enter);
     },[]);
+    React.useEffect(()=>{
+      const dialog=aboutDialog.current;
+      if(aboutVisible&&!dialog.open)dialog.showModal();
+      else if(!aboutVisible&&dialog.open)dialog.close();
+    },[aboutVisible]);
     React.useEffect(()=>{
       const header=document.querySelector('#root header');
       const update=()=>{document.documentElement.style.setProperty('--yw-header-height',`${header?.getBoundingClientRect().height||54}px`);document.documentElement.style.setProperty('--yw-bar-height',`${bar.current?.getBoundingClientRect().height||80}px`)};
       const observer=new ResizeObserver(update);if(header)observer.observe(header);if(bar.current)observer.observe(bar.current);update();return()=>observer.disconnect();
     },[]);
     React.useEffect(()=>{
-      const dialog=navDialog.current;
-      if(dialog){if(sidebarVisible&&!dialog.open)dialog.showModal();else if(!sidebarVisible&&dialog.open)dialog.close()}
-    },[sidebarVisible,wideSidebar]);
-    React.useEffect(()=>{
-      const dialog=notesDialog.current;
-      if(dialog){if(notesVisible&&!dialog.open)dialog.showModal();else if(!notesVisible&&dialog.open)dialog.close()}
-    },[notesVisible,wideNotes]);
-    React.useEffect(()=>{
-      const record=()=>{if(!aboutVisible)positions.current[activeTab]=window.scrollY};
+      const record=()=>{if(!aboutVisible&&!homeVisible)positions.current[activeTab]=window.scrollY};
       window.addEventListener('scroll',record,{passive:true});
       return()=>window.removeEventListener('scroll',record);
-    },[activeTab,aboutVisible]);
+    },[activeTab,aboutVisible,homeVisible]);
     React.useEffect(()=>{
       const toggleAbout=()=>{
         setAboutVisible(current=>{
@@ -177,123 +163,60 @@ export function createYuanWorkspace(React, runtime) {
     },[activeTab]);
     React.useEffect(()=>{
       if(previous.current===activeTab)return;
-      previous.current=activeTab;setSidebarVisible(false);setNotesVisible(false);
+      previous.current=activeTab;
       let restore;
       const timer=requestAnimationFrame(()=>{restore=requestAnimationFrame(()=>window.scrollTo({top:positions.current[activeTab]||0,behavior:'instant'}))});
       return()=>{cancelAnimationFrame(timer);if(restore)cancelAnimationFrame(restore)};
     },[activeTab]);
     const navigate=id=>{
+      if(id!=='rights'&&(!chosenRole||chosenRole!==role.id))return;
+      setHomeVisible(false);
       const wasAbout=aboutVisible;
       setAboutVisible(false);
       if(!aboutVisible)positions.current[activeTab]=window.scrollY;
-      setSidebarVisible(false);
-      const original=document.querySelector(`[data-yuan-original-navigation] button[data-yuan-tab="${id}"]`);
-      original?.click();
+      onNavigate(id);
       if(wasAbout)requestAnimationFrame(()=>window.scrollTo({top:positions.current[id]||0,behavior:'instant'}));
     };
     const sectionKey=`kyuan-section-note-v1:${activeTab}:${['checklist','tasks'].includes(activeTab)?role.id:'general'}`;
-    const showNotes=activeTab!=='toolkit';
     const notes=session&&activeTab==='tasks'?taskNotes:jsx(SectionNotes,{noteKey:sectionKey,label:`${page.title}的備註`},sectionKey);
-    const context=session&&activeTab==='tasks'?session.taskTitle:['checklist','tasks'].includes(activeTab)?roleLabel(role):page.hint;
+    const context=homeVisible?page.hint:session&&activeTab==='tasks'?session.taskTitle:['checklist','tasks'].includes(activeTab)?roleLabel(role):page.hint;
     const notesBody=jsxs('div',{className:'yw-notes-body',children:[jsx('p',{className:'yw-notes-context',children:context}),notes]});
     const openResponse=()=>{
-      setSidebarVisible(false);
+      if(!chosenRole||chosenRole!==role.id)return;
+      setHomeVisible(false);
       setAboutVisible(false);
       const openTemplate=()=>{
         const trigger=Array.from(document.querySelectorAll('#root main button')).find(button=>button.textContent.trim()==='應對範本');
         if(trigger)trigger.click();
         else console.error('Unable to open workplace response templates: the checklist button is unavailable.');
       };
-      if(activeTab==='checklist'&&!aboutVisible){openTemplate();return}
-      document.querySelector('[data-yuan-original-navigation] button[data-yuan-tab="checklist"]')?.click();
+      if(activeTab==='checklist'&&!aboutVisible&&!homeVisible){openTemplate();return}
+      onNavigate('checklist');
       window.setTimeout(openTemplate,80);
     };
-    React.useEffect(()=>{
-      const selector=document.querySelector('[data-yuan-selector]');
-      if(!selector||roleSelectionVisible)return;
-      const hideLegacyFields=()=>{
-        const selects=Array.from(selector.querySelectorAll('select'));
-        if(selects.length<2)return;
-        let container=selects[0].parentElement;
-        while(container&&container!==selector&&!container.contains(selects[1]))container=container.parentElement;
-        if(container&&container!==selector)container.hidden=true;
-      };
-      hideLegacyFields();
-      const observer=new MutationObserver(hideLegacyFields);
-      observer.observe(selector,{childList:true,subtree:true});
-      return()=>observer.disconnect();
-    },[activeTab,roleSelectionVisible]);
-    React.useEffect(()=>{
-      if(activeTab!=='checklist'||aboutVisible)return;
-      const main=document.querySelector('#root main');
-      const picker=document.querySelector('#root [data-yuan-selector]');
-      if(!main||!picker)return;
-      const selects=Array.from(picker.querySelectorAll('select'));
-      const closeAfterRoleSelection=event=>{
-        if(event.target===selects[1])setRoleSelectionVisible(false);
-      };
-      picker.addEventListener('change',closeAfterRoleSelection);
-      const handleReselect=event=>{
-        const button=event.target instanceof Element?event.target.closest('button'):null;
-        if(!button||!(button.textContent.trim()==='重選'||(button.getAttribute('aria-label')||'').includes('返回行業領域與職位挑選')))return;
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        if(selects.length<2){
-          console.error('Unable to return to role selection: the industry and role selectors are unavailable.');
-          return;
-        }
-        setRoleSelectionVisible(true);
-        picker.open=true;
-        let fields=selects[0].parentElement;
-        while(fields&&fields!==picker&&!fields.contains(selects[1]))fields=fields.parentElement;
-        if(!fields||fields===picker){
-          console.error('Unable to return to role selection: the selector fields are unavailable.');
-          return;
-        }
-        fields.hidden=false;
-        requestAnimationFrame(()=>{
-          picker.scrollIntoView({block:'center',behavior:'smooth'});
-          selects[0].focus({preventScroll:true});
-          selects[0].click();
-        });
-      };
-      main.addEventListener('click',handleReselect,true);
-      return()=>{
-        main.removeEventListener('click',handleReselect,true);
-        picker.removeEventListener('change',closeAfterRoleSelection);
-      };
-    },[activeTab,aboutVisible,roleSelectionVisible]);
-    React.useEffect(()=>{
-      const main=document.querySelector('#root main');
-      if(!main)return;
-      const markQuickNavigation=()=>{
-        const previous=Array.from(main.querySelectorAll('button')).find(button=>button.textContent.trim()==='上一頁');
-        previous?.parentElement?.parentElement?.classList.add('yw-quick-nav');
-      };
-      markQuickNavigation();
-      const observer=new MutationObserver(markQuickNavigation);
-      observer.observe(main,{childList:true,subtree:true});
-      return()=>observer.disconnect();
-    },[activeTab]);
-    React.useEffect(()=>{
-      document.querySelectorAll('#root main .yw-common-titles, #root main .yw-checklist-progress, #root main .yw-progress-detail').forEach(disclosure=>{disclosure.open=false});
-    },[activeTab,role?.id]);
-    return jsxs('div',{id:'yuan-workspace',className:roleSelectionVisible?'yw-role-selection-open':undefined,children:[
+    return jsxs('div',{id:'yuan-workspace',children:[
       jsxs('section',{className:'yw-topbar',ref:bar,'aria-label':'目前瀏覽位置',children:[
         jsxs('div',{className:'yw-current',children:[jsx('span',{className:'yw-eyebrow',children:'現在瀏覽'}),jsx('h2',{id:'yuan-current-page',children:page.title}),jsx('p',{className:'yw-context',title:context,children:context})]}),
-        jsxs('div',{className:'yw-top-actions',children:[        !wideSidebar&&jsx('button',{id:'yuan-navigation-open',type:'button','aria-haspopup':'dialog','aria-controls':'yuan-navigation-dialog','aria-expanded':sidebarVisible,onClick:()=>setSidebarVisible(true),children:'功能'}),showNotes&&!wideNotes&&jsx('button',{id:'yuan-notes-open',type:'button','aria-haspopup':'dialog','aria-controls':'yuan-notes-dialog','aria-expanded':notesVisible,onClick:()=>setNotesVisible(true),children:'備註'})]}),
+        jsx('div',{className:'yw-top-actions',children:!homeVisible&&jsx('button',{type:'button','data-home':true,onClick:()=>{setHomeVisible(true);window.scrollTo({top:0,behavior:'instant'})},children:'回首頁'})}),
       ]}),
-      jsxs('div',{className:wideNotes&&showNotes?'yw-columns yw-columns-with-notes':'yw-columns yw-columns-no-notes',children:[
-        wideSidebar&&jsx('aside',{className:'yw-sidebar','aria-label':'功能側欄',children:jsx(Navigation,{activeTab,onNavigate:navigate,onResponse:openResponse})}),
-        jsxs('div',{className:aboutVisible?'yw-content yw-about-content':'yw-content',children:[
-          !aboutVisible&&activeTab==='checklist'&&jsx('figure',{className:'yw-home-illustration',children:jsx('img',{src:'./karen-menu01.png',alt:'凱倫工作助理與檢核清單',width:1536,height:1024,loading:'eager'})}),
-          !aboutVisible&&['checklist','tasks'].includes(activeTab)&&jsx(RolePicker,{domains,role,onSelectDomain,onSelectRole}),
-          aboutVisible?jsx(KarenAbout,{}):children,
+      jsxs('div',{className:'yw-columns',children:[
+        jsxs('div',{className:'yw-content',children:[
+          homeVisible?jsxs('section',{className:'yw-home','aria-label':'職業與工作協助',children:[
+            jsx('h2',{children:'今天需要什麼協助？'}),
+            jsx('p',{children:'先選擇行業與職業，再點選一項協助。'}),
+            jsx(RolePicker,{domains,role,onSelectDomain,onSelectRole:next=>{onSelectRole(next);setChosenRole(next.id)},industry,setIndustry:value=>{setIndustry(value);setChosenRole('')},chosenRole}),
+            !chosenRole&&jsx('p',{className:'yw-home-hint',children:'選好職業後，即可使用下方工作協助；薪水權益可直接查看。'}),
+            jsx(Navigation,{activeTab:null,onNavigate:navigate,onResponse:openResponse,roleReady:!!chosenRole&&chosenRole===role.id}),
+          ]}):jsxs(React.Fragment,{children:[
+            children,
+            jsxs('details',{className:'yw-inline-notes',children:[jsx('summary',{children:'我的備註'}),notesBody]}),
+          ]}),
         ]}),
-        showNotes&&wideNotes&&jsxs('aside',{className:'yw-notes','aria-label':'備註欄',children:[jsx('h2',{children:'備註'}),notesBody]}),
       ]}),
-      !wideSidebar&&jsxs('dialog',{id:'yuan-navigation-dialog',className:'yw-drawer yw-navigation-drawer',ref:navDialog,'aria-labelledby':'yuan-navigation-title',onClose:()=>setSidebarVisible(false),children:[jsxs('div',{className:'yw-drawer-heading',children:[jsx('h2',{id:'yuan-navigation-title',children:'功能側欄'}),jsx('button',{type:'button','data-close':true,onClick:()=>setSidebarVisible(false),children:'關閉'})]}),jsx(Navigation,{activeTab,onNavigate:navigate,onResponse:openResponse})]}),
-      showNotes&&!wideNotes&&jsxs('dialog',{id:'yuan-notes-dialog',className:'yw-drawer yw-notes-drawer',ref:notesDialog,'aria-labelledby':'yuan-notes-title',onClose:()=>setNotesVisible(false),children:[jsxs('div',{className:'yw-drawer-heading',children:[jsx('h2',{id:'yuan-notes-title',children:'備註'}),jsx('button',{type:'button','data-close':true,onClick:()=>setNotesVisible(false),children:'關閉'})]}),notesBody]}),
+      jsxs('dialog',{id:'yuan-about-dialog',className:'yw-about-dialog',ref:aboutDialog,'aria-labelledby':'yuan-about-title',onClose:()=>setAboutVisible(false),children:[
+        jsxs('div',{className:'yw-drawer-heading',children:[jsx('h2',{id:'yuan-about-title',children:'認識凱倫'}),jsx('button',{type:'button','data-close':true,onClick:()=>setAboutVisible(false),children:'關閉／開始使用'})]}),
+        jsx(KarenAbout,{}),
+      ]}),
     ]});
   };
 }
