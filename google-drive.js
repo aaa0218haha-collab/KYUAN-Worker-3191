@@ -9,7 +9,8 @@ let tokenExpiresAt = 0;
 const driveStyles = document.createElement("style");
 driveStyles.textContent = `
   #root header [data-yuan-firebase-controls="true"]{display:none!important}
-  #google-drive-connect{min-height:36px;padding:0 11px;border:1px solid #d8cca8;border-radius:11px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;white-space:nowrap;cursor:pointer}
+  #root header [data-google-drive-actions="true"]{display:flex;align-items:center;flex-wrap:nowrap}
+  #google-drive-connect{display:inline-flex;align-items:center;flex:none;min-height:36px;padding:0 11px;border:1px solid #d8cca8;border-radius:11px;background:#fff;color:#352f28;font:600 15px/1.4 system-ui,"Noto Sans TC",sans-serif;white-space:nowrap;cursor:pointer}
   #google-drive-connect:hover{background:#faf6ed}
   #google-drive-dialog{width:min(520px,calc(100vw - 28px));max-height:min(85vh,720px);padding:0;border:1px solid #e8e2d8;border-radius:18px;background:#fffefa;color:#352f28;box-shadow:0 20px 60px #241d1733;font:16px/1.7 system-ui,"Noto Sans TC",sans-serif}
   #google-drive-dialog::backdrop{background:#1c1711a6;backdrop-filter:blur(3px)}
@@ -62,6 +63,7 @@ function mountConnectButton() {
   const actions = group?.parentElement ??
     header.querySelector("div.max-w-5xl > div:last-child");
   if (actions) {
+    actions.dataset.googleDriveActions = "true";
     actions.insertBefore(button, group ?? null);
   } else {
     header.append(button);
