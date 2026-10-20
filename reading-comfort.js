@@ -17,7 +17,6 @@ readingStyles.textContent = `
   #root main [class~="overflow-x-auto"]{overflow-x:visible!important;overflow-y:visible!important;flex-wrap:wrap!important;flex-shrink:1!important;min-width:0;max-width:100%}
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{z-index:60;box-shadow:0 1px 4px #3025160a}
-  @media(max-width:767px){#root header{padding-bottom:48px}#root header #google-drive-connect{position:absolute;top:auto;right:12px;bottom:5px}}
   @media(min-width:640px) and (max-width:767px){#root header>div:first-child>div:nth-child(2){display:none!important}#root header button[title="搜尋職位"]{display:flex!important}}
   #root .fixed.inset-0.z-50{z-index:70}
   #root main :is(button,span)[class*="rounded-md"][class*="px-"],
