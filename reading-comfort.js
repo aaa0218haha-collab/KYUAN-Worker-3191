@@ -175,7 +175,6 @@ if (readableRoot) {
   readableTextObserver.observe(readableRoot, {
     attributes: true,
     attributeFilter: ["class"],
-    childList: true,
     subtree: true,
   });
   syncReadableTextSize();
@@ -361,6 +360,7 @@ function updateScenarioLists() {
 const observer = new MutationObserver(() => {
   addMoreMenu();
   updateScenarioLists();
+  syncReadableTextSize();
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
