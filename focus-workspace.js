@@ -1,4 +1,6 @@
-﻿const pages = [
+import {taiwanIndustryDomains,taiwanIndustryOccupations} from './taiwan-industry-roles.js?v=20261020-taiwan-ui-order';
+window.kyuanTaiwanIndustryRoles=taiwanIndustryDomains.flatMap(domain=>domain.roles);
+const pages = [
   {id:'checklist',title:'職位要求',hint:'了解職位與能力',type:'profile'},
   {id:'tasks',title:'拆解任務',hint:'一步一步完成工作',type:'steps'},
   {id:'toolkit',title:'實用工具',hint:'需要時選一項工具',type:'tools'},
@@ -25,6 +27,18 @@ const karenApproach=[
   {id:'mindset',label:'Mindset',title:'生活哲學與日常',description:'有信仰但沒有宗教，養了一隻心臟病傲嬌貓；喜歡唱歌、下廚與手工藝，作品也透過結緣售出。',detail:'工作之外，我喜歡唱歌、下廚和做手工藝，也照顧家中有心臟病的傲嬌貓。生活裡的小事，提醒我保留自己的節奏與幽默。'},
   {id:'experience',label:'Experience',title:'倡議與實踐',description:'協助夥伴籌備 NVD 自立生活協會、參與合唱團快閃演出，並推動職場與生活的友善連結。',detail:'我協助夥伴籌備 NVD 自立生活協會，參與合唱團快閃演出，也持續投入自立生活倡議，希望每個人都能自主決定生活並參與社會。'},
   {id:'connection',label:'Connection',title:'交流與預約',description:'紫微諮詢、生涯支持、水晶訂製與故事投稿，歡迎透過 LINE 詢問與交流。',detail:'想了解紫微諮詢、生涯支持、水晶訂製或故事投稿，歡迎先透過 LINE 聯絡凱倫，討論內容與合適的交流方式。'},
+];
+const taiwanOccupations=[
+  {code:'43-6014.00',group:'行政與辦公',onetTitle:'Secretaries and Administrative Assistants'},
+  {code:'43-3031.00',group:'財務與會計',onetTitle:'Bookkeeping, Accounting, and Auditing Clerks'},
+  {code:'43-4051.00',group:'客服與顧客支援',onetTitle:'Customer Service Representatives'},
+  {code:'41-2031.00',group:'門市與零售',onetTitle:'Retail Salespersons'},
+  {code:'35-3031.00',group:'餐飲與旅宿',onetTitle:'Waiters and Waitresses'},
+  {code:'31-1120.00',group:'照顧與生活支持',onetTitle:'Home Health and Personal Care Aides'},
+  {code:'37-2011.00',group:'清潔與場務',onetTitle:'Janitors and Cleaners, Except Maids and Housekeeping Cleaners'},
+  {code:'51-2092.00',group:'製造與組裝',onetTitle:'Team Assemblers'},
+  {code:'43-6013.00',group:'醫療行政',onetTitle:'Medical Secretaries and Administrative Assistants'},
+  {code:'43-5071.00',group:'物流與倉儲',onetTitle:'Shipping, Receiving, and Inventory Clerks'},
 ];
 function roleLabel(role) {
   const chineseAlias=role?.marketAliases?.find(name=>/[\u3400-\u9fff]/.test(name));
@@ -90,6 +104,61 @@ export function createYuanWorkspace(React, runtime) {
       jsxs('button',{type:'button','data-tab':'responses',disabled:!roleReady,className:'yw-response-link',onClick:onResponse,children:[jsx('span',{className:'yw-response-icon','aria-hidden':true,children:'↗'}),jsxs('span',{children:[jsx('strong',{children:'應對範本'}),jsx('small',{children:'職場溝通回覆參考'})]})]}),
     ]});
   }
+  function FeaturedOccupations({domains,onChoose}) {
+    const rolesByCode=new Map((domains||[]).flatMap(domain=>(domain.roles||[]).map(role=>[role.onetCode,{domain,role}])));
+    const featuredOccupations=[
+      ...taiwanOccupations.map(item=>({...item,industry:'台灣常見產業代表職務'})),
+      ...taiwanIndustryOccupations,
+    ];
+    return jsxs('section',{className:'yw-featured-occupations','aria-labelledby':'yw-featured-title',children:[
+      jsxs('header',{className:'yw-featured-heading',children:[
+        jsx('div',{children:[jsx('p',{className:'yw-eyebrow',children:'台灣職業與產業範本'}),jsx('h3',{id:'yw-featured-title',children:'從常見工作到在地產業職務'})]}),
+        jsx('p',{children:'前 10 項是參照主計總處職業類別挑選的代表職務，不是熱門排名；後續範本補入台灣汽車美容、金融、職安、回收與紡織工作。'}),
+      ]}),
+      jsx('div',{className:'yw-featured-grid',children:featuredOccupations.map((item,index)=>{
+        const match=rolesByCode.get(item.code);
+        const role=item.role||match?.role;
+        const taskTitles=role?.typicalTasks?.slice(0,3).map(task=>task.title)||[];
+        const skills=role?.checklist?.filter(entry=>entry.category==='skill').slice(0,3)||[];
+        return jsxs('details',{className:'yw-featured-card',children:[
+          jsxs('summary',{children:[
+            jsx('span',{className:'yw-featured-number',children:String(index+1).padStart(2,'0')}),
+            jsxs('span',{className:'yw-featured-card-title',children:[
+              jsx('strong',{children:role?roleLabel(role):'職業資料載入中'}),
+              jsx('small',{children:item.group}),
+            ]}),
+          ]}),
+          role?jsxs('div',{className:'yw-featured-details',children:[
+            jsx('p',{className:'yw-featured-industry',children:item.industry}),
+            jsx('p',{className:'yw-featured-summary',children:role.summary}),
+            jsx('h4',{children:'典型工作任務'}),
+            jsx('ul',{children:taskTitles.map((title,taskIndex)=>jsx('li',{children:title},`${item.code}-task-${taskIndex}`))}),
+            jsx('h4',{children:'常見技能'}),
+            jsx('ul',{children:skills.map((skill,skillIndex)=>jsx('li',{children:skill.name},`${item.code}-skill-${skillIndex}`))}),
+            role.credentialNotice&&jsxs(React.Fragment,{children:[
+              jsx('h4',{children:'台灣證照／訓練提醒'}),
+              jsx('p',{className:'yw-featured-credential',children:role.credentialNotice}),
+              role.credentialSource&&jsx('a',{className:'yw-featured-credential-link',href:role.credentialSource,target:'_blank',rel:'noopener noreferrer',children:'查閱相關法規或官方資料 ↗'}),
+            ]}),
+            jsx('p',{className:'yw-featured-onet-title',children:`O*NET 對照：${item.onetTitle}`}),
+            jsxs('div',{className:'yw-featured-actions',children:[
+              jsx('a',{href:`https://www.onetonline.org/link/summary/${item.code}`,target:'_blank',rel:'noopener noreferrer',children:`O*NET ${item.code} ↗`}),
+              jsx('button',{type:'button',onClick:()=>onChoose(match?.domain,role),children:'用此職業開始工作拆解'}),
+            ]}),
+          ]}):jsx('p',{className:'yw-featured-unavailable',role:'status',children:`目前無法載入 O*NET ${item.code} 對應的職業資料，請稍後重試。`}),
+        ]},item.code);
+      })}),
+      jsxs('p',{className:'yw-featured-sources',children:[
+        jsx('span',{children:'資料參考：'}),
+        jsx('a',{href:'https://www.stat.gov.tw/News_Content.aspx?n=4001&s=236078',target:'_blank',rel:'noopener noreferrer',children:'主計總處 114 年人力資源調查統計 ↗'}),
+        jsx('span',{children:'；'}),
+        jsx('a',{href:'https://www.stat.gov.tw/standardoccupationalclassification.aspx?n=3145&sms=0&rid=6',target:'_blank',rel:'noopener noreferrer',children:'職業標準分類 ↗'}),
+        jsx('span',{children:'；'}),
+        jsx('a',{href:'https://www.stat.gov.tw/standardindustrialclassification.aspx?n=3144&sms=0',target:'_blank',rel:'noopener noreferrer',children:'行業統計分類 ↗'}),
+        jsx('span',{children:'；工作內容與技能依 O*NET 對照，台灣資格及法規提醒附官方查詢連結；實際要求依主管機關、雇主及職務內容為準。'}),
+      ]}),
+    ]});
+  }
   function RolePicker({domains,role,onSelectDomain,onSelectRole,industry,setIndustry,chosenRole}) {
     if(!Array.isArray(domains)||!role)return null;
     const selected=domains.find(item=>item.id===industry);
@@ -113,6 +182,7 @@ export function createYuanWorkspace(React, runtime) {
     ]});
   }
   return function YuanWorkspace({activeTab,role,domain,domains,onSelectDomain,onSelectRole,onNavigate,session,taskNotes,children}) {
+    const workspaceDomains=[...(domains||[]),...taiwanIndustryDomains];
     const [aboutVisible,setAboutVisible]=React.useState(()=>document.querySelector('#root')?.dataset.entered==='true');
     const [homeVisible,setHomeVisible]=React.useState(true);
     const [industry,setIndustry]=React.useState('');
@@ -177,6 +247,16 @@ export function createYuanWorkspace(React, runtime) {
       onNavigate(id);
       if(wasAbout)requestAnimationFrame(()=>window.scrollTo({top:positions.current[id]||0,behavior:'instant'}));
     };
+    const useFeaturedOccupation=(nextDomain,nextRole)=>{
+      setIndustry(nextDomain.id);
+      setChosenRole(nextRole.id);
+      onSelectDomain(nextDomain.id);
+      onSelectRole(nextRole);
+      setHomeVisible(false);
+      setAboutVisible(false);
+      onNavigate('checklist');
+      window.scrollTo({top:0,behavior:'instant'});
+    };
     const sectionKey=`kyuan-section-note-v1:${activeTab}:${['checklist','tasks'].includes(activeTab)?role.id:'general'}`;
     const notes=session&&activeTab==='tasks'?taskNotes:jsx(SectionNotes,{noteKey:sectionKey,label:`${page.title}的備註`},sectionKey);
     const context=homeVisible?page.hint:session&&activeTab==='tasks'?session.taskTitle:['checklist','tasks'].includes(activeTab)?roleLabel(role):page.hint;
@@ -204,9 +284,10 @@ export function createYuanWorkspace(React, runtime) {
           homeVisible?jsxs('section',{className:'yw-home','aria-label':'職業與工作協助',children:[
             jsx('h2',{children:'今天需要什麼協助？'}),
             jsx('p',{children:'先選擇行業與職業，再點選一項協助。'}),
-            jsx(RolePicker,{domains,role,onSelectDomain,onSelectRole:next=>{onSelectRole(next);setChosenRole(next.id)},industry,setIndustry:value=>{setIndustry(value);setChosenRole('')},chosenRole}),
+            jsx(RolePicker,{domains:workspaceDomains,role,onSelectDomain,onSelectRole:next=>{onSelectRole(next);setChosenRole(next.id)},industry,setIndustry:value=>{setIndustry(value);setChosenRole('')},chosenRole}),
             !chosenRole&&jsx('p',{className:'yw-home-hint',children:'選好職業後，即可使用下方工作協助；薪水權益可直接查看。'}),
             jsx(Navigation,{activeTab:null,onNavigate:navigate,onResponse:openResponse,roleReady:!!chosenRole&&chosenRole===role.id}),
+            jsx(FeaturedOccupations,{domains:workspaceDomains,onChoose:useFeaturedOccupation}),
           ]}):jsxs(React.Fragment,{children:[
             children,
             jsxs('details',{className:'yw-inline-notes',children:[jsx('summary',{children:'我的備註'}),notesBody]}),
