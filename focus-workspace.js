@@ -10,7 +10,7 @@ const karenProfile=[
   {id:'experience',title:'核心經歷',items:[
     {title:'助人與身障資源',text:'諮商心理與復健諮商碩士、職業輔導評量員。曾任大專資源教室輔導員與個案管理師，陪伴身障學生。'},
     {title:'醫療資訊與專案協作',text:'負責醫療資訊系統導入、客戶輔導及企業／政府專案，擅長時程安排、經費管理與跨部門溝通。'},
-    {title:'數位與 AI 應用',text:'完成勞動部 AI 智慧商務人才培訓，運用 ChatGPT、Gemini、Canva 改善工作與行政流程。'},
+    {title:'數位工具應用',text:'完成勞動部人工智慧商務人才培訓，運用數位工具改善工作與行政流程。'},
   ]},
   {id:'life',title:'生活與斜槓',items:[
     {title:'自立生活倡議',text:'以自身經驗參與倡議，關注自主選擇、無障礙環境與身心障礙者的社會參與。'},
@@ -32,9 +32,37 @@ const taiwanOccupations=[
 ];
 function roleLabel(role) {
   const chineseAlias=role?.marketAliases?.find(name=>/[\u3400-\u9fff]/.test(name));
-  return chineseAlias&& !/[\u3400-\u9fff]/.test(role.title)
-    ? `${chineseAlias}（${role.title}）`
-    : role.title;
+  const title=chineseAlias&&!/[\u3400-\u9fff]/.test(role.title)?chineseAlias:role?.title||'';
+  return title.replace(/[（(]([^）)]*[A-Za-z][^）)]*)[）)]/g,(match,term)=>
+    /^[A-Z][A-Z0-9/& -]*$/.test(term.trim())?match:'');
+}
+function occupationWorkMode(role,industryName) {
+  const text=`${role.title} ${role.summary||''} ${industryName||''}`;
+  if(/保險|業務|銷售|門市|客服|照護|導覽|職安|安全衛生|醫療|教學|諮商|社工|回收|居家/.test(text))return 'hybrid';
+  if(/汽車|洗車|鍍膜|清潔|物流|倉儲|園藝|組裝|生產|製造|紡織|染整|施工|維修|配送|外送|房務|餐飲|農林|司機|巡檢|現場/.test(text))return 'field';
+  return 'office';
+}
+const generalResponseTemplates=[
+  {scenario:'stuck',tones:{
+    polite:{subject:'工作進度請教',body:'目前已完成＿＿，在＿＿遇到問題，想請教接下來可以先處理哪一部分？',tips:'先說明已完成事項，再描述遇到的具體問題。'},
+    direct:{subject:'進度請教',body:'目前已完成＿＿，卡在＿＿，想確認下一步先處理哪一項。'},
+    formal:{subject:'請教工作進度與處理方式',body:'目前已完成＿＿，在＿＿遇到問題，想請教建議的處理順序。'},
+  }},
+  {scenario:'deadline_buffer',tones:{
+    polite:{subject:'工作時程調整說明',body:'目前＿＿需要先完成，原訂＿＿交付時間可能受影響。我預計＿＿完成，請問這樣安排是否合適？',tips:'提出可行的新時間，並說明目前的工作安排。'},
+    direct:{subject:'確認交付時間',body:'因＿＿需要先處理，原訂＿＿可能無法完成；預計＿＿交付，請確認是否可以。'},
+    formal:{subject:'工作時程調整確認',body:'因＿＿事項需優先處理，原訂＿＿的交付時間可能需要調整，預計於＿＿完成，敬請確認。'},
+  }},
+  {scenario:'completion',tones:{
+    polite:{subject:'工作完成回報',body:'＿＿已完成，檔案／成果放在＿＿。請協助確認；若需要調整，我會再處理。',tips:'回報完成內容、存放位置及需要對方確認的事項。'},
+    direct:{subject:'完成回報',body:'＿＿已完成，放在＿＿，請查收。'},
+    formal:{subject:'工作成果交付',body:'＿＿已依需求完成，相關成果已放置於＿＿，敬請查收；如需補充或調整，請告知。'},
+  }},
+];
+function withResponseTemplates(role) {
+  return Array.isArray(role.interpersonalTemplates)&&role.interpersonalTemplates.length
+    ?role
+    :{...role,interpersonalTemplates:generalResponseTemplates};
 }
 export function createYuanWorkspace(React, runtime) {
   const {jsx,jsxs} = runtime;
@@ -80,7 +108,7 @@ export function createYuanWorkspace(React, runtime) {
       jsxs('section',{className:'yw-karen-contact',children:[
         jsx('h3',{children:'交流與聯繫'}),
         jsx('p',{children:'歡迎交流生涯支持、紫微諮詢、水晶訂製與故事投稿。'}),
-        jsx('a',{className:'yw-karen-line-link',href:'https://line.me/ti/p/@951rfeit',target:'_blank',rel:'noopener noreferrer',children:'透過 LINE 聯繫凱倫 ↗'}),
+        jsx('a',{className:'yw-karen-line-link',href:'https://line.me/ti/p/@951rfeit',target:'_blank',rel:'noopener noreferrer',children:'透過通訊軟體聯繫凱倫 ↗'}),
       ]}),
     ]});
   }
@@ -99,8 +127,7 @@ export function createYuanWorkspace(React, runtime) {
     ];
     return jsxs('section',{className:'yw-featured-occupations','aria-labelledby':'yw-featured-title',children:[
       jsxs('header',{className:'yw-featured-heading',children:[
-        jsx('div',{children:[jsx('p',{className:'yw-eyebrow',children:'台灣職業與產業範本'}),jsx('h3',{id:'yw-featured-title',children:'從常見工作到在地產業職務'})]}),
-        jsx('p',{children:'前 10 項是參照主計總處職業類別挑選的代表職務，不是熱門排名；後續範本補入台灣汽車美容、金融、職安、回收與紡織工作。'}),
+        jsx('h3',{id:'yw-featured-title',children:'常見工作與職務內容'}),
       ]}),
       jsx('div',{className:'yw-featured-grid',children:featuredOccupations.map((item,index)=>{
         const match=rolesByCode.get(item.code);
@@ -127,12 +154,12 @@ export function createYuanWorkspace(React, runtime) {
               jsx('p',{className:'yw-featured-credential',children:role.credentialNotice}),
               role.credentialSource&&jsx('a',{className:'yw-featured-credential-link',href:role.credentialSource,target:'_blank',rel:'noopener noreferrer',children:'查閱相關法規或官方資料 ↗'}),
             ]}),
-            jsx('p',{className:'yw-featured-onet-title',children:`O*NET 對照：${item.onetTitle}`}),
+            jsx('p',{className:'yw-featured-onet-title',children:`國際職務分類編碼：${item.code}`}),
             jsxs('div',{className:'yw-featured-actions',children:[
-              jsx('a',{href:`https://www.onetonline.org/link/summary/${item.code}`,target:'_blank',rel:'noopener noreferrer',children:`O*NET ${item.code} ↗`}),
+              jsx('a',{href:`https://www.onetonline.org/link/summary/${item.code}`,target:'_blank',rel:'noopener noreferrer',children:'查看職務分類資料 ↗'}),
               jsx('button',{type:'button',onClick:()=>onChoose(match?.domain,role),children:'用此職業開始工作拆解'}),
             ]}),
-          ]}):jsx('p',{className:'yw-featured-unavailable',role:'status',children:`目前無法載入 O*NET ${item.code} 對應的職業資料，請稍後重試。`}),
+          ]}):jsx('p',{className:'yw-featured-unavailable',role:'status',children:`目前無法載入職務分類編碼 ${item.code} 的對應資料，請稍後重試。`}),
         ]},item.code);
       })}),
       jsxs('p',{className:'yw-featured-sources',children:[
@@ -142,21 +169,34 @@ export function createYuanWorkspace(React, runtime) {
         jsx('a',{href:'https://www.stat.gov.tw/standardoccupationalclassification.aspx?n=3145&sms=0&rid=6',target:'_blank',rel:'noopener noreferrer',children:'職業標準分類 ↗'}),
         jsx('span',{children:'；'}),
         jsx('a',{href:'https://www.stat.gov.tw/standardindustrialclassification.aspx?n=3144&sms=0',target:'_blank',rel:'noopener noreferrer',children:'行業統計分類 ↗'}),
-        jsx('span',{children:'；工作內容與技能依 O*NET 對照，台灣資格及法規提醒附官方查詢連結；實際要求依主管機關、雇主及職務內容為準。'}),
+        jsx('span',{children:'；工作內容與技能參照國際職務資料，台灣資格及法規提醒附官方查詢連結；實際要求依主管機關、雇主及職務內容為準。'}),
       ]}),
     ]});
   }
-  function RolePicker({domains,role,onSelectDomain,onSelectRole,industry,setIndustry,chosenRole}) {
+  function RolePicker({domains,role,onSelectDomain,onSelectRole,chosenRole,setChosenRole}) {
+    const [workMode,setWorkMode]=React.useState('all');
     if(!Array.isArray(domains)||!role)return null;
-    const selected=domains.find(item=>item.id===industry);
+    const occupations=[...new Map(domains.flatMap(domain=>(domain.roles||[]).map(item=>[item.id,{domain,role:item}]))).values()];
+    const visibleOccupations=occupations.filter(item=>workMode==='all'||occupationWorkMode(item.role,item.domain.name)===workMode);
+    const selected=occupations.find(item=>item.role.id===chosenRole);
     return jsxs('div',{className:'yw-role-picker',children:[
-      jsxs('label',{children:['1. 選擇行業',jsxs('select',{'aria-label':'選擇行業',value:industry,onChange:event=>{
-        setIndustry(event.target.value);
-      },children:[jsx('option',{value:'',children:'請先選擇行業'}),domains.map(item=>jsx('option',{value:item.id,children:item.name},item.id))]})]}),
-      jsxs('label',{children:['2. 選擇職業',jsxs('select',{'aria-label':'選擇職業',disabled:!selected,value:chosenRole,onChange:event=>{
-        const next=selected?.roles.find(item=>item.id===event.target.value);
-        if(next){onSelectDomain(selected.id);onSelectRole(next)}
-      },children:[jsx('option',{value:'',disabled:true,children:selected?'請選擇職業':'先選行業，再選職業'}),selected?.roles.map(item=>jsx('option',{value:item.id,children:roleLabel(item)},item.id))]})]}),
+      jsxs('label',{children:['1. 工作型態',jsxs('select',{'aria-label':'依工作型態分類',value:workMode,onChange:event=>{
+        setWorkMode(event.target.value);
+        setChosenRole('');
+      },children:[
+        jsx('option',{value:'all',children:'全部工作型態'}),
+        jsx('option',{value:'office',children:'內勤'}),
+        jsx('option',{value:'field',children:'外勤'}),
+        jsx('option',{value:'hybrid',children:'混合'}),
+      ]})]}),
+      jsxs('label',{children:['2. 選擇職業',jsxs('select',{'aria-label':'選擇職業',value:chosenRole,onChange:event=>{
+        const next=occupations.find(item=>item.role.id===event.target.value);
+        if(next){onSelectDomain(next.domain.id);onSelectRole(withResponseTemplates(next.role));setChosenRole(next.role.id)}
+      },children:[
+        jsx('option',{value:'',children:'請選擇職業'}),
+        visibleOccupations.map(item=>jsx('option',{value:item.role.id,children:`${roleLabel(item.role)}（${item.domain.name}）`},item.role.id)),
+      ]})]}),
+      jsx('p',{className:'yw-role-industry-note',role:'status',children:selected?`所屬行業：${selected.domain.name}`:'選擇職業後顯示所屬行業'}),
     ]});
   }
   function SectionNotes({noteKey,label}) {
@@ -172,16 +212,15 @@ export function createYuanWorkspace(React, runtime) {
     const workspaceDomains=[...(domains||[]),...taiwanIndustryDomains];
     const [aboutVisible,setAboutVisible]=React.useState(false);
     const [homeVisible,setHomeVisible]=React.useState(true);
-    const [industry,setIndustry]=React.useState('');
     const [chosenRole,setChosenRole]=React.useState('');
     const bar=React.useRef(null),positions=React.useRef({}),previous=React.useRef(activeTab),previousRole=React.useRef(role.id);
     const page=aboutVisible?{id:'about',title:'認識凱倫',hint:'經歷、專長與生活'}:homeVisible?{id:'home',title:'選擇職業',hint:'選好職業，再選擇需要的協助'}:pages.find(p=>p.id===activeTab)||pages[0];
     React.useEffect(()=>{
       if(previousRole.current===role.id)return;
       previousRole.current=role.id;
-      const nextDomain=domains.find(item=>item.roles.some(itemRole=>itemRole.id===role.id));
-      if(nextDomain){setIndustry(nextDomain.id);setChosenRole(role.id)}
-    },[role.id,domains]);
+      const nextDomain=workspaceDomains.find(item=>item.roles.some(itemRole=>itemRole.id===role.id));
+      if(nextDomain)setChosenRole(role.id);
+    },[role.id,workspaceDomains]);
     React.useEffect(()=>{
       const enter=()=>{setAboutVisible(false);setHomeVisible(true)};
       window.addEventListener('yuan:enter-workspace',enter);
@@ -223,10 +262,9 @@ export function createYuanWorkspace(React, runtime) {
       requestAnimationFrame(()=>window.scrollTo({top:positions.current[id]||0,behavior:'instant'}));
     };
     const useFeaturedOccupation=(nextDomain,nextRole)=>{
-      setIndustry(nextDomain.id);
       setChosenRole(nextRole.id);
       onSelectDomain(nextDomain.id);
-      onSelectRole(nextRole);
+      onSelectRole(withResponseTemplates(nextRole));
       setHomeVisible(false);
       setAboutVisible(false);
       onNavigate('checklist');
@@ -238,6 +276,9 @@ export function createYuanWorkspace(React, runtime) {
     const notesBody=jsxs('div',{className:'yw-notes-body',children:[jsx('p',{className:'yw-notes-context',children:context}),notes]});
     const openResponse=()=>{
       if(!chosenRole||chosenRole!==role.id)return;
+      const responseRole=withResponseTemplates(role);
+      const needsResponseTemplates=responseRole!==role;
+      if(needsResponseTemplates)onSelectRole(responseRole);
       setHomeVisible(false);
       setAboutVisible(false);
       const openTemplate=()=>{
@@ -245,7 +286,7 @@ export function createYuanWorkspace(React, runtime) {
         if(trigger)trigger.click();
         else console.error('Unable to open workplace response templates: the checklist button is unavailable.');
       };
-      if(activeTab==='checklist'&&!aboutVisible&&!homeVisible){openTemplate();return}
+      if(activeTab==='checklist'&&!aboutVisible&&!homeVisible){window.setTimeout(openTemplate,needsResponseTemplates?80:0);return}
       onNavigate('checklist');
       window.setTimeout(openTemplate,80);
     };
@@ -259,8 +300,8 @@ export function createYuanWorkspace(React, runtime) {
           aboutVisible?jsx(KarenAbout,{onBack:()=>{setAboutVisible(false);setHomeVisible(true);window.scrollTo({top:0,behavior:'instant'})}}):homeVisible?jsxs('section',{className:'yw-home','aria-label':'職業與工作協助',children:[
             jsx('figure',{className:'yw-home-illustration',children:jsx('img',{src:'./karen-welcome.png',alt:'凱倫與元元一起查看工作檢核清單的插畫',width:1536,height:1024})}),
             jsx('h2',{children:'今天需要什麼協助？'}),
-            jsx('p',{children:'先選擇行業與職業，再點選一項協助。'}),
-            jsx(RolePicker,{domains:workspaceDomains,role,onSelectDomain,onSelectRole:next=>{onSelectRole(next);setChosenRole(next.id)},industry,setIndustry:value=>{setIndustry(value);setChosenRole('')},chosenRole}),
+            jsx('p',{children:'選擇工作型態與職業，再點選一項協助。'}),
+            jsx(RolePicker,{domains:workspaceDomains,role,onSelectDomain,onSelectRole,chosenRole,setChosenRole}),
             !chosenRole&&jsx('p',{className:'yw-home-hint',children:'選好職業後，即可使用下方工作協助；薪水權益可直接查看。'}),
             jsx(Navigation,{activeTab:null,onNavigate:navigate,onResponse:openResponse,roleReady:!!chosenRole&&chosenRole===role.id}),
             jsx(FeaturedOccupations,{domains:workspaceDomains,onChoose:useFeaturedOccupation}),

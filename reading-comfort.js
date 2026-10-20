@@ -10,9 +10,15 @@ readingStyles.textContent = `
   #root main p{max-width:76ch}
   #root main h2,#root main h3{line-height:1.4}
   #root main input,#root main select,#root main textarea{font-size:17px}
+  #root main select{min-height:44px;border-color:#8a7354!important;border-left:3px solid #31533f!important;border-radius:10px!important;background-color:#fffefa!important;color:#352f28!important;font:600 16px/1.5 "Noto Sans TC",system-ui,sans-serif!important}
+  #root main select option{padding:8px;background:#fffefa;color:#352f28;font:500 16px/1.5 "Noto Sans TC",system-ui,sans-serif}
+  #root main select:focus-visible{border-color:#31533f!important;outline:3px solid #9b762f!important;outline-offset:2px}
+  #root main [class*="rounded-2xl"][class*="border"],#root main [class*="rounded-3xl"][class*="border"]{border-color:#d6c5a8!important}
   #root main [class~="overflow-x-auto"]{overflow-x:visible!important;overflow-y:visible!important;flex-wrap:wrap!important;flex-shrink:1!important;min-width:0;max-width:100%}
   #root main button:focus-visible,#root main input:focus-visible,#root main select:focus-visible,#root main textarea:focus-visible,#root header button:focus-visible,#reading-more summary:focus-visible,#reading-more button:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
   #root header{z-index:60;box-shadow:0 1px 4px #3025160a}
+  @media(max-width:767px){#root header{padding-bottom:48px}#root header #google-drive-connect{position:absolute;top:auto;right:12px;bottom:5px}}
+  @media(min-width:640px) and (max-width:767px){#root header>div:first-child>div:nth-child(2){display:none!important}#root header button[title="搜尋職位"]{display:flex!important}}
   #root .fixed.inset-0.z-50{z-index:70}
   #root main :is(button,span)[class*="rounded-md"][class*="px-"],
   #root main :is(button,span)[class*="rounded-lg"][class*="px-"],
@@ -58,12 +64,9 @@ readingStyles.textContent = `
   #reading-more-menu{position:absolute;top:calc(100% + 10px);right:0;z-index:40;display:grid;gap:4px;width:max-content;min-width:190px;max-width:min(250px,calc(100vw - 24px));padding:7px;border:1px solid #e8e2d8;border-radius:14px;background:#fffefa;box-shadow:0 12px 32px #241d171c}
   #reading-more-menu button{width:100%;min-height:42px;padding:9px 11px;border:0;border-radius:9px;background:transparent;color:#352f28;text-align:left;font:500 16px/1.4 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
   #reading-more-menu button:hover{background:#f5f1e9}
-  #reading-more-menu button.reading-about-card{display:flex;align-items:center;gap:10px;margin-top:3px;padding:10px;border:1px solid #d9e3da;background:#f3f7f3}
-  #reading-more-menu button.reading-about-card:hover{border-color:#aebfae;background:#eaf1eb}
-  #reading-more-menu .reading-about-mark{display:grid;width:36px;height:36px;flex:none;place-items:center;border:1px solid #d8cca8;border-radius:10px;background:#fffefa;color:#846429;font-family:Georgia,serif;font-size:21px}
-  #reading-more-menu .reading-about-copy{display:grid;gap:2px}
-  #reading-more-menu .reading-about-copy strong{font-size:15px}
-  #reading-more-menu .reading-about-copy small{color:#756c60;font-size:13px}
+  #root header .reading-about-icon{display:flex;align-items:center;justify-content:center;width:32px;height:32px;padding:6px;border:1px solid #d8cca8;border-radius:12px;background:#fff;color:#846429;cursor:pointer}
+  #root header .reading-about-icon:hover{background:#faf6ed}
+  #root header .reading-about-icon svg{width:16px;height:16px}
   @media(max-width:640px){
     #root>div{font-size:18px}
     #root header>div:first-child{gap:6px;flex-wrap:wrap}
@@ -201,10 +204,6 @@ document.addEventListener("click", (event) => {
 
 const originalControls = [
   {
-    selector: 'button[title^="切換文字大小"]',
-    label: "文字大小",
-  },
-  {
     selector: 'button[title="查看歷史紀錄"]',
     label: "歷史紀錄",
   },
@@ -229,6 +228,48 @@ function addMoreMenu() {
       button.title.includes("登出 Google"),
     );
   if (!googleButton) return;
+
+  const searchButton = header.querySelector('button[title="搜尋職位"]');
+  const textSizeButton = header.querySelector('button[title^="切換文字大小"]');
+  if (textSizeButton) {
+    delete textSizeButton.dataset.readingHidden;
+    textSizeButton.setAttribute("aria-label", "切換文字大小");
+    if (
+      searchButton?.parentElement === textSizeButton.parentElement &&
+      searchButton.nextElementSibling !== textSizeButton
+    ) {
+      searchButton.after(textSizeButton);
+    }
+  }
+
+  let aboutButton = header.querySelector("#reading-about-karen");
+  if (!aboutButton) {
+    aboutButton = document.createElement("button");
+    aboutButton.id = "reading-about-karen";
+    aboutButton.className = textSizeButton?.className || "";
+    aboutButton.type = "button";
+    aboutButton.title = "認識凱倫";
+    aboutButton.setAttribute("aria-label", "認識凱倫");
+    aboutButton.classList.add("reading-about-icon");
+    aboutButton.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M5 21a7 7 0 0 1 14 0"></path></svg>';
+    aboutButton.addEventListener("click", () => {
+      details.open = false;
+      window.dispatchEvent(new CustomEvent("yuan:toggle-about"));
+    });
+  }
+  if (
+    textSizeButton?.parentElement &&
+    textSizeButton.nextElementSibling !== aboutButton
+  ) {
+    textSizeButton.after(aboutButton);
+  } else if (
+    !textSizeButton?.parentElement &&
+    searchButton?.parentElement &&
+    searchButton.nextElementSibling !== aboutButton
+  ) {
+    searchButton.after(aboutButton);
+  }
 
   let details = document.querySelector("#reading-more");
   if (!details) {
@@ -267,20 +308,7 @@ function addMoreMenu() {
     available += 1;
   }
 
-  let aboutCard=menu.querySelector("#reading-about-karen");
-  if(!aboutCard){
-    aboutCard=document.createElement("button");
-    aboutCard.id="reading-about-karen";
-    aboutCard.type="button";
-    aboutCard.className="reading-about-card";
-    aboutCard.innerHTML='<span class="reading-about-mark" aria-hidden="true">K</span><span class="reading-about-copy"><strong>認識凱倫</strong><small>經歷、專長與生活</small></span>';
-    aboutCard.addEventListener("click",()=>{
-      details.open=false;
-      window.dispatchEvent(new CustomEvent("yuan:toggle-about"));
-    });
-    menu.append(aboutCard);
-  }
-  available += 1;
+  menu.querySelector("#reading-about-karen")?.remove();
 
   details.hidden = available === 0;
   if (details.parentElement !== googleButton.parentElement ||
