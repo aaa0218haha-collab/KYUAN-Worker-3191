@@ -257,7 +257,7 @@ export function createYuanWorkspace(React, runtime) {
       jsxs('div',{className:'yw-columns',children:[
         jsxs('div',{className:'yw-content',children:[
           aboutVisible?jsx(KarenAbout,{onBack:()=>{setAboutVisible(false);setHomeVisible(true);window.scrollTo({top:0,behavior:'instant'})}}):homeVisible?jsxs('section',{className:'yw-home','aria-label':'職業與工作協助',children:[
-            jsx('figure',{className:'yw-home-illustration',children:jsx('img',{src:'./karen-welcome.png',alt:'凱倫與元元一起查看工作檢核清單的插畫',width:1536,height:1024,loading:'lazy'})}),
+            jsx('figure',{className:'yw-home-illustration',children:jsx('img',{src:'./karen-welcome.png',alt:'凱倫與元元一起查看工作檢核清單的插畫',width:1536,height:1024})}),
             jsx('h2',{children:'今天需要什麼協助？'}),
             jsx('p',{children:'先選擇行業與職業，再點選一項協助。'}),
             jsx(RolePicker,{domains:workspaceDomains,role,onSelectDomain,onSelectRole:next=>{onSelectRole(next);setChosenRole(next.id)},industry,setIndustry:value=>{setIndustry(value);setChosenRole('')},chosenRole}),
