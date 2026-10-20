@@ -170,6 +170,14 @@ function scheduleReadableTextSize() {
   readableTextFrame = requestAnimationFrame(syncReadableTextSize);
 }
 
+function syncReadableTextSizeAfterRender() {
+  window.setTimeout(() => {
+    if (readableTextFrame) cancelAnimationFrame(readableTextFrame);
+    readableTextFrame = 0;
+    syncReadableTextSize();
+  }, 0);
+}
+
 if (readableRoot) {
   const readableTextObserver = new MutationObserver(scheduleReadableTextSize);
   readableTextObserver.observe(readableRoot, {
@@ -179,6 +187,8 @@ if (readableRoot) {
   });
   syncReadableTextSize();
 }
+
+window.addEventListener("yuan:enter-workspace", syncReadableTextSizeAfterRender);
 
 document.addEventListener("click", (event) => {
   if (
@@ -249,11 +259,7 @@ function addMoreMenu() {
         details.open = false;
         target?.click();
         if (item.label === "文字大小") {
-          window.setTimeout(() => {
-            if (readableTextFrame) cancelAnimationFrame(readableTextFrame);
-            readableTextFrame = 0;
-            syncReadableTextSize();
-          }, 0);
+          syncReadableTextSizeAfterRender();
         }
       });
       menu.append(action);
