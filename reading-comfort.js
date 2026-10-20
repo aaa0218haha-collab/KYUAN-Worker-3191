@@ -72,6 +72,11 @@ readingStyles.textContent = `
     #root header>div:first-child>div:last-child>div:has(#reading-more[open]){flex:1 1 100%;min-width:0;flex-wrap:wrap}
     #root header>div>div:first-child{gap:7px}
     #root header h1{font-size:16px}
+    @media(max-width:380px){
+      #root header>div:first-child>div:first-child{flex:1 1 100%!important;width:100%;min-width:0}
+      #root header>div:first-child>div:last-child{flex:1 1 100%!important;width:100%;min-width:0;margin-left:0;justify-content:space-between;flex-wrap:wrap}
+      #root header>div:first-child>div:last-child>div{flex:1 1 100%!important;width:100%;justify-content:space-between;flex-wrap:wrap}
+    }
     #root main{padding-top:12px;padding-bottom:20px}
     #reading-more[open]{position:static;flex:1 1 100%;min-width:0}
     #reading-more-menu{position:static;top:auto;right:auto;width:100%;min-width:0;max-width:none;box-sizing:border-box;box-shadow:0 4px 14px #241d170a}
@@ -104,6 +109,86 @@ readingStyles.textContent = `
   @media(prefers-reduced-motion:reduce){#root *,#reading-more-menu *{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 `;
 document.head.append(readingStyles);
+
+const readableRoot = document.querySelector("#root");
+const readableTextStyles = new Map();
+let readableTextFrame = 0;
+
+function restoreReadableText() {
+  for (const [element, original] of readableTextStyles) {
+    if (!element.isConnected) continue;
+    if (original.value) {
+      element.style.setProperty("font-size", original.value, original.priority);
+    } else {
+      element.style.removeProperty("font-size");
+    }
+  }
+  readableTextStyles.clear();
+}
+
+function syncReadableTextSize() {
+  readableTextFrame = 0;
+  const app = document.querySelector("#root>div");
+  restoreReadableText();
+  if (!app) return;
+  const scale = app.classList.contains("text-lg")
+    ? 1.24
+    : app.classList.contains("text-base")
+    ? 1.12
+    : 1;
+  if (scale === 1) return;
+
+  const targets = new Set();
+  const textNodes = document.createTreeWalker(app, NodeFilter.SHOW_TEXT);
+  while (textNodes.nextNode()) {
+    const node = textNodes.currentNode;
+    const element = node.parentElement;
+    if (!node.nodeValue.trim() || !element || element.closest("svg,[aria-hidden='true']")) {
+      continue;
+    }
+    targets.add(element);
+  }
+  app.querySelectorAll("input,select,textarea").forEach((element) => targets.add(element));
+
+  const scaled = [];
+  for (const element of targets) {
+    const fontSize = Number.parseFloat(getComputedStyle(element).fontSize);
+    if (!Number.isFinite(fontSize)) continue;
+    readableTextStyles.set(element, {
+      value: element.style.getPropertyValue("font-size"),
+      priority: element.style.getPropertyPriority("font-size"),
+    });
+    scaled.push([element, fontSize]);
+  }
+  for (const [element, fontSize] of scaled) {
+    element.style.setProperty("font-size", `${fontSize * scale}px`, "important");
+  }
+}
+
+function scheduleReadableTextSize() {
+  if (readableTextFrame) return;
+  readableTextFrame = requestAnimationFrame(syncReadableTextSize);
+}
+
+if (readableRoot) {
+  const readableTextObserver = new MutationObserver(scheduleReadableTextSize);
+  readableTextObserver.observe(readableRoot, {
+    attributes: true,
+    attributeFilter: ["class"],
+    childList: true,
+    subtree: true,
+  });
+  syncReadableTextSize();
+}
+
+document.addEventListener("click", (event) => {
+  if (
+    event.target instanceof Element &&
+    event.target.closest('button[title^="切換文字大小"]')
+  ) {
+    window.setTimeout(scheduleReadableTextSize, 0);
+  }
+});
 
 const originalControls = [
   {
@@ -164,6 +249,13 @@ function addMoreMenu() {
           document.querySelector(item.selector);
         details.open = false;
         target?.click();
+        if (item.label === "文字大小") {
+          window.setTimeout(() => {
+            if (readableTextFrame) cancelAnimationFrame(readableTextFrame);
+            readableTextFrame = 0;
+            syncReadableTextSize();
+          }, 0);
+        }
       });
       menu.append(action);
     }

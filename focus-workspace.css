@@ -26,7 +26,7 @@
 .yw-response-link:hover{background:#edf3ee;border-color:#c1d0c5}
 .yw-response-link strong{display:block;font-size:16px;font-weight:600}.yw-response-link small{display:block;margin-top:3px;color:#756c60;font-size:13px;line-height:1.5}
 .yw-response-icon{display:grid;width:42px;height:38px;flex:none;place-items:center;border:1px solid #e4ded3;border-radius:6px;color:#597261;font-size:21px}
-.yw-home-illustration{width:100%;max-width:840px;margin:0 auto 16px;overflow:hidden;border:1px solid #ded6c8;border-radius:16px;background:#fffefa}
+.yw-home-illustration{width:100%;max-width:660px;margin:0 auto 20px;overflow:hidden;border:1px solid #ded6c8;border-radius:16px;background:#fffefa}
 .yw-home-illustration img{display:block;width:100%;height:auto;object-fit:contain}
 .yw-role-picker{position:absolute;top:0;left:0;z-index:2;display:flex;align-items:center;max-width:840px;width:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent}
 .yw-role-picker>span{display:none}
@@ -66,6 +66,9 @@
 .yw-progress-item{display:flex;align-items:flex-start;gap:6px;padding:2px 0;font-size:13px;line-height:1.4;color:#655d53}
 .yw-progress-item-status{flex:none;font-weight:700;color:#547363}
 .yw-karen-page{max-width:840px;margin:0 auto;padding:0 12px 28px}
+.yw-karen-back{min-height:44px;margin:0 0 12px;padding:8px 12px;border:1px solid #ded6c8;border-radius:10px;background:#fffefa;color:#30453a;font-size:16px;font-weight:600;cursor:pointer}
+.yw-karen-back:hover{background:#edf3ee}
+.yw-karen-back:focus-visible{outline:3px solid #9b762f;outline-offset:2px}
 .yw-karen-welcome-image{display:block;width:100%;height:auto;margin:0 0 16px;border-radius:16px}
 .yw-karen-intro{display:grid;grid-template-columns:104px minmax(0,1fr);align-items:center;gap:18px;margin-bottom:16px;padding:16px;border:1px solid #ded6c8;border-radius:18px;background:linear-gradient(135deg,#fffefa,#f6f1e9)}
 .yw-karen-intro img{display:block;width:104px;height:auto;max-height:132px;object-fit:contain}
@@ -80,6 +83,9 @@
 .yw-karen-story h3,.yw-karen-section>h3{margin:0 0 9px;color:#30453a;font-size:18px}
 .yw-karen-story p,.yw-karen-card p,.yw-karen-step p{margin:0;color:#655d53;font-size:15px;line-height:1.75}
 .yw-karen-story p+p{margin-top:8px}
+.yw-karen-contact{margin:18px 0 4px;padding:16px;border:1px solid #ded6c8;border-radius:14px;background:#edf3ee}
+.yw-karen-contact h3{margin:0 0 6px;color:#30453a;font-size:18px}
+.yw-karen-contact p{margin:0;color:#655d53;font-size:15px;line-height:1.7}
 .yw-karen-section{margin:18px 0}
 .yw-karen-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .yw-karen-card{min-width:0;padding:14px;border:1px solid #e5ded2;border-radius:13px;background:#fffefa}
@@ -310,15 +316,7 @@
 .yw-inline-notes,.yw-disclosure{margin:16px 0;border:1px solid #ded6c8;border-radius:12px;background:#fffefa;overflow:hidden}
 .yw-inline-notes>summary,.yw-disclosure>summary{padding:14px;cursor:pointer;font-size:17px;font-weight:600;color:#30453a;min-height:48px}
 .yw-inline-notes>.yw-notes-body,.yw-disclosure>.yw-disclosure-body{padding:0 14px 16px}
-.yw-about-dialog{width:min(600px,calc(100vw - 24px));max-height:calc(100dvh - 24px);overflow:auto;margin:auto;padding:18px;border:1px solid #ded6c8;border-radius:18px;background:#fffefa;color:#30453a;font:16px/1.6 system-ui,"Noto Sans TC",sans-serif}
-.yw-about-dialog::backdrop{background:#241d1777}
-.yw-about-dialog .yw-karen-page{padding:0}
-.yw-about-dialog .yw-drawer-heading{position:sticky;top:-18px;z-index:2;background:#fffefa;padding:10px 0;margin-bottom:10px}
-.yw-about-dialog .yw-drawer-heading h2{font-size:19px}
-.yw-about-dialog .yw-drawer-heading button{font-size:15px}
-.yw-about-dialog .yw-karen-kyuan-link{display:table;max-width:100%;margin-top:8px;padding:4px 8px;min-height:0;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
-.yw-about-dialog .yw-karen-cards{grid-template-columns:1fr}
-@media(max-width:540px){#yuan-workspace .yw-columns{padding:16px 12px}.yw-home .yw-navigation nav{grid-template-columns:1fr}.yw-home .yw-navigation nav button,.yw-home .yw-response-link{min-height:78px;padding:12px}#yuan-workspace .yw-role-picker{grid-template-columns:1fr}.yw-about-dialog{padding:12px}.yw-about-dialog .yw-drawer-heading{top:-12px}}
+@media(max-width:540px){#yuan-workspace .yw-columns{padding:16px 12px}.yw-home .yw-navigation nav{grid-template-columns:1fr}.yw-home .yw-navigation nav button,.yw-home .yw-response-link{min-height:78px;padding:12px}#yuan-workspace .yw-role-picker{grid-template-columns:1fr}.yw-karen-intro{grid-template-columns:76px minmax(0,1fr);gap:12px;padding:12px}.yw-karen-intro img{width:76px;max-height:100px}.yw-karen-intro h2{font-size:23px}.yw-karen-kyuan-link{min-height:40px;padding:6px 8px;font-size:15px;line-height:1.5;overflow-wrap:anywhere}}
 .yw-redundant-controls{display:none!important}
 #root .yw-simple-section{display:block;cursor:default}
 #root .yw-simple-section>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;margin:0;padding-block:10px;min-height:44px}
@@ -337,9 +335,6 @@
 .welcome-landing-copy{font-size:17px;line-height:1.8;color:#655d53;margin:0;max-width:36ch}
 .welcome-landing-start{min-height:48px;padding:13px 25px;border:0;border-radius:14px;background:#30453a;color:#fffefa;font:700 20px/1.5 system-ui,"Noto Sans TC",sans-serif;cursor:pointer}
 .welcome-landing-start:focus-visible{outline:3px solid #9b762f;outline-offset:3px}
-.yw-karen-first-paragraph,.yw-karen-more>p{font-size:16px;line-height:1.8;color:#655d53;margin:12px 0}
-.yw-karen-more{border-top:1px solid #ded6c8;margin-top:12px}
-.yw-karen-more>summary{padding-block:12px}
 .yw-home .yw-navigation button:disabled{opacity:.6;cursor:default}
 .yw-home-hint{font-size:14px;line-height:1.6;margin:0 0 14px;color:#655d53}
 
